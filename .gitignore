@@ -13,10 +13,11 @@ app/tmp/cache/views/*.php
 # Cake logs
 app/tmp/logs/*.log
  
-# Wildflower uploaded files
+# Uploaded files
 app/webroot/uploads/*
  
-# HTML webroot cache
+# Webroot cache
 app/webroot/cache/*
- 
+
+# Mac OS X folder settings
 .DS_Store
