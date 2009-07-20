@@ -5,18 +5,18 @@ www/app/config/database.php
 www/app/webroot/.htaccess
 
 # Cake caches
-app/tmp/cache/cake_*
-app/tmp/cache/models/cake_*
-app/tmp/cache/persistent/cake_*
-app/tmp/cache/views/*.php
+www/app/tmp/cache/cake_*
+www/app/tmp/cache/models/cake_*
+www/app/tmp/cache/persistent/cake_*
+www/app/tmp/cache/views/*.php
  
 # Cake logs
-app/tmp/logs/*.log
+www/app/tmp/logs/*.log
  
 # Wildflower uploaded files
-app/webroot/uploads/*
+www/app/webroot/uploads/*
  
 # HTML webroot cache
-app/webroot/cache/*
+www/app/webroot/cache/*
  
 .DS_Store
