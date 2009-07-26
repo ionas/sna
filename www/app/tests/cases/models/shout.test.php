@@ -1,6 +1,6 @@
 <?php 
 /* SVN FILE: $Id$ */
-/* Shout Test cases generated on: 2009-07-20 17:07:57 : 1248105477*/
+/* Shout Test cases generated on: 2009-07-26 13:07:37 : 1248609457*/
 App::import('Model', 'Shout');
 
 class ShoutTestCase extends CakeTestCase {

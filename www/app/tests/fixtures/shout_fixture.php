@@ -1,6 +1,6 @@
 <?php 
 /* SVN FILE: $Id$ */
-/* Shout Fixture generated on: 2009-07-20 17:07:57 : 1248105477*/
+/* Shout Fixture generated on: 2009-07-26 13:07:37 : 1248609457*/
 
 class ShoutFixture extends CakeTestFixture {
 	var $name = 'Shout';

@@ -9,6 +9,19 @@ class User extends AppModel {
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 	var $hasMany = array(
+		'Message' => array(
+			'className' => 'Message',
+			'foreignKey' => 'user_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
 		'Shout' => array(
 			'className' => 'Shout',
 			'foreignKey' => 'user_id',

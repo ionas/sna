@@ -1,11 +1,11 @@
 <?php 
 /* SVN FILE: $Id$ */
-/* User Test cases generated on: 2009-07-20 17:07:20 : 1248105500*/
+/* User Test cases generated on: 2009-07-26 13:07:10 : 1248609490*/
 App::import('Model', 'User');
 
 class UserTestCase extends CakeTestCase {
 	var $User = null;
-	var $fixtures = array('app.user', 'app.shout');
+	var $fixtures = array('app.user', 'app.message', 'app.shout');
 
 	function startTest() {
 		$this->User =& ClassRegistry::init('User');
