@@ -1,41 +1,54 @@
 <?php
 class User extends AppModel {
-
+	
 	var $name = 'User';
 	var $validate = array(
-		'username' => array('notempty'),
-		'password' => array('notempty')
+		'username' => array(
+			'isUnique' => array(
+				'rule' => 'isUnique',
+				'message' => 'This nickname is already in use.',
+			),
+			'minLength' => array(
+				'rule' => array('minLength', '8'),
+				'message' => 'Minimum length of 8 characters.',
+			),
+		),
+		'password' => array(
+			'minLength' => array(
+				'rule' => array('minLength', '5'),
+				'message' => 'Minimum length of 5 characters.',
+			),
+		),
+		'nickname' => array(
+			'isUnique' => array(
+				'rule' => 'isUnique',
+				'message' => 'This nickname is already in use.',
+			),
+			'minLength' => array(
+				'rule' => array('minLength', '8'),
+				'message' => 'Minimum length of 8 characters.',
+			),
+			'alphaNumeric' => array(
+				'rule' => 'alphaNumeric',
+				'message' => 'Nickname must only contain letters and numbers.',
+			),
+		),
 	);
-
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
+	
+	var $displayField = 'nickname';
+	
 	var $hasMany = array(
 		'Message' => array(
 			'className' => 'Message',
 			'foreignKey' => 'user_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
+			'dependent' => true,
 		),
 		'Shout' => array(
 			'className' => 'Shout',
 			'foreignKey' => 'user_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
+			'dependent' => true,
 		)
 	);
-
+	
 }
 ?>

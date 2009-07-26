@@ -1,0 +1,10 @@
+SocialNetwork Application
+
+Basic Application which includes:
+User Registration, Inactivity state and deletion
+Shoutbox
+Profile page
+Messaging with Auth Challenge (see ICQ)
+Buddylists
+Logging in and out
+ACL
