@@ -1,9 +1,11 @@
 <?php
 class Shout extends AppModel {
-
+	
 	var $name = 'Shout';
 	var $validate = array(
-		'user_id' => array('notempty')
+		'user_id' => array('notempty'),
+		'from_user_id' => array('notempty'),
+		'text' => array('notempty'),
 	);
 	
 	var $belongsTo = array(

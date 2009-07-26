@@ -6,7 +6,7 @@ class Message extends AppModel {
 		'user_id' => array('notempty'),
 		'form_user_id' => array('notempty'),
 		'subject' => array('notempty'),
-		'body' => array('notempty')
+		'body' => array('notempty'),
 	);
 	
 	var $belongsTo = array(
