@@ -33,6 +33,16 @@ class User extends AppModel {
 				'message' => 'Nickname must only contain letters and numbers.',
 			),
 		),
+		'email' => array(
+			'isUnique' => array(
+				'rule' => 'isUnique',
+				'message' => 'This email address is already in use.',
+			),
+			'email' => array(
+				'rule' => 'email',
+				'message' => 'Must be a valid email address.',
+			),
+		),
 	);
 	
 	var $displayField = 'nickname';
@@ -47,7 +57,7 @@ class User extends AppModel {
 			'className' => 'Shout',
 			'foreignKey' => 'user_id',
 			'dependent' => true,
-		)
+		),
 	);
 	
 }

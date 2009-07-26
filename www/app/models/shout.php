@@ -13,9 +13,9 @@ class Shout extends AppModel {
 			'className' => 'User',
 			'foreignKey' => 'user_id',
 		),
-		'FormUser' => array(
+		'FromUser' => array(
 			'className' => 'User',
-			'foreignKey' => 'form_user_id',
+			'foreignKey' => 'from_user_id',
 		),
 	);
 	
