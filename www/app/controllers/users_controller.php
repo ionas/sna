@@ -1,7 +1,100 @@
 <?php
 class UsersController extends AppController {
-
+	
 	var $name = 'Users';
-	var $scaffold;
+	var $components = array('Auth');
+	var $helpers = array('Html', 'Form');
+	
+	function index() {
+		$this->User->recursive = 0;
+		$this->set('users', $this->paginate());
+	}
+	
+	function view($id = null) {
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid User.', true));
+			$this->redirect(array('action'=>'index'));
+		}
+		// given
+		if(strlen($id) < 36) {
+			$user = $this->User->find('first', array(
+					'User.id',
+					'conditions' => array('User.nickname' => $id),
+				)
+			);
+			$id = $user['User']['id'];
+		}
+		$this->set('user', $this->User->read(null, $id));
+	}
+	
+	function add() {
+		if (!empty($this->data)) {
+			$this->User->create();
+			if ($this->User->save($this->data)) {
+				$this->Session->setFlash(__('The User has been saved', true));
+				$this->redirect(array('action'=>'index'));
+			} else {
+				$this->Session->setFlash(__('The User could not be saved. Please, try again.', true));
+			}
+		}
+	}
+	
+	function edit($id = null) {
+		if (!$id && empty($this->data)) {
+			$this->Session->setFlash(__('Invalid User', true));
+			$this->redirect(array('action'=>'index'));
+		}
+		if (!empty($this->data)) {
+			if ($this->User->save($this->data)) {
+				$this->Session->setFlash(__('The User has been saved', true));
+				$this->redirect(array('action'=>'index'));
+			} else {
+				$this->Session->setFlash(__('The User could not be saved. Please, try again.', true));
+			}
+		}
+		if (empty($this->data)) {
+			$this->data = $this->User->read(null, $id);
+		}
+	}
+	
+	function delete($id = null) {
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid id for User', true));
+			$this->redirect(array('action'=>'index'));
+		}
+		if ($this->User->del($id)) {
+			$this->Session->setFlash(__('User deleted', true));
+			$this->redirect(array('action'=>'index'));
+		}
+	}
+	
+	/**
+	 *  The AuthComponent provides the needed functionality
+	 *  for login, so you can leave this function blank.
+	 */
+	function login() {
+		if($this->Auth->user()) {
+			$this->redirect(array('controller'=>'users', 'action'=>'home'));
+		}
+	}
+	
+	function logout() {
+		$authedUser = $this->Auth->user();
+		$this->Session->setFlash(
+			__('Goodbye', true) . ' &lt;' . $authedUser['User']['nickname'] . '&gt; ...'
+		);
+		$this->redirect($this->Auth->logout());
+	}
+	
+	function home() {
+		$authedUser = $this->Auth->user();
+		$landingPage = $this->User->UserOption->get($authedUser['User']['id'], array('landingPage'));
+		if(!empty($landingPage)) {
+			$this->redirect(AppController::toRoute($landingPage));
+		} else {
+			$this->redirect(array('controller' => 'pages', 'action' => 'display', 'home'));
+		}
+	}
+	
 }
 ?>

@@ -48,6 +48,11 @@ class User extends AppModel {
 	var $displayField = 'nickname';
 	
 	var $hasMany = array(
+		'UserOption' => array(
+			'className' => 'UserOption',
+			'foreignKey' => 'user_id',
+			'dependent' => true,
+		),
 		'Message' => array(
 			'className' => 'Message',
 			'foreignKey' => 'user_id',
