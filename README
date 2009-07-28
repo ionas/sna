@@ -1,16 +1,17 @@
 SocialNetwork Application
 
 TODO:
-- User Registration
 - Logging in and out
+- User registration
 - User checkboxes
-- User Deletion
+- User deletion
+- User picture uploads
 - Shoutbox
-- Shout's hiding
+- Shout hiding
 - Profile page
 - Profile visibility options
 - Messaging
-- Messaging Auth Challenge (see ICQ)
+- Messaging auth challenge (see ICQ)
 - Buddylists
-- Buddy Auth Challenge
+- Buddy auth challenge
 - ACL
