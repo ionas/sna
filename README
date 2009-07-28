@@ -1,10 +1,16 @@
 SocialNetwork Application
 
-Basic Application which includes:
-User Registration, Inactivity state and deletion
-Shoutbox
-Profile page
-Messaging with Auth Challenge (see ICQ)
-Buddylists
-Logging in and out
-ACL
+TODO:
+- User Registration
+- Logging in and out
+- User checkboxes
+- User Deletion
+- Shoutbox
+- Shout's hiding
+- Profile page
+- Profile visibility options
+- Messaging
+- Messaging Auth Challenge (see ICQ)
+- Buddylists
+- Buddy Auth Challenge
+- ACL
