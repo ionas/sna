@@ -13,7 +13,7 @@ www/app/tmp/cache/views/*.php
 # Cake logs
 www/app/tmp/logs/*.log
  
-# Wildflower uploaded files
+# Webroot uploaded files
 www/app/webroot/uploads/*
  
 # HTML webroot cache
