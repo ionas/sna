@@ -90,7 +90,7 @@ class UsersController extends AppController {
 		$authedUser = $this->Auth->user();
 		$landingPage = $this->User->UserOption->get($authedUser['User']['id'], array('landingPage'));
 		if(!empty($landingPage)) {
-			$this->redirect(AppController::toRoute($landingPage));
+			$this->redirect(Lib::toRoute($landingPage));
 		} else {
 			$this->redirect(array('controller' => 'pages', 'action' => 'display', 'home'));
 		}

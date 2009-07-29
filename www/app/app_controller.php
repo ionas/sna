@@ -5,6 +5,10 @@ class AppController extends Controller {
 		Security::setHash('sha256');
 	}
 	
+}
+
+class Lib {
+	
 	function toRoute($stringRoute) {
 		// format key=>value, key=>value
 		$explodedRoute = explode(', ', $stringRoute);
@@ -21,4 +25,5 @@ class AppController extends Controller {
 	}
 	
 }
+
 ?>

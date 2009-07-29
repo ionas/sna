@@ -2,7 +2,7 @@ SocialNetwork Application
 
 TODO:
 - Logging in and out
-- User registration
+- User registration /w captcha ( see http://captcha.ru/en/kcaptcha/) - be aware: accessibilitys
 - User checkboxes
 - User deletion
 - User picture uploads
@@ -15,3 +15,6 @@ TODO:
 - Buddylists
 - Buddy auth challenge
 - ACL
+- Security Features and Double Salts
+  See also: http://devedge.jonas-hartmann.com/documents/Securing_authentication_and_data_manipulation_via_HTTP.html
+- Routing (index => list, add => register/create/whatever, delete => remove (OR disable))
