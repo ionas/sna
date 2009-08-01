@@ -12,12 +12,14 @@ echo $paginator->counter(array(
 	<th><?php echo $paginator->sort('created');?></th>
 	<th><?php echo $paginator->sort('modified');?></th>
 	<th><?php echo $paginator->sort('has_accepted_tos');?></th>
+	<th><?php echo $paginator->sort('is_hidden');?></th>
 	<th><?php echo $paginator->sort('is_disabled');?></th>
-	<th><?php echo $paginator->sort('is_active');?></th>
+	<th><?php echo $paginator->sort('is_deleted');?></th>
 	<th><?php echo $paginator->sort('username');?></th>
 	<th><?php echo $paginator->sort('password');?></th>
 	<th><?php echo $paginator->sort('nickname');?></th>
 	<th><?php echo $paginator->sort('email');?></th>
+	<th><?php echo $paginator->sort('authentification_key');?></th>
 	<th class="actions"><?php __('Actions');?></th>
 </tr>
 <?php
@@ -42,10 +44,13 @@ foreach ($users as $user):
 			<?php echo $user['User']['has_accepted_tos']; ?>
 		</td>
 		<td>
+			<?php echo $user['User']['is_hidden']; ?>
+		</td>
+		<td>
 			<?php echo $user['User']['is_disabled']; ?>
 		</td>
 		<td>
-			<?php echo $user['User']['is_active']; ?>
+			<?php echo $user['User']['is_deleted']; ?>
 		</td>
 		<td>
 			<?php echo $user['User']['username']; ?>
@@ -58,6 +63,9 @@ foreach ($users as $user):
 		</td>
 		<td>
 			<?php echo $user['User']['email']; ?>
+		</td>
+		<td>
+			<?php echo $user['User']['authentification_key']; ?>
 		</td>
 		<td class="actions">
 			<?php echo $html->link(__('View', true), array('action'=>'view', $user['User']['id'])); ?>
@@ -76,6 +84,8 @@ foreach ($users as $user):
 <div class="actions">
 	<ul>
 		<li><?php echo $html->link(__('New User', true), array('action'=>'add')); ?></li>
+		<li><?php echo $html->link(__('List User Options', true), array('controller'=> 'user_options', 'action'=>'index')); ?> </li>
+		<li><?php echo $html->link(__('New User Option', true), array('controller'=> 'user_options', 'action'=>'add')); ?> </li>
 		<li><?php echo $html->link(__('List Messages', true), array('controller'=> 'messages', 'action'=>'index')); ?> </li>
 		<li><?php echo $html->link(__('New Message', true), array('controller'=> 'messages', 'action'=>'add')); ?> </li>
 		<li><?php echo $html->link(__('List Shouts', true), array('controller'=> 'shouts', 'action'=>'index')); ?> </li>

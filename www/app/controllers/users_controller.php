@@ -27,16 +27,27 @@ class UsersController extends AppController {
 		$this->set('user', $this->User->read(null, $id));
 	}
 	
-	function add() {
+	function register() {
 		if (!empty($this->data)) {
 			$this->User->create();
+			$this->data['User']['is_hidden'] = 0;
+			$this->data['User']['is_disabled'] = 0;
+			$this->data['User']['is_deleted'] = 0;
 			if ($this->User->save($this->data)) {
-				$this->Session->setFlash(__('The User has been saved', true));
-				$this->redirect(array('action'=>'index'));
+				$this->User->saveField('activation_key',
+					Security::hash(mb_strtolower(), 'sha256'), true);
+				$this->Session->setFlash(__('Your registration has been successful. However, you will still need to activate your user account.', true));
+				$this->redirect(array('action' => 'user_activation'));
 			} else {
+				unset($this->data['User']['password']);
+				unset($this->data['User']['password_confirmation']);
 				$this->Session->setFlash(__('The User could not be saved. Please, try again.', true));
 			}
 		}
+	}
+	
+	function user_activation() {
+		// activate with given activation_key
 	}
 	
 	function edit($id = null) {
@@ -73,24 +84,26 @@ class UsersController extends AppController {
 	 *  for login, so you can leave this function blank.
 	 */
 	function login() {
-		if($this->Auth->user()) {
-			$this->redirect(array('controller'=>'users', 'action'=>'home'));
-		}
 	}
 	
 	function logout() {
 		$authedUser = $this->Auth->user();
 		$this->Session->setFlash(
-			__('Goodbye', true) . ' &lt;' . $authedUser['User']['nickname'] . '&gt; ...'
+			__('Goodbye', true) . ' &lt;' . $authedUser['User']['username'] . '&gt; ...'
 		);
 		$this->redirect($this->Auth->logout());
+	}
+	
+	function status() {
+		debug($this->Auth->user());
+		exit;
 	}
 	
 	function home() {
 		$authedUser = $this->Auth->user();
 		$landingPage = $this->User->UserOption->get($authedUser['User']['id'], array('landingPage'));
 		if(!empty($landingPage)) {
-			$this->redirect(Lib::toRoute($landingPage));
+			$this->redirect(Func::toRoute($landingPage));
 		} else {
 			$this->redirect(array('controller' => 'pages', 'action' => 'display', 'home'));
 		}

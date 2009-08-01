@@ -7,7 +7,7 @@ class AppController extends Controller {
 	
 }
 
-class Lib {
+class Func {
 	
 	function toRoute($stringRoute) {
 		// format key=>value, key=>value
