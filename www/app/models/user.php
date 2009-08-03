@@ -166,9 +166,17 @@ class User extends AppModel {
 			$serverName = substr($serverName, 4);
 		}
 		$Email->to = $data[$this->alias]['email'];
-		$Email->subject = 'User Account Activation';
+		$Email->subject = $serverName . ': ' . $data[$this->alias]['username'] . '/'
+			. $data[$this->alias]['nickname'] . ' - ' . __('User Account Activation', true);
 		$Email->from = 'noreply@' . $serverName;
-		$message = array($message, 'Activation Key: ' . $activationKey);
+		$message = array($message,
+			__('You can either click on the Activation Link below...', true),
+			__('Activation Link', true) . ':'
+				. '<a href="http://' . $_SERVER['SERVER_NAME']. '/users/activate/' . $activationKey,
+			'... ' . __('or if that does not work, copy and paste over the Activation Key below, to', true)
+				. ' http://' . $_SERVER['SERVER_NAME']. '/users/activate ',
+			__('Activation Key', true) . ': ' . $activationKey,
+		);
 		if ($Email->send($message)) {
 			$this->log('User account activation email send from ' . $Email->from
 				. ' send to: ' . $Email->to, LOG_DEBUG);
