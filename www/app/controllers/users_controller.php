@@ -53,7 +53,7 @@ class UsersController extends AppController {
 				$this->redirect(array('action' => 'index'));
 			}
 			else {
-				$this->Session->setFlash(__('The Activation failed. Please correct your Activation Key and try again.', true));
+				$this->Session->setFlash(__('The User Account Activation failed. Please correct your Activation Key and try again.', true));
 			}
 		}
 		if($activationKey) {
