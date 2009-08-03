@@ -6,7 +6,18 @@ class UsersController extends AppController {
 	
 	function beforeFilter() {
 		parent::beforeFilter();
-		// $this->Auth->allow(array('register', 'activate'));
+		$this->Auth->allow(array('register', 'activate', 'logout', 'login'));
+		// Active users may login
+		$this->Auth->userScope = array(
+			'User.activation_key' => '',
+			'User.is_deleted' => false,
+			'User.is_disabled' => false,
+		);
+		if($this->action == 'register') {
+			// Use User::hashPasswords instead Auth::hashPasswords
+			$this->Auth->authenticate = $this->User;
+		}
+		$this->Auth->autoRedirect = false;
 	}
 	
 	function index() {
@@ -20,7 +31,7 @@ class UsersController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
 		// given
-		if(strlen($id) < 36) {
+		if (strlen($id) < 36) {
 			$user = $this->User->find('first', array(
 					'User.id',
 					'conditions' => array('User.nickname' => $id),
@@ -32,7 +43,6 @@ class UsersController extends AppController {
 	}
 	
 	function register() {
-		$this->Auth->authenticate = $this->User;
 		if (!empty($this->data)) {
 			$this->User->create();
 			if ($this->User->save($this->data, true, array('has_accepted_tos', 'username', 'password', 'nickname', 'email'))) {
@@ -48,15 +58,15 @@ class UsersController extends AppController {
 	
 	function activate($activationKey = null) {
 		if (!empty($this->data)) {
-			if($this->User->activate($this->data)) {
-				$this->Session->setFlash(__('Your User Account has been activated. Thank you.', true));
-				$this->redirect(array('action' => 'index'));
+			if ($this->User->activate($this->data)) {
+				$this->Session->setFlash(__('Your User Account has been activated. You may now login.', true));
+				$this->redirect(array('action' => 'login'));
 			}
 			else {
 				$this->Session->setFlash(__('The User Account Activation failed. Please correct your Activation Key and try again.', true));
 			}
 		}
-		if($activationKey) {
+		if ($activationKey) {
 			$this->data['User']['activation_key'] = $activationKey;
 		}
 	}
@@ -93,11 +103,11 @@ class UsersController extends AppController {
 	function add_buddy() {
 		
 	}
-
+	
 	function ignore_user() {
 		
 	}
-
+	
 	function change_email() {
 		
 	}
@@ -109,26 +119,24 @@ class UsersController extends AppController {
 	function hide() {
 		
 	}
-
-	/*
+	
 	function home() {
 		$authedUser = $this->Auth->user();
 		$landingPage = $this->User->UserOption->get($authedUser['User']['id'], array('landingPage'));
-		if(!empty($landingPage)) {
+		if (!empty($landingPage)) {
 			$this->redirect(Func::toRoute($landingPage));
 		} else {
 			$this->redirect(array('controller' => 'pages', 'action' => 'display', 'home'));
 		}
 	}
-	*/
 	
 	function status() {
 		debug($this->Auth->user());
 		exit;
 	}
-
+	
 	function login() {
-		$this->Auth->loginRedirect = array('controller'=>'users', 'action'=>'index');
+		
 	}
 	
 	function logout() {

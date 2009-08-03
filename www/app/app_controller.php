@@ -1,10 +1,15 @@
 <?php
 class AppController extends Controller {
 	
-	// var $components = array('Auth');
+	var $components = array('Auth');
 	
 	function beforeFilter() {
 		Security::setHash('sha256');
+		$this->Auth->allow(array('display'));
+		$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
+		$this->Auth->logoutRedirect = '/';
+		$this->Auth->loginRedirect = array('controller' => 'users', 'action' => 'home');
+		$this->Auth->autoRedirect = true;
 	}
 	
 }

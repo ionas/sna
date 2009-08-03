@@ -117,8 +117,9 @@ class User extends AppModel {
 	}
 	
 	function validateEqualData($data, $message, $comparisonField) {
+		debug($this->data);
 		if (is_array($data)) {
-			foreach($data as $value) {
+			foreach ($data as $value) {
 				if ($value !== $this->data[$this->alias][$comparisonField]) {
 					$this->invalidate($comparisonField, $message);
 					return false;
@@ -147,6 +148,7 @@ class User extends AppModel {
 	}
 	
 	function hashPasswords($data, $enforce = false) {
+		$this->log('Hashing password', LOG_DEBUG);
 		if ($enforce && isset($this->data[$this->alias]['password'])) {
 			if (!empty($this->data[$this->alias]['password'])) {
 				$this->data[$this->alias]['password'] =
@@ -159,7 +161,8 @@ class User extends AppModel {
 	function deactivate($data, $doSendEmail = true, $message = '') {
 		$activationKey = Security::hash(time() . mt_rand(), 'sha256');
 		$this->saveField('activation_key', $activationKey , true);
-		// Sending the Email
+		// Sending the Activation Email (maybe this should be somewhere else,
+		// and here should be a switch for Activation via Email OR SMS-Gateway!)
 		$Email = new EmailComponent();
 		$serverName = $_SERVER['SERVER_NAME'];
 		if (strpos($serverName, 'www.') === 0) {
@@ -189,7 +192,7 @@ class User extends AppModel {
 	}
 	
 	function activate($data, $doSendEmail = true) {
-		if(empty($data['User']['activation_key'])) {
+		if (empty($data['User']['activation_key'])) {
 			$this->invalidate('activation_key', __('Enter your Activation Key.', true));
 			return false;
 		}
@@ -199,9 +202,9 @@ class User extends AppModel {
 				'recursive' => 0,
 			)
 		);
-		if(!empty($data['User']['id'])) {
+		if (!empty($data['User']['id'])) {
 			$this->id = $data['User']['id'];
-			if($this->saveField('activation_key', '')) {
+			if ($this->saveField('activation_key', '')) {
 				// TODO doSendEmail
 				return true;
 			}
