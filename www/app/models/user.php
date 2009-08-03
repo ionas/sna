@@ -142,7 +142,7 @@ class User extends AppModel {
 	
 	function afterSave($isCreated) {
 		if ($isCreated === true) {
-			$this->deactivate(true);
+			$this->deactivate($this->data);
 		}
 	}
 	
@@ -156,7 +156,7 @@ class User extends AppModel {
 		return $data;
 	}
 	
-	function deactivate($doSendEmail, $message = '') {
+	function deactivate($data, $doSendEmail = true, $message = '') {
 		$activationKey = Security::hash(time() . mt_rand(), 'sha256');
 		$this->saveField('activation_key', $activationKey , true);
 		// Sending the Email
@@ -165,14 +165,16 @@ class User extends AppModel {
 		if (strpos($serverName, 'www.') === 0) {
 			$serverName = substr($serverName, 4);
 		}
-		$Email->to = $this->data['User']['email'];
+		$Email->to = $data[$this->alias]['email']
 		$Email->subject = 'User Account Activation';
 		$Email->from = 'noreply@' . $serverName;
 		$message = array($message, 'Activation Key: ' . $activationKey);
 		if ($Email->send($message)) {
-			$this->log("User account activation send to: " . $Email->to, LOG_DEBUG);
+			$this->log('User account activation email send from ' . $EMail->from
+				. ' send to: ' . $Email->to, LOG_DEBUG);
 		} else {
-			$this->log("User account activation NOT send to: " . $Email->to, LOG_DEBUG);
+			$this->log('User account activation email COULD NOT be send from ' . $EMail->from
+				. ' send to: ' . $Email->to, LOG_DEBUG);
 		}
 		unset($Email);
 	}
