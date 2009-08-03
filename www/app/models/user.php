@@ -82,7 +82,7 @@ class User extends AppModel {
 				),
 				'message' => 'You must accept the Terms of Service on User Account creation.',
 			),
-		),
+		)
 	);
 	
 	var $displayField = 'nickname';
@@ -188,8 +188,27 @@ class User extends AppModel {
 		unset($Email);
 	}
 	
-	function activate($doSendEmail) {
-		// TODO
+	function activate($data, $doSendEmail = true) {
+		if(empty($data['User']['activation_key'])) {
+			$this->invalidate('activation_key', __('Enter your Activation Key.', true));
+			return false;
+		}
+		$data = $this->find('first', array(
+				'fields' => array('User.id'),
+				'conditions' => array('activation_key' => $data['User']['activation_key']),
+				'recursive' => 0,
+			)
+		);
+		if(!empty($data['User']['id'])) {
+			$this->id = $data['User']['id'];
+			if($this->saveField('activation_key', '')) {
+				// TODO doSendEmail
+				return true;
+			}
+		} else {
+			$this->invalidate('activation_key', __('The Activation Key you have entered is invalid.', true));
+			return false;
+		}
 	}
 	
 }

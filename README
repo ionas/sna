@@ -2,7 +2,10 @@ SocialNetwork Application
 
 TODO:
 - Logging in and out
-- User registration /w captcha ( see http://captcha.ru/en/kcaptcha/) - be aware: accessibilitys
+- User registration
+- User registration captcha ( see http://captcha.ru/en/kcaptcha/) be aware: accessibilitys
+- autofill username = nickname
+- prechecked checkbox: Send me a copy of my user account details (username, passwort, email, registration date)
 - User checkboxes
 - User deletion
 - User picture uploads
@@ -18,3 +21,6 @@ TODO:
 - Security Features and Double Salts
   See also: http://devedge.jonas-hartmann.com/documents/Securing_authentication_and_data_manipulation_via_HTTP.html
 - Routing (index => list, add => register/create/whatever, delete => remove (OR disable))
+- FAQ (cakephp book application?) - FAQ explains double use: username + nickname (security bonus)
+
+e57e320fba01ea2e7657816a65a498aa781e6c46d0ebfd4cef311cbc2dc8a2de

@@ -48,24 +48,14 @@ class UsersController extends AppController {
 	
 	function activate($activationKey = null) {
 		if (!empty($this->data)) {
-			$data = $this->User->find('first', array(
-					'fields' => array('User.id'),
-					'conditions' => array('activation_key' => $this->data['User']['activation_key']),
-					'recursive' => 0,
-				)
-			);
-			if(!empty($data['User']['id'])) {
-				$this->User->id = $data['User']['id'];
-				if($this->User->saveField('activation_key', '')) {
-					$this->Session->setFlash(__('Your User Account has been activated. Thank you.', true));
-					$this->redirect(array('action' => 'index'));
-				}
+			if($this->User->activate($this->data)) {
+				$this->Session->setFlash(__('Your User Account has been activated. Thank you.', true));
+				$this->redirect(array('action' => 'index'));
 			}
 		}
 		if($activationKey) {
 			$this->data['User']['activation_key'] = $activationKey;
 		}
-		// activate with given activation_key
 	}
 	
 	function edit($id = null) {
@@ -97,11 +87,14 @@ class UsersController extends AppController {
 		}
 	}
 	
-	/**
-	 *  The AuthComponent provides the needed functionality
-	 *  for login, so you can leave this function blank.
-	 */
-	
+	function add_buddy() {
+		
+	}
+
+	function ignore_user() {
+		
+	}
+
 	function change_email() {
 		
 	}
@@ -110,6 +103,27 @@ class UsersController extends AppController {
 		
 	}
 	
+	function hide() {
+		
+	}
+
+	/*
+	function home() {
+		$authedUser = $this->Auth->user();
+		$landingPage = $this->User->UserOption->get($authedUser['User']['id'], array('landingPage'));
+		if(!empty($landingPage)) {
+			$this->redirect(Func::toRoute($landingPage));
+		} else {
+			$this->redirect(array('controller' => 'pages', 'action' => 'display', 'home'));
+		}
+	}
+	*/
+	
+	function status() {
+		debug($this->Auth->user());
+		exit;
+	}
+
 	function login() {
 		$this->Auth->loginRedirect = array('controller'=>'users', 'action'=>'index');
 	}
@@ -122,22 +136,5 @@ class UsersController extends AppController {
 		$this->redirect($this->Auth->logout());
 	}
 	
-	function status() {
-		debug($this->Auth->user());
-		exit;
-	}
-	
-	/*
-	function0 home() {
-		$authedUser = $this->Auth->user();
-		$landingPage = $this->User->UserOption->get($authedUser['User']['id'], array('landingPage'));
-		if(!empty($landingPage)) {
-			$this->redirect(Func::toRoute($landingPage));
-		} else {
-			$this->redirect(array('controller' => 'pages', 'action' => 'display', 'home'));
-		}
-	}
-	*/
-		
 }
 ?>
