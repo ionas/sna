@@ -110,16 +110,16 @@ class User extends AppModel {
 	}
 	
 	function validateTosOnCreate() {
-		if($this->id === false && $this->data['User']['has_accepted_tos'] == 0) {
+		if ($this->id === false && $this->data['User']['has_accepted_tos'] == 0) {
 			return false;
 		}
 		return true;
 	}
 	
 	function validateEqualData($data, $message, $comparisonField) {
-		if(is_array($data)) {
+		if (is_array($data)) {
 			foreach($data as $value) {
-				if($value !== $this->data[$this->alias][$comparisonField]) {
+				if ($value !== $this->data[$this->alias][$comparisonField]) {
 					$this->invalidate($comparisonField, $message);
 					return false;
 				}
@@ -130,7 +130,7 @@ class User extends AppModel {
 	
 	function beforeSave() {
 		$this->hashPasswords(null, true);
-		if($this->id === false) { // on new records, clear out some fields, predefine some values
+		if ($this->id === false) { // on new records, clear out some fields, predefine some values
 			$this->data['User']['is_hidden'] = 0;
 			$this->data['User']['is_disabled'] = 0;
 			$this->data['User']['is_deleted'] = 0;
@@ -141,14 +141,14 @@ class User extends AppModel {
 	}
 	
 	function afterSave($isCreated) {
-		if($isCreated === true) {
+		if ($isCreated === true) {
 			$this->deactivate(true);
 		}
 	}
 	
 	function hashPasswords($data, $enforce = false) {
-		if($enforce && isset($this->data[$this->alias]['password'])) {
-			if(!empty($this->data[$this->alias]['password'])) {
+		if ($enforce && isset($this->data[$this->alias]['password'])) {
+			if (!empty($this->data[$this->alias]['password'])) {
 				$this->data[$this->alias]['password'] =
 					Security::hash($this->data[$this->alias]['password'], null, true);
 			}
@@ -162,7 +162,7 @@ class User extends AppModel {
 		// Sending the Email
 		$Email = new EmailComponent();
 		$serverName = $_SERVER['SERVER_NAME'];
-		if(strpos($serverName, 'www.') === 0) {
+		if (strpos($serverName, 'www.') === 0) {
 			$serverName = substr($serverName, 4);
 		}
 		$Email->to = $this->data['User']['email'];
@@ -170,10 +170,9 @@ class User extends AppModel {
 		$Email->from = 'noreply@' . $serverName;
 		$message = array($message, 'Activation Key: ' . $activationKey);
 		if ($Email->send($message)) {
-			debug('ho');
-		//	$this->Session->setFlash('Simple email sent');
+			$this->log("User account activation send to: " . $Email->to, LOG_DEBUG);
 		} else {
-		//	$this->Session->setFlash('Simple email not sent');
+			$this->log("User account activation NOT send to: " . $Email->to, LOG_DEBUG);
 		}
 		unset($Email);
 	}
