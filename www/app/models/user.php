@@ -165,15 +165,15 @@ class User extends AppModel {
 		if (strpos($serverName, 'www.') === 0) {
 			$serverName = substr($serverName, 4);
 		}
-		$Email->to = $data[$this->alias]['email']
+		$Email->to = $data[$this->alias]['email'];
 		$Email->subject = 'User Account Activation';
 		$Email->from = 'noreply@' . $serverName;
 		$message = array($message, 'Activation Key: ' . $activationKey);
 		if ($Email->send($message)) {
-			$this->log('User account activation email send from ' . $EMail->from
+			$this->log('User account activation email send from ' . $Email->from
 				. ' send to: ' . $Email->to, LOG_DEBUG);
 		} else {
-			$this->log('User account activation email COULD NOT be send from ' . $EMail->from
+			$this->log('User account activation email COULD NOT be send from ' . $Email->from
 				. ' send to: ' . $Email->to, LOG_DEBUG);
 		}
 		unset($Email);
