@@ -17,7 +17,7 @@ class UsersController extends AppController {
 	function view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid User.', true));
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('action' => 'index'));
 		}
 		// given
 		if(strlen($id) < 36) {
@@ -46,19 +46,37 @@ class UsersController extends AppController {
 		}
 	}
 	
-	function activate() {
+	function activate($activationKey = null) {
+		if (!empty($this->data)) {
+			$data = $this->User->find('first', array(
+					'fields' => array('User.id'),
+					'conditions' => array('activation_key' => $this->data['User']['activation_key']),
+					'recursive' => 0,
+				)
+			);
+			if(!empty($data['User']['id'])) {
+				$this->User->id = $data['User']['id'];
+				if($this->User->saveField('activation_key', '')) {
+					$this->Session->setFlash(__('Your User Account has been activated. Thank you.', true));
+					$this->redirect(array('action' => 'index'));
+				}
+			}
+		}
+		if($activationKey) {
+			$this->data['User']['activation_key'] = $activationKey;
+		}
 		// activate with given activation_key
 	}
 	
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid User', true));
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
 			if ($this->User->save($this->data)) {
 				$this->Session->setFlash(__('The User has been saved', true));
-				$this->redirect(array('action'=>'index'));
+				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__('The User could not be saved. Please, try again.', true));
 			}
@@ -71,11 +89,11 @@ class UsersController extends AppController {
 	function delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for User', true));
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('action' => 'index'));
 		}
 		if ($this->User->del($id)) {
 			$this->Session->setFlash(__('User deleted', true));
-			$this->redirect(array('action'=>'index'));
+			$this->redirect(array('action' => 'index'));
 		}
 	}
 	
