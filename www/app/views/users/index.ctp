@@ -19,7 +19,7 @@ echo $paginator->counter(array(
 	<th><?php echo $paginator->sort('password');?></th>
 	<th><?php echo $paginator->sort('nickname');?></th>
 	<th><?php echo $paginator->sort('email');?></th>
-	<th><?php echo $paginator->sort('authentification_key');?></th>
+	<th><?php echo $paginator->sort('activation_key');?></th>
 	<th class="actions"><?php __('Actions');?></th>
 </tr>
 <?php
@@ -65,7 +65,7 @@ foreach ($users as $user):
 			<?php echo $user['User']['email']; ?>
 		</td>
 		<td>
-			<?php echo $user['User']['authentification_key']; ?>
+			<?php echo $user['User']['activation_key']; ?>
 		</td>
 		<td class="actions">
 			<?php echo $html->link(__('View', true), array('action'=>'view', $user['User']['id'])); ?>

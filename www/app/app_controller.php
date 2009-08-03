@@ -1,6 +1,8 @@
 <?php
 class AppController extends Controller {
 	
+	// var $components = array('Auth');
+	
 	function beforeFilter() {
 		Security::setHash('sha256');
 	}

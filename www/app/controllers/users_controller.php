@@ -2,8 +2,12 @@
 class UsersController extends AppController {
 	
 	var $name = 'Users';
-	var $components = array('Auth');
 	var $helpers = array('Html', 'Form');
+	
+	function beforeFilter() {
+		parent::beforeFilter();
+		// $this->Auth->allow(array('register', 'activate'));
+	}
 	
 	function index() {
 		$this->User->recursive = 0;
@@ -28,25 +32,21 @@ class UsersController extends AppController {
 	}
 	
 	function register() {
+		$this->Auth->authenticate = $this->User;
 		if (!empty($this->data)) {
 			$this->User->create();
-			$this->data['User']['is_hidden'] = 0;
-			$this->data['User']['is_disabled'] = 0;
-			$this->data['User']['is_deleted'] = 0;
-			if ($this->User->save($this->data)) {
-				$this->User->saveField('activation_key',
-					Security::hash(mb_strtolower(), 'sha256'), true);
+			if ($this->User->save($this->data, true, array('has_accepted_tos', 'username', 'password', 'nickname', 'email'))) {
 				$this->Session->setFlash(__('Your registration has been successful. However, you will still need to activate your user account.', true));
-				$this->redirect(array('action' => 'user_activation'));
+				$this->redirect(array('action' => 'activate'));
 			} else {
 				unset($this->data['User']['password']);
 				unset($this->data['User']['password_confirmation']);
-				$this->Session->setFlash(__('The User could not be saved. Please, try again.', true));
+				$this->Session->setFlash(__('Your registration could not be completed, see below.', true));
 			}
 		}
 	}
 	
-	function user_activation() {
+	function activate() {
 		// activate with given activation_key
 	}
 	
@@ -83,7 +83,17 @@ class UsersController extends AppController {
 	 *  The AuthComponent provides the needed functionality
 	 *  for login, so you can leave this function blank.
 	 */
+	
+	function change_email() {
+		
+	}
+	
+	function change_password() {
+		
+	}
+	
 	function login() {
+		$this->Auth->loginRedirect = array('controller'=>'users', 'action'=>'index');
 	}
 	
 	function logout() {
@@ -99,7 +109,8 @@ class UsersController extends AppController {
 		exit;
 	}
 	
-	function home() {
+	/*
+	function0 home() {
 		$authedUser = $this->Auth->user();
 		$landingPage = $this->User->UserOption->get($authedUser['User']['id'], array('landingPage'));
 		if(!empty($landingPage)) {
@@ -108,6 +119,7 @@ class UsersController extends AppController {
 			$this->redirect(array('controller' => 'pages', 'action' => 'display', 'home'));
 		}
 	}
-	
+	*/
+		
 }
 ?>

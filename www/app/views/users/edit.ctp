@@ -1,18 +1,12 @@
 <div class="users form">
 <?php echo $form->create('User');?>
 	<fieldset>
- 		<legend><?php __('Edit User');?></legend>
+ 		<legend><?php __('Edit User Account');?></legend>
 	<?php
 		echo $form->input('id');
 		echo $form->input('has_accepted_tos');
 		echo $form->input('is_hidden');
-		echo $form->input('is_disabled');
-		echo $form->input('is_deleted');
-		echo $form->input('username');
-		echo $form->input('password');
 		echo $form->input('nickname');
-		echo $form->input('email');
-		echo $form->input('authentification_key');
 	?>
 	</fieldset>
 <?php echo $form->end('Submit');?>

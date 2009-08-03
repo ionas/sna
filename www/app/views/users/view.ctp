@@ -56,9 +56,9 @@
 			<?php echo $user['User']['email']; ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Authentification Key'); ?></dt>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Activation Key'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $user['User']['authentification_key']; ?>
+			<?php echo $user['User']['activation_key']; ?>
 			&nbsp;
 		</dd>
 	</dl>

@@ -1,17 +1,22 @@
 <div class="users form">
 <?=$form->create('User', array('action' => 'register'))?>
 	<fieldset>
- 		<legend><?php __('Register User')?></legend>
+		<legend><?php __('New User Account')?></legend>
 	<?php
-		echo $form->input('username');
-		echo $form->input('password');
-	    echo $form->input('password_confirmation');
 		echo $form->input('nickname');
 		echo $form->input('email');
-		echo $form->input('has_accepted_tos');
+		echo $form->input('email_confirmation');
+		echo $form->input('username', array('label' => 'Login Username'));
+		echo $form->input('password');
+		echo $form->input('password_confirmation', array('type'=>'password'));
+		echo $form->input('has_accepted_tos', array('label' => __('Hereby, I accept the', true) . ' '
+				. $html->link(__('Terms of Service', true),
+					array('controller' => 'pages', 'action' => 'display', 'public/terms_of_service'),
+					array('target' => '_blank'))
+				. '!'));
 	?>
 	</fieldset>
-<?=$form->end('Submit')?>
+<?=$form->end('Sign up')?>
 </div>
 <div class="actions">
 	<ul>
