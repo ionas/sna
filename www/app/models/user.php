@@ -173,9 +173,10 @@ class User extends AppModel {
 			__('You can either click on the Activation Link below...', true),
 			__('Activation Link', true) . ':'
 				. '<a href="http://' . $_SERVER['SERVER_NAME']. '/users/activate/' . $activationKey,
-			'... ' . __('or if that does not work, copy and paste over the Activation Key below, to', true)
+			'... ' . __('or if that does not work, copy and paste over the Activation Key', true) . ': ',
+			$activationKey,
+			'... ' . __('in the Activation Key field on', true) . ': '
 				. ' http://' . $_SERVER['SERVER_NAME']. '/users/activate ',
-			__('Activation Key', true) . ': ' . $activationKey,
 		);
 		if ($Email->send($message)) {
 			$this->log('User account activation email send from ' . $Email->from
