@@ -17,7 +17,10 @@ class UsersController extends AppController {
 			// Use User::hashPasswords instead Auth::hashPasswords
 			$this->Auth->authenticate = $this->User;
 		}
-		$this->Auth->autoRedirect = false;
+		$authRedirect = $this->Session->read('Auth.redirect');
+		if($authRedirect == '/users/activate') {
+			$this->Session->write('Auth.redirect', '/users/home');
+		}
 	}
 	
 	function index() {
@@ -61,8 +64,7 @@ class UsersController extends AppController {
 			if ($this->User->activate($this->data)) {
 				$this->Session->setFlash(__('Your User Account has been activated. You may now login.', true));
 				$this->redirect(array('action' => 'login'));
-			}
-			else {
+			} else {
 				$this->Session->setFlash(__('The User Account Activation failed. Please correct your Activation Key and try again.', true));
 			}
 		}
@@ -100,6 +102,24 @@ class UsersController extends AppController {
 		}
 	}
 	
+	function terms_of_service() {
+		if (!empty($this->params['form']['decline'])) {
+			$this->User->setTos($this->Auth->user(), 0);
+			$this->Session->setFlash(__('You have declined the Terms of Service.', true));
+			$this->Session->write('Auth', $this->User->find('first',
+					array('conditions' => array('id' => $this->Auth->user('id')))));
+			$this->redirect('/');
+		} else if (!empty($this->params['form']['accept'])) {
+			$this->User->setTos($this->Auth->user(), 1);
+			$this->Session->setFlash(__('You have accepted the Terms of Service.', true));
+			$this->Session->write('Auth', $this->User->find('first',
+					array('conditions' => array('id' => $this->Auth->user('id')))));
+			$this->redirect($this->Session->read('TermsOfService.redirect'));
+		}
+		$this->set('hasAcceptedTos', $this->Auth->user('has_accepted_tos'));
+		$this->set('termsOfService', $this->requestAction('/pages/public/terms_of_service'));
+	}
+	
 	function add_buddy() {
 		
 	}
@@ -121,8 +141,7 @@ class UsersController extends AppController {
 	}
 	
 	function home() {
-		$authedUser = $this->Auth->user();
-		$landingPage = $this->User->UserOption->get($authedUser['User']['id'], array('landingPage'));
+		$landingPage = $this->User->UserOption->get($this->Auth->user('id'), array('landingPage'));
 		if (!empty($landingPage)) {
 			$this->redirect(Func::toRoute($landingPage));
 		} else {
@@ -132,11 +151,9 @@ class UsersController extends AppController {
 	
 	function status() {
 		debug($this->Auth->user());
-		exit;
 	}
 	
 	function login() {
-		
 	}
 	
 	function logout() {

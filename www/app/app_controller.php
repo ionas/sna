@@ -3,25 +3,57 @@ class AppController extends Controller {
 	
 	var $components = array('Auth');
 	
+	var $termsOfServiceRequired = array('Users', 'Messages', 'Shouts');
+	
 	function beforeFilter() {
+		$this->_setupAuth();
+		$this->_checkHasAcceptedTos();
+	}
+	
+	function _setupAuth() {
 		Security::setHash('sha256');
-		$this->Auth->allow(array('display'));
+		if ($this->name == 'Pages') {
+			$this->Auth->allow(array('display'));
+		}
 		$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
 		$this->Auth->logoutRedirect = '/';
 		$this->Auth->loginRedirect = array('controller' => 'users', 'action' => 'home');
 		$this->Auth->autoRedirect = true;
 	}
 	
+	function _checkHasAcceptedTos() {
+		if ($this->Auth->isAuthorized()) {
+			if (in_array($this->name, $this->termsOfServiceRequired)
+			&& !($this->name == 'Users' && in_array($this->action, array(
+							'register', // does not make sense for later use
+							'activate', // does not make sense for later use
+							'login',
+							'logout',
+							'hide',
+							'terms_of_service',
+						)
+			))
+			&& $this->Auth->user('has_accepted_tos') != 1) {
+				$this->Session->setFlash(__('You have accepted the Terms of Service before continuing.', true));
+				$this->Session->write('TermsOfService.redirect', $this->here);
+				$this->redirect(array('controller' => 'users', 'action' => 'terms_of_service'));
+			}
+		}
+	}
+	
 }
-
+/**
+* Namespace for general helper functions
+* 
+*/
 class Func {
 	
 	function toRoute($stringRoute) {
 		// format key=>value, key=>value
 		$explodedRoute = explode(', ', $stringRoute);
 		$route = array();
-		foreach($explodedRoute as $pair) {
-			if(strstr($pair, '=>')) {
+		foreach ($explodedRoute as $pair) {
+			if (strstr($pair, '=>')) {
 				$pair = explode('=>', $pair);
 				$route[$pair[0]] = $pair[1];
 			} else {

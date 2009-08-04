@@ -6,6 +6,8 @@ class User extends AppModel {
 	
 	var $name = 'User';
 	
+	var $recursive = 0;
+	
 	var $validate = array(
 		'username' => array(
 			'isUnique' => array(
@@ -117,7 +119,6 @@ class User extends AppModel {
 	}
 	
 	function validateEqualData($data, $message, $comparisonField) {
-		debug($this->data);
 		if (is_array($data)) {
 			foreach ($data as $value) {
 				if ($value !== $this->data[$this->alias][$comparisonField]) {
@@ -144,11 +145,12 @@ class User extends AppModel {
 	function afterSave($isCreated) {
 		if ($isCreated === true) {
 			$this->deactivate($this->data);
+			$this->sendActivationEmail($this->data);
 		}
 	}
 	
 	function hashPasswords($data, $enforce = false) {
-		$this->log('Hashing password', LOG_DEBUG);
+		$this->log('Hashing password');
 		if ($enforce && isset($this->data[$this->alias]['password'])) {
 			if (!empty($this->data[$this->alias]['password'])) {
 				$this->data[$this->alias]['password'] =
@@ -158,13 +160,16 @@ class User extends AppModel {
 		return $data;
 	}
 	
-	function deactivate($data, $doSendEmail = true, $message = '') {
+	function deactivate($data) {
 		$activationKey = Security::hash(time() . mt_rand(), 'sha256');
 		$this->saveField('activation_key', $activationKey , true);
+	}
+	
+	function sendActivationEmail($data) {
 		// Sending the Activation Email (maybe this should be somewhere else,
 		// and here should be a switch for Activation via Email OR SMS-Gateway!)
 		$Email = new EmailComponent();
-		$serverName = $_SERVER['SERVER_NAME'];
+		$serverName = env('SERVER_NAME');
 		if (strpos($serverName, 'www.') === 0) {
 			$serverName = substr($serverName, 4);
 		}
@@ -172,7 +177,7 @@ class User extends AppModel {
 		$Email->subject = $serverName . ': ' . $data[$this->alias]['username'] . '/'
 			. $data[$this->alias]['nickname'] . ' - ' . __('User Account Activation', true);
 		$Email->from = 'noreply@' . $serverName;
-		$message = array($message,
+		$message = array(
 			__('You can either click on the Activation Link below...', true),
 			__('Activation Link', true) . ':'
 				. '<a href="http://' . $_SERVER['SERVER_NAME']. '/users/activate/' . $activationKey,
@@ -181,12 +186,13 @@ class User extends AppModel {
 			'... ' . __('in the Activation Key field on', true) . ': '
 				. ' http://' . $_SERVER['SERVER_NAME']. '/users/activate ',
 		);
+		debug($data);
 		if ($Email->send($message)) {
 			$this->log('User account activation email send from ' . $Email->from
-				. ' send to: ' . $Email->to, LOG_DEBUG);
+				. ' send to: ' . $Email->to);
 		} else {
 			$this->log('User account activation email COULD NOT be send from ' . $Email->from
-				. ' send to: ' . $Email->to, LOG_DEBUG);
+				. ' send to: ' . $Email->to);
 		}
 		unset($Email);
 	}
@@ -212,6 +218,11 @@ class User extends AppModel {
 			$this->invalidate('activation_key', __('The Activation Key you have entered is invalid.', true));
 			return false;
 		}
+	}
+	
+	function setTos($data, $switch = 0) {
+		$this->id = $data['User']['id'];
+		$this->saveField('has_accepted_tos', $switch);
 	}
 	
 }
