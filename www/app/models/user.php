@@ -145,7 +145,7 @@ class User extends AppModel {
 	
 	function afterSave($isCreated) {
 		if ($isCreated === true) {
-			$activationKey = Security::hash(time() . mt_rand(), 'sha256');
+			$activationKey = substr(strtoupper(String::uuid()), 4, -8);
 			$this->deactivate($this->read(), $activationKey);
 			$this->sendActivationEmail($this->read(), $activationKey);
 		}
