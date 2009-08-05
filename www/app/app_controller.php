@@ -8,6 +8,7 @@ class AppController extends Controller {
 	function beforeFilter() {
 		$this->_setupAuth();
 		$this->_checkHasAcceptedTos();
+		$this->_authAutoRedirectFixes();
 	}
 	
 	function _setupAuth() {
@@ -39,6 +40,13 @@ class AppController extends Controller {
 				$this->Session->write('TermsOfService.redirect', $this->here);
 				$this->redirect(array('controller' => 'users', 'action' => 'terms_of_service'));
 			}
+		}
+	}
+	
+	function _authAutoRedirectFixes() {
+		$authRedirect = $this->Session->read('Auth.redirect');
+		if($authRedirect == '/users/activate') {
+			$this->Session->write('Auth.redirect', '/users/home');
 		}
 	}
 	

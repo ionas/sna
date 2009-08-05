@@ -17,10 +17,6 @@ class UsersController extends AppController {
 			// Use User::hashPasswords instead Auth::hashPasswords
 			$this->Auth->authenticate = $this->User;
 		}
-		$authRedirect = $this->Session->read('Auth.redirect');
-		if($authRedirect == '/users/activate') {
-			$this->Session->write('Auth.redirect', '/users/home');
-		}
 	}
 	
 	function index() {
