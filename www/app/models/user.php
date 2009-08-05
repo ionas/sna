@@ -152,6 +152,7 @@ class User extends AppModel {
 	}
 	
 	function generateActivationKey($i = 0) {
+		// Defensive loop stopper.
 		$i++;
 		if ($i > 10) {
 			$this->log('Issue with User::generateActivationKey(). Failed at generating a valid key.');
@@ -167,7 +168,7 @@ class User extends AppModel {
 	}
 	
 	function hashPasswords($data, $enforce = false) {
-		$this->log('Hashing password');
+		$this->log('Hashing password', LOG_DEBUG);
 		if ($enforce && isset($this->data[$this->alias]['password'])) {
 			if (!empty($this->data[$this->alias]['password'])) {
 				$this->data[$this->alias]['password'] =

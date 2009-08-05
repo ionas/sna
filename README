@@ -4,8 +4,9 @@ TODO:
 X Logging in and out
 X User basic registration, validation and activation
 X User registration autofill username = nickname
-- User Registration prechecked checkbox: Send me a copy of my user account details (username, passwort, email, registration date)
+X User Registration prechecked checkbox: Send me a copy of my user account details (username, passwort, email, registration date)
 - User Registration Email Templates
+- User Registration Email Templates (external)
 - User checkboxes
 - User deletion
 - User picture uploads
@@ -23,6 +24,4 @@ X User registration autofill username = nickname
 - Security Features and Double Salts
   See also: http://devedge.jonas-hartmann.com/documents/Securing_authentication_and_data_manipulation_via_HTTP.html
 - Routing (index => list, add => register/create/whatever, delete => remove (OR disable))
-- FAQ (cakephp book application?) - FAQ explains double use: username + nickname (security bonus)
-
-e57e320fba01ea2e7657816a65a498aa781e6c46d0ebfd4cef311cbc2dc8a2de
+- FAQ (cakephp book application?) - FAQ explains double use: username + nickname (security bonus), about, browser stuff and more
