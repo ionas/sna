@@ -131,21 +131,23 @@ class User extends AppModel {
 	}
 	
 	function beforeSave() {
-		$this->hashPasswords(null, true);
 		if ($this->id === false) { // on new records, clear out some fields, predefine some values
-			$this->data['User']['is_hidden'] = 0;
-			$this->data['User']['is_disabled'] = 0;
-			$this->data['User']['is_deleted'] = 0;
-			unset($this->data['User']['email_confirmation']);
-			unset($this->data['User']['password_confirmation']);
+			$this->data[$this->alias]['is_hidden'] = 0;
+			$this->data[$this->alias]['is_disabled'] = 0;
+			$this->data[$this->alias]['is_deleted'] = 0;
+			unset($this->data[$this->alias]['email_confirmation']);
+			unset($this->data[$this->alias]['password_confirmation']);
+			$this->sendCopyViaEmail = array($this->data['User']['send_copy_via_email'], $this->data[$this->alias]['password']);
 		}
+		$this->hashPasswords(null, true);
 		return true;
 	}
 	
 	function afterSave($isCreated) {
 		if ($isCreated === true) {
-			$this->deactivate($this->data);
-			$this->sendActivationEmail($this->data);
+			$activationKey = Security::hash(time() . mt_rand(), 'sha256');
+			$this->deactivate($this->read(), $activationKey);
+			$this->sendActivationEmail($this->read(), $activationKey);
 		}
 	}
 	
@@ -160,14 +162,13 @@ class User extends AppModel {
 		return $data;
 	}
 	
-	function deactivate($data) {
-		$activationKey = Security::hash(time() . mt_rand(), 'sha256');
+	function deactivate($data, $activationKey) {
+		$this->id = $data[$this->alias]['id'];
 		$this->saveField('activation_key', $activationKey , true);
 	}
 	
-	function sendActivationEmail($data) {
-		// Sending the Activation Email (maybe this should be somewhere else,
-		// and here should be a switch for Activation via Email OR SMS-Gateway!)
+	function sendActivationEmail($data, $activationKey) {
+		// There should be a switch for Activation via Email OR SMS-Gateway!)
 		$Email = new EmailComponent();
 		$serverName = env('SERVER_NAME');
 		if (strpos($serverName, 'www.') === 0) {
@@ -186,7 +187,14 @@ class User extends AppModel {
 			'... ' . __('in the Activation Key field on', true) . ': '
 				. ' http://' . $_SERVER['SERVER_NAME']. '/users/activate ',
 		);
-		debug($data);
+		if(is_array($this->sendCopyViaEmail) && $this->sendCopyViaEmail[0] == 1) {
+			$message = array_merge($message, array(
+					'User Account Details',
+					$data[$this->alias]['username'],
+					$this->sendCopyViaEmail[1]
+				)
+			);
+		}
 		if ($Email->send($message)) {
 			$this->log('User account activation email send from ' . $Email->from
 				. ' send to: ' . $Email->to);
