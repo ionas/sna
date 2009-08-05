@@ -180,13 +180,15 @@ class User extends AppModel {
 			. $data[$this->alias]['nickname'] . ' - ' . __('User Account Activation', true);
 		$Email->from = 'noreply@' . $serverName;
 		$message = array(
-			__('Please click on the Activation Link:', true),
+			__('Welcome to ', true) . $serverName . '!',
+			' ',
+			__('Your User Account still needs to be activated. Please click on this Activation Link:', true),
 			'<a href="http://' . env('SERVER_NAME') . '/users/activate/' . $activationKey . '">'
 				. 'http://' . env('SERVER_NAME') . '/users/activate/' . $activationKey . '</a>',
 			' ',
-			__('If the Link does not work, copy and paste over this Activation Key', true) . ': ',
+			__('If that does not work, copy and paste over this Activation Key', true) . ': ',
 			$activationKey,
-			__('in the Activation Key field on', true) . ': '
+			__('... into the Activation Key field at', true) . ': '
 				. ' http://' . env('SERVER_NAME') . '/users/activate ',
 		);
 		if(is_array($this->sendCopyViaEmail) && $this->sendCopyViaEmail[0] == 1) {
