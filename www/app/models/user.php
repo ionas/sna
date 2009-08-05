@@ -145,10 +145,24 @@ class User extends AppModel {
 	
 	function afterSave($isCreated) {
 		if ($isCreated === true) {
-			// Key looks like D7E9-F3E4-479A-838C-0448
-			$activationKey = substr(strtoupper(String::uuid()), 4, -8);
+			$activationKey = $this->generateActivationKey();
 			$this->deactivate($this->read(), $activationKey);
 			$this->sendActivationEmail($this->read(), $activationKey);
+		}
+	}
+	
+	function generateActivationKey($i = 0) {
+		$i++;
+		if ($i > 10) {
+			$this->log('Issue with User::generateActivationKey(). Failed at generating a valid key.');
+			die();
+		}
+		// Key looks like D7E9-F3E4-479A-838C
+		$activationKey = substr(strtoupper(String::uuid()), 4, -13);
+		if ($this->find('first', array('conditions' => array('activation_key' => $activationKey))) !== false) {
+			$activationKey = $this->generateActivationKey($i);
+		} else {
+			return $activationKey;
 		}
 	}
 	
@@ -187,11 +201,13 @@ class User extends AppModel {
 				. 'http://' . env('SERVER_NAME') . '/users/activate/' . $activationKey . '</a>',
 			' ',
 			__('If that does not work, copy and paste over this Activation Key', true) . ': ',
-			$activationKey,
+			' ',
+			'    ' . $activationKey,
+			' ',
 			__('... into the Activation Key field at', true) . ': '
-				. ' http://' . env('SERVER_NAME') . '/users/activate ',
+				. ' http://' . env('SERVER_NAME') . '/users/activate',
 		);
-		if(is_array($this->sendCopyViaEmail) && $this->sendCopyViaEmail[0] == 1) {
+		if (is_array($this->sendCopyViaEmail) && $this->sendCopyViaEmail[0] == 1) {
 			$message = array_merge($message, array(
 					' ',
 					__('User Account Details for', true) . ' [' . $data[$this->alias]['nickname'] . ']',
