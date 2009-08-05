@@ -145,9 +145,7 @@ class User extends AppModel {
 	
 	function afterSave($isCreated) {
 		if ($isCreated === true) {
-			$activationKey = $this->generateActivationKey();
-			$this->deactivate($this->read(), $activationKey);
-			$this->sendActivationEmail($this->read(), $activationKey);
+			$this->deactivate();
 		}
 	}
 	
@@ -156,14 +154,15 @@ class User extends AppModel {
 		$i++;
 		if ($i > 10) {
 			$this->log('Issue with User::generateActivationKey(). Failed at generating a valid key.');
-			die();
-		}
-		// Key looks like D7E9-F3E4-479A-838C
-		$activationKey = substr(strtoupper(String::uuid()), 4, -13);
-		if ($this->find('first', array('conditions' => array('activation_key' => $activationKey))) !== false) {
-			$activationKey = $this->generateActivationKey($i);
+			return false;
 		} else {
-			return $activationKey;
+			// Key looks like D7E9-F3E4-479A-838C
+			$activationKey = substr(strtoupper(String::uuid()), 4, -13);
+			if ($this->find('first', array('conditions' => array('activation_key' => $activationKey))) !== false) {
+				$activationKey = $this->generateActivationKey($i);
+			} else {
+				return $activationKey;
+			}
 		}
 	}
 	
@@ -178,13 +177,21 @@ class User extends AppModel {
 		return $data;
 	}
 	
-	function deactivate($data, $activationKey) {
-		$this->id = $data[$this->alias]['id'];
-		$this->saveField('activation_key', $activationKey , true);
+	function deactivate() {
+		$activationKey = $this->generateActivationKey();
+		$data = $this->read();
+		if($activationKey === false) {
+			$this->log('No valid Activation Key. Disabling User.');
+			$this->setDisabled($data, 1);
+		} else {
+			$this->id = $data[$this->alias]['id'];
+			$this->saveField('activation_key', $activationKey , true);
+			$this->sendActivationEmail($data, $activationKey);
+		}
 	}
 	
 	function sendActivationEmail($data, $activationKey) {
-		// There should be a switch for Activation via Email OR SMS-Gateway!)
+		// ENH: SMS-Gateway
 		$Email = new EmailComponent();
 		$serverName = env('SERVER_NAME');
 		if (strpos($serverName, 'www.') === 0) {
@@ -243,7 +250,6 @@ class User extends AppModel {
 		if (!empty($data['User']['id'])) {
 			$this->id = $data['User']['id'];
 			if ($this->saveField('activation_key', '')) {
-				// TODO doSendEmail
 				return true;
 			}
 		} else {
@@ -255,6 +261,11 @@ class User extends AppModel {
 	function setTos($data, $switch = 0) {
 		$this->id = $data['User']['id'];
 		$this->saveField('has_accepted_tos', $switch);
+	}
+	
+	function setDisabled($data, $switch) {
+		$this->id = $data['User']['id'];
+		$this->saveField('is_disabled', $switch);
 	}
 	
 }
