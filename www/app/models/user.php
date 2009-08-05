@@ -181,8 +181,8 @@ class User extends AppModel {
 		$Email->from = 'noreply@' . $serverName;
 		$message = array(
 			__('Please click on the Activation Link:', true),
-			'<a href="http://' . env('SERVER_NAME') . '/users/activate/' . $activationKey . '>'
-				. __('Activate my User Account', true) . '</a>',
+			'<a href="http://' . env('SERVER_NAME') . '/users/activate/' . $activationKey . '">'
+				. 'http://' . env('SERVER_NAME') . '/users/activate/' . $activationKey . '</a>',
 			' ',
 			__('If the Link does not work, copy and paste over this Activation Key', true) . ': ',
 			$activationKey,
