@@ -181,6 +181,7 @@ class User extends AppModel {
 		$message = array(
 			__('Please click on the Activation Link:', true),
 			'<a href="http://' . env('SERVER_NAME') . '/users/activate/' . $activationKey,
+			' ',
 			__('If the Link does not work, copy and paste over this Activation Key', true) . ': ',
 			$activationKey,
 			__('in the Activation Key field on', true) . ': '
@@ -189,9 +190,9 @@ class User extends AppModel {
 		if(is_array($this->sendCopyViaEmail) && $this->sendCopyViaEmail[0] == 1) {
 			$message = array_merge($message, array(
 					' ',
-					__('User Account Details for', true) . ' ' . $data[$this->alias]['nickname'],
-					__('Login name', true) . ': ' . $data[$this->alias]['username'],
-					__('Password', true) . ': ' . $this->sendCopyViaEmail[1],
+					__('User Account Details for', true) . ' [' . $data[$this->alias]['nickname'] . ']',
+					__('Login name', true) . ':   ' . $data[$this->alias]['username'],
+					__('Password', true) . ':     ' . $this->sendCopyViaEmail[1],
 					__('EMail Address', true) . ': ' . $data[$this->alias]['email'],
 				)
 			);
