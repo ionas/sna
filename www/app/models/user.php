@@ -145,6 +145,7 @@ class User extends AppModel {
 	
 	function afterSave($isCreated) {
 		if ($isCreated === true) {
+			// Key looks like D7E9-F3E4-479A-838C-0448
 			$activationKey = substr(strtoupper(String::uuid()), 4, -8);
 			$this->deactivate($this->read(), $activationKey);
 			$this->sendActivationEmail($this->read(), $activationKey);
@@ -180,7 +181,8 @@ class User extends AppModel {
 		$Email->from = 'noreply@' . $serverName;
 		$message = array(
 			__('Please click on the Activation Link:', true),
-			'<a href="http://' . env('SERVER_NAME') . '/users/activate/' . $activationKey,
+			'<a href="http://' . env('SERVER_NAME') . '/users/activate/' . $activationKey . '>'
+				. __('Activate my User Account', true) . '</a>',
 			' ',
 			__('If the Link does not work, copy and paste over this Activation Key', true) . ': ',
 			$activationKey,
