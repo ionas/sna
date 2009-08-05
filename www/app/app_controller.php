@@ -12,6 +12,7 @@ class AppController extends Controller {
 	
 	function _setupAuth() {
 		Security::setHash('sha256');
+		// ENCH: Functionize, pass Array with 'ControllerA' => array('ActionA')?
 		if ($this->name == 'Pages') {
 			$this->Auth->allow(array('display'));
 		}

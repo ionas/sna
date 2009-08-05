@@ -2,16 +2,20 @@ SocialNetwork Application
 
 TODO:
 X Logging in and out
+X User TOS Check on Login
 X User basic registration, validation and activation
 X User registration autofill username = nickname
 X User Registration prechecked checkbox: Send me a copy of my user account details (username, passwort, email, registration date)
+x (User) Validation translation (change from "var $validates = ..." to "contructor: $this->validates = ...")
 - User Registration Email Templates
 - User Registration Email Templates (external)
 - User checkboxes
 - User deletion
 - User picture uploads
-- (User) Validation translation (change from "var $validates = ..." to "contructor: $this->validates = ...")
 - User registration captcha ( see http://captcha.ru/en/kcaptcha/) be aware: accessibilitys
+- Check out Translation + Translation Tool (PO Files)
+- Add Language switcher to $layout + save in Cookies
+- Add Language autodetection (browser, geo location/ip) + save in Cookies
 - Shoutbox
 - Shout hiding
 - Profile page

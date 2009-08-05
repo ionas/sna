@@ -8,84 +8,7 @@ class User extends AppModel {
 	
 	var $recursive = 0;
 	
-	var $validate = array(
-		'username' => array(
-			'isUnique' => array(
-				'rule' => 'isUnique',
-				'message' => 'This username is already in use.',
-			),
-			'alphaNumeric' => array(
-				'rule' => 'alphaNumeric',
-				'message' => 'Use letters from A to Z or numbers from 0 to 9 only.',
-			),
-			'minLength' => array(
-				'rule' => array('minLength', '3'),
-				'message' => 'Minimum length of 3 characters.',
-			),
-		),
-		'password' => array(
-			'alphaNumeric' => array(
-				'rule' => 'alphaNumeric',
-				'message' => 'Use letters from A to Z or numbers from 0 to 9 only.',
-			),
-			'minLength' => array(
-				'rule' => array('minLength', '3'),
-				'message' => 'Minimum length of 3 characters.',
-			),
-			'validateEqualData' => array(
-				'rule' => array(
-					'validateEqualData',
-					'You may have misstyped your Password or your Password Confirmation is wrong.',
-					'password_confirmation',
-				),
-				'message' => 'Your Password does not match with your Password Confirmation.',
-			),
-		),
-		'nickname' => array(
-			'isUnique' => array(
-				'rule' => 'isUnique',
-				'message' => 'This nickname is already in use.',
-			),
-			'alphaNumeric' => array(
-				'rule' => 'alphaNumeric',
-				'message' => 'Nickname must only contain letters and numbers.',
-			),
-			'minLength' => array(
-				'rule' => array('minLength', '3'),
-				'message' => 'Minimum length of 3 characters.',
-			),
-		),
-		'email' => array(
-			'isUnique' => array(
-				'rule' => 'isUnique',
-				'message' => 'This email address is already in use.',
-			),
-			'email' => array(
-				'rule' => 'email',
-				'message' => 'Must be a valid email address.',
-			),
-			'validateEqualData' => array(
-				'rule' => array(
-					'validateEqualData',
-					'You may have misstyped your Email or your Email Confirmation is wrong.',
-					'email_confirmation',
-				),
-				'message' => 'Your Email does not match with your Email Confirmation.',
-			),
-		),
-		'has_accepted_tos' => array(
-			'boolean' => array(
-				'rule' => array('boolean'),
-				'message' => 'You may only accept or deny the Terms of Service.',
-			),
-			'validateTosOnCreate' => array(
-				'rule' => array(
-					'validateTosOnCreate',
-				),
-				'message' => 'You must accept the Terms of Service on User Account creation.',
-			),
-		)
-	);
+	var $validate = array(); // See __construct(); It is there to enable use of__()
 	
 	var $displayField = 'nickname';
 	
@@ -106,6 +29,88 @@ class User extends AppModel {
 			'dependent' => true,
 		),
 	);
+	
+	function __construct() {
+		$this->validate = array( 
+			'username' => array(
+				'isUnique' => array(
+					'rule' => 'isUnique',
+					'message' => __('This username is already in use.', true),
+				),
+				'alphaNumeric' => array(
+					'rule' => 'alphaNumeric',
+					'message' => __('Use letters from A to Z or numbers from 0 to 9 only.', true),
+				),
+				'minLength' => array(
+					'rule' => array('minLength', '3'),
+					'message' => __('Minimum length of 3 characters.', true),
+				),
+			),
+			'password' => array(
+				'alphaNumeric' => array(
+					'rule' => 'alphaNumeric',
+					'message' => __('Use letters from A to Z or numbers from 0 to 9 only.', true),
+				),
+				'minLength' => array(
+					'rule' => array('minLength', '3'),
+					'message' => __('Minimum length of 3 characters.', true),
+				),
+				'validateEqualData' => array(
+					'rule' => array(
+						'validateEqualData',
+						__('You may have misstyped your Password or your Password Confirmation is wrong.', true),
+						'password_confirmation',
+					),
+					'message' => __('Your Password does not match with your Password Confirmation.', true),
+				),
+			),
+			'nickname' => array(
+				'isUnique' => array(
+					'rule' => 'isUnique',
+					'message' => __('This nickname is already in use.', true),
+				),
+				'alphaNumeric' => array(
+					'rule' => 'alphaNumeric',
+					'message' => __('Nickname must only contain letters and numbers.', true),
+				),
+				'minLength' => array(
+					'rule' => array('minLength', '3'),
+					'message' => __('Minimum length of 3 characters.', true),
+				),
+			),
+			'email' => array(
+				'isUnique' => array(
+					'rule' => 'isUnique',
+					'message' => __('This email address is already in use.', true),
+				),
+				'email' => array(
+					'rule' => 'email',
+					'message' => __('Must be a valid email address.', true),
+				),
+				'validateEqualData' => array(
+					'rule' => array(
+						'validateEqualData',
+						__('You may have misstyped your Email or your Email Confirmation is wrong.', true),
+						'email_confirmation',
+					),
+					'message' => __('Your Email does not match with your Email Confirmation.', true),
+				),
+			),
+			'has_accepted_tos' => array(
+				'boolean' => array(
+					'rule' => array('boolean'),
+					'message' => __('You may only accept or deny the Terms of Service.', true),
+				),
+				'validateTosOnCreate' => array(
+					'rule' => array(
+						'validateTosOnCreate',
+					),
+					'message' => __('You must accept the Terms of Service on User Account creation.', true),
+				),
+			)
+		);
+		parent::__construct();
+	}
 	
 	function validates() {
 		return count($this->invalidFields()) == 0;
@@ -249,7 +254,7 @@ class User extends AppModel {
 		);
 		if (!empty($data['User']['id'])) {
 			$this->id = $data['User']['id'];
-			if ($this->saveField('activation_key', '')) {
+			if ($this->saveField('activation_key', null)) {
 				return true;
 			}
 		} else {
