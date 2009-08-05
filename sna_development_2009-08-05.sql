@@ -4,7 +4,7 @@
 #
 # Host: localhost (MySQL 5.0.67)
 # Database: sna_development
-# Generation Time: 2009-08-05 02:22:57 +0200
+# Generation Time: 2009-08-05 03:32:37 +0200
 # ************************************************************
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -115,7 +115,7 @@ CREATE TABLE `users` (
   `activation_key` varchar(64) NOT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `UNIQUE_USERNAME` (`username`),
-  KEY `UNIQUE_NICKNAME` (`nickname`)
+  UNIQUE KEY `UNIQUE_NICKNAME` (`nickname`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 LOCK TABLES `users` WRITE;
@@ -123,8 +123,7 @@ LOCK TABLES `users` WRITE;
 INSERT INTO `users` (`id`,`created`,`modified`,`has_accepted_tos`,`is_hidden`,`is_disabled`,`is_deleted`,`username`,`password`,`nickname`,`email`,`activation_key`)
 VALUES
 	('4a648ce4-08a4-46e2-91f8-024a8784ca84','0000-00-00 00:00:00','2009-08-04 17:15:22',1,0,0,0,'ionas','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b','Jonas','foo@bar.com',''),
-	('4a6c68a7-7b94-4370-8b37-02378784ca84','2009-07-26 16:31:03','2009-07-26 16:31:03',1,0,0,0,'somebody','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b','Some Guy','',''),
-	('4a78d032-6504-46ec-b122-04498784ca84','2009-08-05 02:20:02','2009-08-05 02:20:02',1,0,0,0,'abc','2313ebdda36736a7ad439bf21f5c6544ec2f457dd10939e28db48ef1ab2f29b1','abc','abc@abc.abc','c41bd6a47ae4848601353620cd71c65bcb92b061866149457ab0183fd95f8882');
+	('4a6c68a7-7b94-4370-8b37-02378784ca84','2009-07-26 16:31:03','2009-07-26 16:31:03',1,0,0,0,'somebody','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b','Some Guy','','');
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
