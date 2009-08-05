@@ -179,19 +179,20 @@ class User extends AppModel {
 			. $data[$this->alias]['nickname'] . ' - ' . __('User Account Activation', true);
 		$Email->from = 'noreply@' . $serverName;
 		$message = array(
-			__('You can either click on the Activation Link below...', true),
-			__('Activation Link', true) . ':'
+			__('Please click on the Activation Link:', true),
 				. '<a href="http://' . $_SERVER['SERVER_NAME']. '/users/activate/' . $activationKey,
-			'... ' . __('or if that does not work, copy and paste over the Activation Key', true) . ': ',
+			__('If the Link does not work, copy and paste over this Activation Key', true) . ': ',
 			$activationKey,
-			'... ' . __('in the Activation Key field on', true) . ': '
+			. __('in the Activation Key field on', true) . ': '
 				. ' http://' . $_SERVER['SERVER_NAME']. '/users/activate ',
 		);
 		if(is_array($this->sendCopyViaEmail) && $this->sendCopyViaEmail[0] == 1) {
 			$message = array_merge($message, array(
-					'User Account Details',
-					$data[$this->alias]['username'],
-					$this->sendCopyViaEmail[1]
+					' ',
+					__('User Account Details for', true) . ' ' . $data[$this->alias]['nickname']
+					__('Login name', true) . ': ' . $data[$this->alias]['username'],
+					__('Password', true) . ': ' . $this->sendCopyViaEmail[1]
+					__('EMail Address', true) . ': ' . $data[$this->alias]['email'],
 				)
 			);
 		}
