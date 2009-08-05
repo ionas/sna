@@ -1,5 +1,8 @@
 SocialNetwork Application
 
+The whole client (anything besides /www/cake/*) is licensed under GPL V3
+See: http://gplv3.fsf.org/
+
 TODO:
 X Logging in and out
 X User TOS Check on Login
