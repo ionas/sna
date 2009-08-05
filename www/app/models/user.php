@@ -168,7 +168,7 @@ class User extends AppModel {
 	}
 	
 	function hashPasswords($data, $enforce = false) {
-		$this->log('Hashing password', LOG_DEBUG);
+		$this->log('User::hashPasswords()', 'debug');
 		if ($enforce && isset($this->data[$this->alias]['password'])) {
 			if (!empty($this->data[$this->alias]['password'])) {
 				$this->data[$this->alias]['password'] =
@@ -233,6 +233,7 @@ class User extends AppModel {
 			$this->invalidate('activation_key', __('Enter your Activation Key.', true));
 			return false;
 		}
+		$data['User']['activation_key'] = strtoupper($data['User']['activation_key']);
 		$data = $this->find('first', array(
 				'fields' => array('User.id'),
 				'conditions' => array('activation_key' => $data['User']['activation_key']),
