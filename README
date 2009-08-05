@@ -1,6 +1,6 @@
 SocialNetwork Application
 
-The whole client (anything besides /www/cake/*) is licensed under GPL V3
+The whole client (anything besides www/index.php or www/cake/*) is licensed under GPL V3
 See: http://gplv3.fsf.org/
 
 TODO:
