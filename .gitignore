@@ -9,14 +9,21 @@ www/app/tmp/cache/cake_*
 www/app/tmp/cache/models/cake_*
 www/app/tmp/cache/persistent/cake_*
 www/app/tmp/cache/views/*.php
- 
+
 # Cake logs
 www/app/tmp/logs/*.log
- 
+
 # Webroot uploaded files
 www/app/webroot/uploads/*
- 
+
 # HTML webroot cache
 www/app/webroot/cache/*
- 
+
+# Temporary files
+tmp/*
+
+# Mac OS X Finder settings
 .DS_Store
+
+# CakePHP directory placemolder
+empty
