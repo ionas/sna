@@ -134,6 +134,15 @@ class User extends AppModel {
 		return true;
 	}
 	
+	function beforeValidate() {
+		if(!empty($this->data['User']['email'])) {
+			$this->data['User']['email'] = trim($this->data['User']['email']);
+		}
+		if(!empty($this->data['User']['email_confirmation'])) {
+			$this->data['User']['email_confirmation'] = trim($this->data['User']['email_confirmation']);
+		}
+	}
+	
 	function beforeSave() {
 		if ($this->id === false) { // on new records, clear out some fields, predefine some values
 			$this->data[$this->alias]['is_hidden'] = 0;
