@@ -44,13 +44,15 @@ class UsersController extends AppController {
 	function register() {
 		if (!empty($this->data)) {
 			$this->User->create();
-			if ($this->User->save($this->data, true, array('has_accepted_tos', 'username', 'password', 'nickname', 'email'))) {
+			if ($this->User->save($this->data, true, array(
+						'has_accepted_tos', 'username', 'password', 'nickname', 'email'))) {
 				$this->Session->setFlash(__('Your registration has been successful. However, you will still need to activate your user account.', true));
 				$this->redirect(array('action' => 'activate'));
 			} else {
 				unset($this->data['User']['password']);
 				unset($this->data['User']['password_confirmation']);
-				$this->Session->setFlash(__('Your registration could not be completed, see below.', true));
+				$this->Session->setFlash(
+					__('Your registration could not be completed, see below.', true));
 			}
 		}
 	}
@@ -58,7 +60,8 @@ class UsersController extends AppController {
 	function activate($activationKey = null) {
 		if (!empty($this->data)) {
 			if ($this->User->activate($this->data)) {
-				$this->Session->setFlash(__('Your User Account has been activated. You may now login.', true));
+				$this->Session->setFlash(
+					__('Your User Account has been activated. You may now login.', true));
 				$this->redirect(array('action' => 'login'));
 			} else {
 				$this->Session->setFlash(__('The User Account Activation failed. Please correct your Activation Key and try again.', true));

@@ -6,7 +6,7 @@
 echo $form->input('nickname', array('label' => __('Nickname (public visible)', true)));
 echo $form->input('username', array(
 		'label' => __('Login name', true) . ' ('
-			. __('For better security, choose a Login name, different from your Nickname or Email address!', true) . ')',
+			. __('For better security, choose a Login name, different from your Nickname or EMail address!', true) . ')',
 		'onfocus' => "if(this.value == '') { this.value = getElementById('UserNickname').value; }"));
 echo $form->input('password', array('label' => __('Password', true)));
 echo $form->input('password_confirmation', array('type'=>'password', 'label' => __('Password Confirmation', true)));
