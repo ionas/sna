@@ -1,7 +1,5 @@
 <?php
 
-App::import('Component', 'Email');
-
 class User extends AppModel {
 	
 	var $name = 'User';
@@ -109,6 +107,7 @@ class User extends AppModel {
 				),
 			)
 		);
+		$this->passwordInClearText = null;
 		parent::__construct();
 	}
 	
@@ -142,7 +141,9 @@ class User extends AppModel {
 			$this->data[$this->alias]['is_deleted'] = 0;
 			unset($this->data[$this->alias]['email_confirmation']);
 			unset($this->data[$this->alias]['password_confirmation']);
-			$this->sendCopyViaEmail = array($this->data['User']['send_copy_via_email'], $this->data[$this->alias]['password']);
+			if(isset($this->data['User']['send_copy_via_email']) && $this->data['User']['send_copy_via_email'] == 1) {
+				$this->passwordInClearText = $this->data[$this->alias]['password'];
+			}
 		}
 		$this->hashPasswords(null, true);
 		return true;
@@ -150,7 +151,8 @@ class User extends AppModel {
 	
 	function afterSave($isCreated) {
 		if ($isCreated === true) {
-			$this->deactivate();
+			$this->deactivate($this->passwordInClearText);
+			$this->passwordInClearText = null;
 		}
 	}
 	
@@ -182,7 +184,7 @@ class User extends AppModel {
 		return $data;
 	}
 	
-	function deactivate() {
+	function deactivate($passwordInClearText, $isNewUser = true) {
 		$activationKey = $this->generateActivationKey();
 		$data = $this->read();
 		if($activationKey === false) {
@@ -191,13 +193,18 @@ class User extends AppModel {
 		} else {
 			$this->id = $data[$this->alias]['id'];
 			$this->saveField('activation_key', $activationKey , true);
-			$this->sendActivationEmail($data, $activationKey);
+			$this->sendActivationEmail($data, $activationKey, $isNewUser, $passwordInClearText);
 		}
 	}
 	
-	function sendActivationEmail($data, $activationKey) {
+	function sendActivationEmail($data, $activationKey, $isNewUser, $passwordInClearText) {
 		// ENH: SMS-Gateway
-		$Email = new EmailComponent();
+		App::import('Core', 'Controller');
+		App::import('Controller', 'Component', 'Email');
+		$this->Controller =& new Controller();
+		$this->Email =& new EmailComponent(null);
+		$this->Email->initialize($this->Controller);
+		$Email = $this->Email;
 		$serverName = env('SERVER_NAME');
 		if (strpos($serverName, 'www.') === 0) {
 			$serverName = substr($serverName, 4);
@@ -220,17 +227,19 @@ class User extends AppModel {
 			__('... into the Activation Key field at', true) . ': '
 				. ' http://' . env('SERVER_NAME') . '/users/activate',
 		);
-		if (is_array($this->sendCopyViaEmail) && $this->sendCopyViaEmail[0] == 1) {
+		if ($passwordInClearText !== null) {
 			$message = array_merge($message, array(
 					' ',
 					__('User Account Details for', true) . ' [' . $data[$this->alias]['nickname'] . ']',
 					__('Login name', true) . ':   ' . $data[$this->alias]['username'],
-					__('Password', true) . ':     ' . $this->sendCopyViaEmail[1],
+					__('Password', true) . ':     ' . $passwordInClearText,
 					__('EMail Address', true) . ': ' . $data[$this->alias]['email'],
 				)
 			);
 		}
-		if ($Email->send($message)) {
+		$Email->template = 'registration';
+		// $this->set('foo', 'bar');
+		if ($foo = $Email->send($message)) {
 			$this->log('User account activation email send from ' . $Email->from
 				. ' send to: ' . $Email->to);
 		} else {
