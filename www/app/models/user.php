@@ -205,7 +205,7 @@ class User extends AppModel {
 		$this->Controller =& new Controller();
 		$this->Email =& new EmailComponent(null);
 		$this->Email->initialize($this->Controller);
-		
+		$this->Controller->set('test', 'ausgabe');
 		$Email = $this->Email;
 		
 		$serverName = env('SERVER_NAME');
