@@ -199,12 +199,15 @@ class User extends AppModel {
 	
 	function sendActivationEmail($data, $activationKey, $isNewUser, $passwordInClearText) {
 		// ENH: SMS-Gateway
+
 		App::import('Core', 'Controller');
-		App::import('Controller', 'Component', 'Email');
+		App::import('Component', 'Email');
 		$this->Controller =& new Controller();
 		$this->Email =& new EmailComponent(null);
 		$this->Email->initialize($this->Controller);
+		
 		$Email = $this->Email;
+		
 		$serverName = env('SERVER_NAME');
 		if (strpos($serverName, 'www.') === 0) {
 			$serverName = substr($serverName, 4);
