@@ -205,7 +205,6 @@ class User extends AppModel {
 		$this->Controller =& new Controller();
 		$this->Email =& new EmailComponent(null);
 		$this->Email->initialize($this->Controller);
-		$this->Controller->set('test', 'ausgabe');
 		$Email = $this->Email;
 		
 		$serverName = env('SERVER_NAME');
@@ -216,6 +215,10 @@ class User extends AppModel {
 		$Email->subject = $serverName . ': ' . $data[$this->alias]['username'] . '/'
 			. $data[$this->alias]['nickname'] . ' - ' . __('User Account Activation', true);
 		$Email->from = 'noreply@' . $serverName;
+		$Email->template = 'registration';
+		$this->Controller->set('test', 'ausgabe');
+		$Email->send();
+		/*
 		$message = array(
 			__('Welcome to ', true) . $serverName . '!',
 			' ',
@@ -240,8 +243,6 @@ class User extends AppModel {
 				)
 			);
 		}
-		$Email->template = 'registration';
-		// $this->set('foo', 'bar');
 		if ($foo = $Email->send($message)) {
 			$this->log('User account activation email send from ' . $Email->from
 				. ' send to: ' . $Email->to);
@@ -250,6 +251,7 @@ class User extends AppModel {
 				. ' send to: ' . $Email->to);
 		}
 		unset($Email);
+		*/
 	}
 	
 	function activate($data, $doSendEmail = true) {

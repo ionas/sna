@@ -1,3 +1,2 @@
 Registration Email View
-<?=$foo?>
-<?=$bar?>
+<?=$test?>
