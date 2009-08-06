@@ -199,14 +199,12 @@ class User extends AppModel {
 	
 	function sendActivationEmail($data, $activationKey, $isNewUser, $passwordInClearText) {
 		// ENH: SMS-Gateway
-
 		App::import('Core', 'Controller');
 		App::import('Component', 'Email');
-		$this->Controller =& new Controller();
-		$this->Email =& new EmailComponent(null);
-		$this->Email->initialize($this->Controller);
-		$Email = $this->Email;
-		
+		// We need this fake controller
+		$Controller = new Controller();
+		$Email = new EmailComponent(null);
+		$Email->initialize($Controller);
 		$serverName = env('SERVER_NAME');
 		if (strpos($serverName, 'www.') === 0) {
 			$serverName = substr($serverName, 4);
@@ -216,7 +214,7 @@ class User extends AppModel {
 			. $data[$this->alias]['nickname'] . ' - ' . __('User Account Activation', true);
 		$Email->from = 'noreply@' . $serverName;
 		$Email->template = 'registration';
-		$this->Controller->set('test', 'ausgabe');
+		$Controller->set('test', 'ausgabe');
 		$Email->send();
 		/*
 		$message = array(
@@ -250,8 +248,9 @@ class User extends AppModel {
 			$this->log('User account activation email COULD NOT be send from ' . $Email->from
 				. ' send to: ' . $Email->to);
 		}
-		unset($Email);
 		*/
+		unset($Email);
+		unset($Controller);
 	}
 	
 	function activate($data, $doSendEmail = true) {
