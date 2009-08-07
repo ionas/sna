@@ -219,7 +219,7 @@ class User extends AppModel {
 		$Email->to = $data[$this->alias]['email'];
 		$Email->subject = $domainName . ': ' . $data[$this->alias]['username'] . '/'
 			. $data[$this->alias]['nickname'];
-		$Email->from = 'asd@' . $domainName;
+		$Email->from = 'noreply@' . $domainName;
 		$Controller->set(array(
 				'domainName' => $domainName,
 				'serverName' => env('SERVER_NAME'),
