@@ -1,3 +1,3 @@
-<b><u>Registration Email View</u></b>
+<?=__('Welcome to ', true) . $domainName . '!'?><br>
 <br>
-<?=$test?>
+<?php require('activation.ctp');?>

@@ -135,6 +135,10 @@ class UsersController extends AppController {
 		
 	}
 	
+	function forgot_password() {
+		
+	}
+	
 	function hide() {
 		
 	}

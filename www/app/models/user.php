@@ -4,8 +4,6 @@ class User extends AppModel {
 	
 	var $name = 'User';
 	
-	var $recursive = 0;
-	
 	var $validate = array(); // See __construct(); It is there to enable use of__()
 	
 	var $displayField = 'nickname';
@@ -214,55 +212,46 @@ class User extends AppModel {
 		$Controller = new Controller();
 		$Email = new EmailComponent(null);
 		$Email->initialize($Controller);
-		$serverName = env('SERVER_NAME');
-		if (strpos($serverName, 'www.') === 0) {
-			$serverName = substr($serverName, 4);
+		$domainName = env('SERVER_NAME');
+		if (strpos($domainName, 'www.') === 0) {
+			$domainName = substr($domainName, 4);
 		}
 		$Email->to = $data[$this->alias]['email'];
-		$Email->subject = $serverName . ': ' . $data[$this->alias]['username'] . '/'
-			. $data[$this->alias]['nickname'] . ' - ' . __('User Account Activation', true);
-		$Email->from = 'noreply@' . $serverName;
-		$Email->template = 'registration';
-		$Controller->set('test', 'ausgabe');
-		$Email->send();
-		/*
-		$message = array(
-			__('Welcome to ', true) . $serverName . '!',
-			' ',
-			__('Your User Account still needs to be activated. Please click on this Activation Link:', true),
-			'<a href="http://' . env('SERVER_NAME') . '/users/activate/' . $activationKey . '">'
-				. 'http://' . env('SERVER_NAME') . '/users/activate/' . $activationKey . '</a>',
-			' ',
-			__('If that does not work, copy and paste over this Activation Key', true) . ': ',
-			' ',
-			'    ' . $activationKey,
-			' ',
-			__('... into the Activation Key field at', true) . ': '
-				. ' http://' . env('SERVER_NAME') . '/users/activate',
-		);
-		if ($passwordInClearText !== null) {
-			$message = array_merge($message, array(
-					' ',
-					__('User Account Details for', true) . ' [' . $data[$this->alias]['nickname'] . ']',
-					__('Login name', true) . ':   ' . $data[$this->alias]['username'],
-					__('Password', true) . ':     ' . $passwordInClearText,
-					__('EMail Address', true) . ': ' . $data[$this->alias]['email'],
+		$Email->subject = $domainName . ': ' . $data[$this->alias]['username'] . '/'
+			. $data[$this->alias]['nickname'];
+		$Email->from = 'asd@' . $domainName;
+		$Controller->set(array(
+				'domainName' => $domainName,
+				'serverName' => env('SERVER_NAME'),
+				'title' => $Email->subject,
+				'activationKey' => $activationKey
+		));
+		if($isNewUser) {
+			$Email->template = 'registration';
+			$Email->subject .= ' - ' . __('User Account Activation', true);
+				
+		} else {
+			$Email->template = 'activation';
+			$Email->subject .= ' - ' . __('User Account Reactivation', true);
+		}
+		if($passwordInClearText) {
+			$Email->template .= '_details';
+			$Email->subject .= ' ' . __('including User Account Details', true);
+			$Controller->set(array(
+					'nickname' => $data[$this->alias]['nickname'],
+					'username' => $data[$this->alias]['username'],
+					'password' => $passwordInClearText,
+					'email' => $data[$this->alias]['email'],
 				)
 			);
 		}
-		if ($foo = $Email->send($message)) {
-			$this->log('User account activation email send from ' . $Email->from
-				. ' send to: ' . $Email->to);
-		} else {
-			$this->log('User account activation email COULD NOT be send from ' . $Email->from
-				. ' send to: ' . $Email->to);
-		}
-		*/
+		$Email->send();
 		unset($Email);
 		unset($Controller);
 	}
 	
 	function activate($data, $doSendEmail = true) {
+		// TODO: treat $doSendEmail
 		if (empty($data['User']['activation_key'])) {
 			$this->invalidate('activation_key', __('Enter your Activation Key.', true));
 			return false;
