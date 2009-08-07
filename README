@@ -1,7 +1,12 @@
 SocialNetwork Application
 
-Any source code besides the that in files www/index.php, any files in www/cake/* or source code files that explicitly state another license is licensed under GPL V3.
-See: gpl-3.0.txt or http://gplv3.fsf.org/
+LICENSE:
+Any files and sources code besides the following exceptions is licensed under GPL V3, see gpl-3.0.txt or http://gplv3.fsf.org/.
+Exceptions, source code in following files is licensed under different licenses, see the given files for details:
+- sourcecode of www/index.php
+- sourcecode of any files in www/cake/*
+- sourcecode in any file that explicitly states a different license
+
 
 TODO:
 X Logging in and out
@@ -12,9 +17,8 @@ X User Registration prechecked checkbox: Send me a copy of my user account detai
 X (User) Validation translation (change from "var $validates = ..." to "contructor: $this->validates = ...")
 X User Registration Email Templates
 X User Registration Email Templates (external)
-- User last login
+X User last login
 - User deletion
-- User picture uploads
 - User registration captcha ( see http://captcha.ru/en/kcaptcha/) be aware: accessibilitys
 - Form error format (CSS)
 - Check out Translation + Translation Tool (PO Files)
@@ -23,6 +27,7 @@ X User Registration Email Templates (external)
 - Shoutbox
 - Shout hiding
 - Profile page
+- Profile picture uploads
 - Profile visibility options
 - Messaging
 - Messaging auth challenge (see ICQ)
