@@ -12,8 +12,7 @@ X User Registration prechecked checkbox: Send me a copy of my user account detai
 X (User) Validation translation (change from "var $validates = ..." to "contructor: $this->validates = ...")
 X User Registration Email Templates
 X User Registration Email Templates (external)
-X User last login
-- User checkboxes
+- User last login
 - User deletion
 - User picture uploads
 - User registration captcha ( see http://captcha.ru/en/kcaptcha/) be aware: accessibilitys
