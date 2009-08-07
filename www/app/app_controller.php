@@ -28,6 +28,7 @@ class AppController extends Controller {
 			if (in_array($this->name, $this->termsOfServiceRequired)
 			&& !($this->name == 'Users' && in_array($this->action, array(
 							'forgot_password',
+							'login',
 							'logout',
 							'terms_of_service',
 						)
@@ -41,7 +42,7 @@ class AppController extends Controller {
 		}
 	}
 	
-	/* could this be in UsersController? */
+	/* TODO: Could this be in UsersController? */
 	function _authAutoRedirectFixes() {
 		$authRedirect = $this->Session->read('Auth.redirect');
 		// $this->log('$this->name: ' . $this->name . ' | $this->action: ' 

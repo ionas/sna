@@ -97,49 +97,50 @@ class User extends AppModel {
 					'rule' => array('boolean'),
 					'message' => __('You may only accept or deny the Terms of Service.', true),
 				),
-				'validateTosOnCreate' => array(
-					'rule' => array(
-						'validateTosOnCreate',
-					),
+				'validateBooleanValue' => array(
+					'rule' => array('validateBooleanValue', 'has_accepted_tos', 1),
+					'on' => 'create',
 					'message' => __('You must accept the Terms of Service on User Account registration.', true),
 				),
-			)
+			),
+			'last_login' => array(
+				'validateDatetime' => array(
+					'rule' => array('validateDatetime', 'last_login'),
+					'message' => __('Last Login must be a valid datetime (yyyy-mm-dd hh:mm:ss).', true),
+				),
+			),
 		);
 		$this->passwordInClearText = null;
 		parent::__construct();
 	}
 	
-	function validateTosOnCreate() {
-		if ($this->id === false && $this->data['User']['has_accepted_tos'] == 0) {
-			return false;
-		}
-		return true;
-	}
-	
-	function validateEqualData($data, $message, $comparisonField) {
-		if (is_array($data)) {
-			foreach ($data as $value) {
-				if ($value !== $this->data[$this->alias][$comparisonField]) {
-					$this->invalidate($comparisonField, $message);
-					return false;
+	function afterFind(&$results) {
+		foreach ($results as $index => $data) {
+			if (!empty($results[$index][$this->alias]['nickname'])) {
+				$results[$index][$this->alias]['nicename'] = $results[$index][$this->alias]['nickname'];
+			}
+			if (!empty($results[$index][$this->alias]['nickname'])
+			&& !empty($results[$index][$this->alias]['username'])) {
+				if ($results[$index][$this->alias]['nickname'] != $results[$index][$this->alias]['username']) {
+					$results[$index][$this->alias]['nicename'] .= ':' . $results[$index][$this->alias]['username'];
 				}
 			}
 		}
-		return true;
+		return $results;
 	}
 	
 	function beforeValidate() {
 		// be nice to the user, starting and trailing whitespaces are ignored and removed before validation
-		if(!empty($this->data['User']['email'])) {
+		if (!empty($this->data['User']['email'])) {
 			$this->data['User']['email'] = trim($this->data['User']['email']);
 		}
-		if(!empty($this->data['User']['email_confirmation'])) {
+		if (!empty($this->data['User']['email_confirmation'])) {
 			$this->data['User']['email_confirmation'] = trim($this->data['User']['email_confirmation']);
 		}
-		if(!empty($this->data['User']['username'])) {
+		if (!empty($this->data['User']['username'])) {
 			$this->data['User']['username'] = trim($this->data['User']['username']);
 		}
-		if(!empty($this->data['User']['nickname'])) {
+		if (!empty($this->data['User']['nickname'])) {
 			$this->data['User']['nickname'] = trim($this->data['User']['nickname']);
 		}
 	}
@@ -151,7 +152,7 @@ class User extends AppModel {
 			$this->data[$this->alias]['is_deleted'] = 0;
 			unset($this->data[$this->alias]['email_confirmation']);
 			unset($this->data[$this->alias]['password_confirmation']);
-			if(isset($this->data['User']['send_copy_via_email']) && $this->data['User']['send_copy_via_email'] == 1) {
+			if (isset($this->data['User']['send_copy_via_email']) && $this->data['User']['send_copy_via_email'] == 1) {
 				$this->passwordInClearText = $this->data[$this->alias]['password'];
 			}
 		}
@@ -163,6 +164,7 @@ class User extends AppModel {
 		if ($isCreated === true) {
 			$this->deactivate($this->passwordInClearText);
 			$this->passwordInClearText = null;
+			$this->updateLastLogin($this->read());
 		}
 	}
 	
@@ -197,7 +199,7 @@ class User extends AppModel {
 	function deactivate($passwordInClearText, $isNewUser = true) {
 		$activationKey = $this->generateActivationKey();
 		$data = $this->read();
-		if($activationKey === false) {
+		if ($activationKey === false) {
 			$this->log('No valid Activation Key. Disabling User.', 'error');
 			$this->setDisabled($data, 1);
 		} else {
@@ -229,7 +231,7 @@ class User extends AppModel {
 				'title' => $Email->subject,
 				'activationKey' => $activationKey
 		));
-		if($isNewUser) {
+		if ($isNewUser) {
 			$Email->template = 'registration';
 			$Email->subject .= ' - ' . __('User Account Activation', true);
 				
@@ -237,7 +239,7 @@ class User extends AppModel {
 			$Email->template = 'activation';
 			$Email->subject .= ' - ' . __('User Account Reactivation', true);
 		}
-		if($passwordInClearText) {
+		if ($passwordInClearText) {
 			$Email->template .= '_details';
 			$Email->subject .= ' ' . __('including User Account Details', true);
 			$Controller->set(array(
@@ -279,28 +281,30 @@ class User extends AppModel {
 	
 	function setTos($data, $switch = 0) {
 		$this->id = $data['User']['id'];
-		$this->saveField('has_accepted_tos', $switch);
-	}
-	
-	function setDisabled($data, $switch) {
-		$this->id = $data['User']['id'];
-		$this->saveField('is_disabled', $switch);
-	}
-	
-	function getNiceName($userId = null) {
-		if($userId != null) {
-			$data = $this->find('first', array(
-					'fields' => array('username', 'nickname'),
-					'conditions' => array('id' => $userId)));
-			if ($data['User']['username'] == $data['User']['nickname']) {
-				return '‹' . $data['User']['username'] . '›';
-			} else {
-				return $data['User']['nickname'] . ':' . $data['User']['username'];
-			}
+		if ($this->saveField('has_accepted_tos', $switch, true)) {
+			return true;
 		} else {
 			return false;
 		}
 	}
 	
+	function setDisabled($data, $switch) {
+		$this->id = $data['User']['id'];
+		if ($this->saveField('is_disabled', $switch, true)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	function updateLastLogin($data) {
+		$this->id = $data['User']['id'];
+		if ($this->saveField('last_login', date('Y-m-d H:i:s'), true)) {
+			return true;
+		} else {
+			$this->log('Could not update last_login on user ' . $this->id . true);
+			return false;
+		}
+	}
 }
 ?>

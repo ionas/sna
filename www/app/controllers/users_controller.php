@@ -29,8 +29,8 @@ class UsersController extends AppController {
 			$this->Session->setFlash(__('Invalid User.', true));
 			$this->redirect(array('action' => 'index'));
 		}
-		// given
-		if (strlen($id) < 36) {
+		// no UUID, try finding user by nickname
+		if (strlen($id) != 36) {
 			$user = $this->User->find('first', array(
 					'User.id',
 					'conditions' => array('User.nickname' => $id),
@@ -150,25 +150,22 @@ class UsersController extends AppController {
 		}
 	}
 	
-	function status() {
-		var_dump($this->Auth->user());
-	}
-	
 	function login() {
-		$this->set('niceName', $this->User->getNiceName($this->Auth->user('id')));
+		$this->set('nicename', $this->Auth->user('nicename'));
 	}
 	
 	function logout() {
 		$this->Session->setFlash(
-			__('Goodbye', true) . $this->User->getNiceName($this->Auth->user('id')) . '...');
+			__('Goodbye', true) . ' ' . $this->Auth->user('nicename') . '...');
+		$this->User->updateLastLogin($this->Auth->user());
 		$this->redirect($this->Auth->logout());
 	}
 	
-	function buddy() {
+	function make_buddies() {
 		
 	}
 	
-	function ignore() {
+	function ignore_user() {
 		
 	}
 	
