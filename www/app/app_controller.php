@@ -44,8 +44,8 @@ class AppController extends Controller {
 	/* could this be in UsersController? */
 	function _authAutoRedirectFixes() {
 		$authRedirect = $this->Session->read('Auth.redirect');
-		$this->log('$this->name: ' . $this->name . ' | $this->action: ' 
-			. $this->action . ' | Auth->redirect: ' . $authRedirect, 'debug');
+		// $this->log('$this->name: ' . $this->name . ' | $this->action: ' 
+		//	. $this->action . ' | Auth->redirect: ' . $authRedirect, 'debug');
 		if(stripos($authRedirect, '/users/activate') === 0) {
 			$this->Session->write('Auth.redirect', '/users/home');
 		}

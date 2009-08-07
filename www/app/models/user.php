@@ -101,16 +101,12 @@ class User extends AppModel {
 					'rule' => array(
 						'validateTosOnCreate',
 					),
-					'message' => __('You must accept the Terms of Service on User Account creation.', true),
+					'message' => __('You must accept the Terms of Service on User Account registration.', true),
 				),
 			)
 		);
 		$this->passwordInClearText = null;
 		parent::__construct();
-	}
-	
-	function validates() {
-		return count($this->invalidFields()) == 0;
 	}
 	
 	function validateTosOnCreate() {
@@ -133,11 +129,18 @@ class User extends AppModel {
 	}
 	
 	function beforeValidate() {
+		// be nice to the user, starting and trailing whitespaces are ignored and removed before validation
 		if(!empty($this->data['User']['email'])) {
 			$this->data['User']['email'] = trim($this->data['User']['email']);
 		}
 		if(!empty($this->data['User']['email_confirmation'])) {
 			$this->data['User']['email_confirmation'] = trim($this->data['User']['email_confirmation']);
+		}
+		if(!empty($this->data['User']['username'])) {
+			$this->data['User']['username'] = trim($this->data['User']['username']);
+		}
+		if(!empty($this->data['User']['nickname'])) {
+			$this->data['User']['nickname'] = trim($this->data['User']['nickname']);
 		}
 	}
 	
@@ -167,7 +170,7 @@ class User extends AppModel {
 		// Defensive loop stopper.
 		$i++;
 		if ($i > 10) {
-			$this->log('Issue with User::generateActivationKey(). Failed at generating a valid key.');
+			$this->log('Issue with User::generateActivationKey(). Failed at generating a valid key.', 'error');
 			return false;
 		} else {
 			// Key looks like D7E9-F3E4-479A-838C
@@ -181,7 +184,7 @@ class User extends AppModel {
 	}
 	
 	function hashPasswords($data, $enforce = false) {
-		$this->log('User::hashPasswords()', 'debug');
+		// $this->log('User::hashPasswords()', 'debug');
 		if ($enforce && isset($this->data[$this->alias]['password'])) {
 			if (!empty($this->data[$this->alias]['password'])) {
 				$this->data[$this->alias]['password'] =
@@ -195,7 +198,7 @@ class User extends AppModel {
 		$activationKey = $this->generateActivationKey();
 		$data = $this->read();
 		if($activationKey === false) {
-			$this->log('No valid Activation Key. Disabling User.');
+			$this->log('No valid Activation Key. Disabling User.', 'error');
 			$this->setDisabled($data, 1);
 		} else {
 			$this->id = $data[$this->alias]['id'];
