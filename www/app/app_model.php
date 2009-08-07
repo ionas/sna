@@ -3,13 +3,6 @@ class AppModel extends Model {
 	
 	var $recursive = 0; // Default setting for all Model::find() calls, better use containable
 	
-	function validateBooleanValue($data, $field, $value = 1) {
-		if ($data[$field] == $value) {
-			return true;
-		}
-		return false;
-	}
-	
 	function validateEqualData($data, $message, $comparisonField) {
 		if (is_array($data)) {
 			foreach ($data as $value) {

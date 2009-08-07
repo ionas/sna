@@ -97,8 +97,8 @@ class User extends AppModel {
 					'rule' => array('boolean'),
 					'message' => __('You may only accept or deny the Terms of Service.', true),
 				),
-				'validateBooleanValue' => array(
-					'rule' => array('validateBooleanValue', 'has_accepted_tos', 1),
+				'equalTo' => array(
+					'rule' => array('equalTo', '1'),
 					'on' => 'create',
 					'message' => __('You must accept the Terms of Service on User Account registration.', true),
 				),
