@@ -1,11 +1,12 @@
+<h2>Login</h2>
 <div class="users form">
-<?php
-	if ($session->check('Message.auth')) {
-		$session->flash('auth');
-	}
-	echo $form->create('User', array('action' => 'login'));
-	echo $form->input('username');
-	echo $form->input('password');
-	echo $form->end('Login');
-?>
+<?=$session->check('Message.auth') ? $session->flash('auth') : ''?>
+<?php if($niceName !== false):?>
+<p><?=__('You are currently logged in as')?> <strong><?=$niceName?></strong>.</p>
+<br>
+<?php endif?>
+<?=$form->create('User', array('action' => 'login'))?>
+<?=$form->input('username')?>
+<?=$form->input('password')?>
+<?=$form->end('Login')?>
 </div>

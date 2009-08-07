@@ -1,7 +1,7 @@
 SocialNetwork Application
 
-The whole client (anything besides www/index.php or www/cake/*) is licensed under GPL V3
-See: http://gplv3.fsf.org/
+Any source code besides the that in files www/index.php, any files in www/cake/* or source code files that explicitly state another license is licensed under GPL V3.
+See: gpl-3.0.txt or http://gplv3.fsf.org/
 
 TODO:
 X Logging in and out
@@ -12,6 +12,7 @@ X User Registration prechecked checkbox: Send me a copy of my user account detai
 X (User) Validation translation (change from "var $validates = ..." to "contructor: $this->validates = ...")
 X User Registration Email Templates
 X User Registration Email Templates (external)
+X User last login
 - User checkboxes
 - User deletion
 - User picture uploads

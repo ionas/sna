@@ -42,6 +42,7 @@ class UsersController extends AppController {
 	}
 	
 	function register() {
+		$this->Auth->logout();
 		if (!empty($this->data)) {
 			$this->User->create();
 			if ($this->User->save($this->data, true, array(
@@ -58,6 +59,7 @@ class UsersController extends AppController {
 	}
 	
 	function activate($activationKey = null) {
+		$this->Auth->logout();
 		if (!empty($this->data)) {
 			if ($this->User->activate($this->data)) {
 				$this->Session->setFlash(
@@ -119,14 +121,6 @@ class UsersController extends AppController {
 		$this->set('termsOfService', $this->requestAction('/pages/public/terms_of_service'));
 	}
 	
-	function add_buddy() {
-		
-	}
-	
-	function ignore_user() {
-		
-	}
-	
 	function change_email() {
 		
 	}
@@ -143,6 +137,10 @@ class UsersController extends AppController {
 		
 	}
 	
+	function enable() {
+		
+	}
+	
 	function home() {
 		$landingPage = $this->User->UserOption->get($this->Auth->user('id'), array('landingPage'));
 		if (!empty($landingPage)) {
@@ -153,18 +151,25 @@ class UsersController extends AppController {
 	}
 	
 	function status() {
-		debug($this->Auth->user());
+		var_dump($this->Auth->user());
 	}
 	
 	function login() {
+		$this->set('niceName', $this->User->getNiceName($this->Auth->user('id')));
 	}
 	
 	function logout() {
-		$authedUser = $this->Auth->user();
 		$this->Session->setFlash(
-			__('Goodbye', true) . ' &lt;' . $authedUser['User']['username'] . '&gt; ...'
-		);
+			__('Goodbye', true) . $this->User->getNiceName($this->Auth->user('id')) . '...');
 		$this->redirect($this->Auth->logout());
+	}
+	
+	function buddy() {
+		
+	}
+	
+	function ignore() {
+		
 	}
 	
 }

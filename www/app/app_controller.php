@@ -27,11 +27,8 @@ class AppController extends Controller {
 		if ($this->Auth->isAuthorized()) {
 			if (in_array($this->name, $this->termsOfServiceRequired)
 			&& !($this->name == 'Users' && in_array($this->action, array(
-							'register', // does not make sense for later use
-							'activate', // does not make sense for later use
-							'login',
+							'forgot_password',
 							'logout',
-							'hide',
 							'terms_of_service',
 						)
 			))

@@ -284,5 +284,20 @@ class User extends AppModel {
 		$this->saveField('is_disabled', $switch);
 	}
 	
+	function getNiceName($userId = null) {
+		if($userId != null) {
+			$data = $this->find('first', array(
+					'fields' => array('username', 'nickname'),
+					'conditions' => array('id' => $userId)));
+			if ($data['User']['username'] == $data['User']['nickname']) {
+				return '‹' . $data['User']['username'] . '›';
+			} else {
+				return $data['User']['nickname'] . ':' . $data['User']['username'];
+			}
+		} else {
+			return false;
+		}
+	}
+	
 }
 ?>
