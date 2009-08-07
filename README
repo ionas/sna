@@ -10,8 +10,8 @@ X User basic registration, validation and activation
 X User registration autofill username = nickname
 X User Registration prechecked checkbox: Send me a copy of my user account details (username, passwort, email, registration date)
 X (User) Validation translation (change from "var $validates = ..." to "contructor: $this->validates = ...")
-- User Registration Email Templates
-- User Registration Email Templates (external)
+X User Registration Email Templates
+X User Registration Email Templates (external)
 - User checkboxes
 - User deletion
 - User picture uploads
