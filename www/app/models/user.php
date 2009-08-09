@@ -209,17 +209,15 @@ class User extends AppModel {
 		}
 	}
 	
-	function _messageUser($viewData, $template, $method) {
-		if(isset($method['email'])) {
-			// ENH: SMS-Gateway
-			App::import('Core', 'Controller');
-			App::import('Component', 'Email');
+	function _messageUser($viewData, $template, $gateway) {
+		if(isset($gateway['email'])) {
 			// We need this fake controller
+			/*
 			$Controller = new Controller();
 			$Email = new EmailComponent(null);
 			$Email->initialize($Controller);
-			$Email->to = $method['email']['to'];
-			$Email->subject = $method['email']['subject'];
+			$Email->to = $gateway['email']['to'];
+			$Email->subject = $gateway['email']['subject'];
 			$domainName = env('SERVER_NAME');
 			if (strpos($domainName, 'www.') === 0) {
 				$domainName = substr($domainName, 4);
@@ -229,9 +227,27 @@ class User extends AppModel {
 			if($Email->send() == false) {
 				$this->log('Sending mail not successful.', 'error');
 			}
+			*/
+			
+			App::import('Core', 'Controller');
+			App::import('Component', 'Email');
+			$Controller = new Controller();
+			$Email = new EmailComponent(null);
+			$Email->initialize($Controller);
+			$Email->to = 'yourlogin@localhost';
+			$Email->subject = 'Cake test simple email';
+			$Email->replyTo = 'noreply@example.com';
+			$Email->from = 'Cake Test Account <noreply@example.com>';
+			//Set the body of the mail as we send it.
+			//Note: the text can be an array, each element will appear as a
+			//seperate line in the message body.
+			if($Email->send('Here is the body of the email') == false) {
+				$this->log('Sending mail not successful.', 'error');
+			}
 			unset($Email);
 			unset($Controller);
 		}
+		// ENH: SMS-Gateway
 	}
 	
 	function sendActivation($data, $activationKey, $isNewUser, $passwordInClearText) {
@@ -240,28 +256,26 @@ class User extends AppModel {
 		if (strpos($domainname, 'www.') === 0) {
 			$domainname = substr($domainname, 4);
 		}
-		$method['email'] = true;
-		$method['to'] = $data[$this->alias]['email'];
-		$method['subject'] = $domainname . ': ' . $data[$this->alias]['username'] . '/' 
+		$gateway['email']['to'] = $data[$this->alias]['email'];
+		$gateway['email']['subject'] = $domainname . ': ' . $data[$this->alias]['username'] . '/' 
 			. $data[$this->alias]['nickname'];
-		$method['domainname'] = $domainname;
 		$viewData = array(
 			'domainName' => $domainname,
 			'serverName' => env('SERVER_NAME'),
-			'title' => $method['subject'],
+			'title' => $gateway['email']['subject'],
 			'activationKey' => $activationKey
 		);
 		if ($isNewUser) {
 			$template = 'registration';
-			$method['subject'] .= ' - ' . __('User Account Activation', true);
+			$gateway['email']['subject'] .= ' - ' . __('User Account Activation', true);
 				
 		} else {
 			$template = 'activation';
-			$method['subject'] .= ' - ' . __('User Account Reactivation', true);
+			$gateway['email']['subject'] .= ' - ' . __('User Account Reactivation', true);
 		}
 		if ($passwordInClearText) {
 			$template .= '_details';
-			$method['subject'] .= ' ' . __('including User Account Details', true);
+			$gateway['email']['subject'] .= ' ' . __('including User Account Details', true);
 			$viewData = array_merge($viewData, array(
 					'nickname' => $data[$this->alias]['nickname'],
 					'username' => $data[$this->alias]['username'],
@@ -270,7 +284,7 @@ class User extends AppModel {
 				)
 			);
 		}
-		$this->_messageUser($data, $template, $method);
+		$this->_messageUser($data, $template, $gateway);
 	}
 	
 	function activate($data, $doSendEmail = true) {
