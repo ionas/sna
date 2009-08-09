@@ -6,15 +6,15 @@ class AppModel extends Model {
 	function validateEqualData($data, $message, $comparisonField) {
 		if (is_array($data)) {
 			foreach ($data as $value) {
-				if ($value !== $this->data[$this->alias][$comparisonField]) {
-					$this->invalidate($comparisonField, $message);
-					return false;
-				} else {
-					return true;
+				if(isset($this->data[$this->alias][$comparisonField])) {
+					if ($value !== $this->data[$this->alias][$comparisonField]) {
+						$this->invalidate($comparisonField, $message);
+						return false;
+					}
 				}
 			}
 		}
-		return false;
+		return true;
 	}
 	
 	function validateDatetime($data = null, $fieldname) {

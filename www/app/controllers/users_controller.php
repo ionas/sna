@@ -7,7 +7,7 @@ class UsersController extends AppController {
 	
 	function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow(array('register', 'activate', 'logout', 'login', 'home'));
+		$this->Auth->allow(array('register', 'activate', 'forgot_password', 'logout', 'login', 'home'));
 		// Active users may login
 		$this->Auth->userScope = array(
 			'User.activation_key' => '',
@@ -128,11 +128,18 @@ class UsersController extends AppController {
 	}
 	
 	function forgot_password() {
+		if(!empty($this->data)) {
+			$this->User->sendPasswordInstructions($this->data);
+		} else {
+			$this->Session->setFlash(__("Enter your Account's login name or Email address.", true));
+		}
+	}
+	
+	function retrieve_new_password() {
 		
 	}
 
 	function change_password() {
-		
 	}
 	
 	function change_email() {

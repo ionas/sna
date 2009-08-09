@@ -3,7 +3,11 @@
 	<fieldset>
 		<legend><?php __('Activate User Account')?></legend>
 	<?php
+		echo $honeypot->spawn();
+		echo $honeypot->spawn();
 		echo $form->input('activation_key');
-		echo $form->end('Finish Activation');
+		echo $honeypot->spawn();
+		echo $honeypot->spawn();
+		echo $form->end(__('Finish Activation', true));
 	?>
 </div>
