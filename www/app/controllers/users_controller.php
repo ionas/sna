@@ -2,18 +2,19 @@
 class UsersController extends AppController {
 	
 	var $name = 'Users';
-	var $helpers = array('Html', 'Form');
+	var $components = array('Honeypotting' => array('formModels' => array('User', 'UserOption')));
+	var $helpers = array('Html', 'Form', 'Honeypot');
 	
 	function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow(array('register', 'activate', 'logout', 'login'));
+		$this->Auth->allow(array('register', 'activate', 'logout', 'login', 'home'));
 		// Active users may login
 		$this->Auth->userScope = array(
 			'User.activation_key' => '',
 			'User.is_deleted' => false,
 			'User.is_disabled' => false,
 		);
-		if($this->action == 'register') {
+		if ($this->action == 'register') {
 			// Use User::hashPasswords instead Auth::hashPasswords
 			$this->Auth->authenticate = $this->User;
 		}
@@ -47,7 +48,8 @@ class UsersController extends AppController {
 			$this->User->create();
 			if ($this->User->save($this->data, true, array(
 						'has_accepted_tos', 'username', 'password', 'nickname', 'email'))) {
-				$this->Session->setFlash(__('Your registration has been successful. However, you will still need to activate your user account.', true));
+				$this->Session->setFlash(
+					__('Your registration has been successful. However, you will still need to activate your user account.', true));
 				$this->redirect(array('action' => 'activate'));
 			} else {
 				unset($this->data['User']['password']);
@@ -66,7 +68,8 @@ class UsersController extends AppController {
 					__('Your User Account has been activated. You may now login.', true));
 				$this->redirect(array('action' => 'login'));
 			} else {
-				$this->Session->setFlash(__('The User Account Activation failed. Please correct your Activation Key and try again.', true));
+				$this->Session->setFlash(
+					__('The User Account Activation failed. Please correct your Activation Key and try again.', true));
 			}
 		}
 		if ($activationKey) {
@@ -76,15 +79,16 @@ class UsersController extends AppController {
 	
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(__('Invalid User', true));
+			$this->Session->setFlash(__('Invalid User Accuont ID.', true));
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
 			if ($this->User->save($this->data)) {
-				$this->Session->setFlash(__('The User has been saved', true));
+				$this->Session->setFlash(__('Your User Account has been updated.', true));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The User could not be saved. Please, try again.', true));
+				$this->Session->setFlash(
+					__('The User Account could not be updated. Please, try again.', true));
 			}
 		}
 		if (empty($this->data)) {
@@ -98,8 +102,10 @@ class UsersController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
 		if ($this->User->del($id)) {
-			$this->Session->setFlash(__('User deleted', true));
-			$this->redirect(array('action' => 'index'));
+			$this->Session->setFlash(
+				String::insert(__('User Account :nicename removed.', true),
+					array('nicename' => $this->Auth->user('nicename'))));
+			$this->redirect($this->Auth->logout());
 		}
 	}
 	
@@ -121,23 +127,19 @@ class UsersController extends AppController {
 		$this->set('termsOfService', $this->requestAction('/pages/public/terms_of_service'));
 	}
 	
-	function change_email() {
+	function forgot_password() {
 		
 	}
-	
+
 	function change_password() {
 		
 	}
 	
-	function forgot_password() {
+	function change_email() {
 		
 	}
-	
+
 	function hide() {
-		
-	}
-	
-	function enable() {
 		
 	}
 	
@@ -152,13 +154,19 @@ class UsersController extends AppController {
 	
 	function login() {
 		$this->set('nicename', $this->Auth->user('nicename'));
+		if($this->Auth->isAuthorized() == true) {
+			$this->User->updateLastLogin($this->Auth->user());
+		}
 	}
 	
 	function logout() {
-		$this->Session->setFlash(
-			__('Goodbye', true) . ' ' . $this->Auth->user('nicename') . '...');
-		$this->User->updateLastLogin($this->Auth->user());
-		$this->redirect($this->Auth->logout());
+		if($this->Auth->isAuthorized() == true) {
+			$this->Session->setFlash(
+				__('Goodbye', true) . ' ' . $this->Auth->user('nicename') . '...');
+			$this->User->updateLastLogin($this->Auth->user());
+		}
+		$this->Auth->logout();
+		$this->redirect('home');
 	}
 	
 	function make_buddies() {

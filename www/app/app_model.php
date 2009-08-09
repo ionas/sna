@@ -1,7 +1,7 @@
 <?php
 class AppModel extends Model {
 	
-	var $recursive = 0; // Default setting for all Model::find() calls, better use containable
+//	var $recursive = 0; // Default setting for all Model::find() calls, better use containable
 	
 	function validateEqualData($data, $message, $comparisonField) {
 		if (is_array($data)) {

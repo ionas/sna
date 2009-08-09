@@ -18,8 +18,10 @@ X (User) Validation translation (change from "var $validates = ..." to "contruct
 X User Registration Email Templates
 X User Registration Email Templates (external)
 X User last login
-- User deletion
-- User registration captcha ( see http://captcha.ru/en/kcaptcha/) be aware: accessibilitys
+X User deletion
+X last login bugfix (read to session on login, write to DB on login and logout)
+X Honey Pot Component + Autoloading helper
+- User forgot password, change password, hide
 - Form error format (CSS)
 - Check out Translation + Translation Tool (PO Files)
 - Add Language switcher to $layout + save in Cookies
@@ -38,3 +40,4 @@ X User last login
   See also: http://devedge.jonas-hartmann.com/documents/Securing_authentication_and_data_manipulation_via_HTTP.html
 - Routing (index => list, add => register/create/whatever, delete => remove (OR disable))
 - FAQ (cakephp book application?) - FAQ explains double use: username + nickname (security bonus), about, browser stuff and more
+- Research Akismet: http://sethcardoza.com/posts/view/8/title/integrating-akismet-with-cakephp http://akismet.com/ http://cakeforge.org/snippet/detail.php?type=snippet&id=95

@@ -306,5 +306,20 @@ class User extends AppModel {
 			return false;
 		}
 	}
+	
+	function del($id = null, $cascade = true) {
+		$fields = array_keys($this->_schema);
+		$keepFields = array('id', 'created', 'modified');
+		if($id != null) {
+			$purgeData = array_diff($fields, $keepFields);
+			$purgeData = Set::normalize($purgeData);
+			$purgeData = array_fill_keys(array_keys($purgeData), null);
+			$purgeData['is_deleted'] = '1';
+			$this->id = $id;
+			// $this->save($purgeData, null, false);
+		}
+		return true;
+	}
+	
 }
 ?>
