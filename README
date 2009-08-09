@@ -21,7 +21,7 @@ X User last login
 X User deletion
 X last login bugfix (read to session on login, write to DB on login and logout)
 X Honey Pot Component + Autoloading helper
-- User forgot password
+0 User forgot password
 - User change password#
 - User hide
 - Form error format (CSS)

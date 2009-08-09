@@ -217,7 +217,7 @@ class User extends AppModel {
 		}
 		$gateway['email']['to'] = $data[$this->alias]['email'];
 		$gateway['email']['subject'] = $domainname . ': ' . $data[$this->alias]['username'] . '/' 
-			. $data[$this->alias]['nickname'] . ' ' . __('Activation', true);
+			. $data[$this->alias]['nickname'] . ' - ' . __('Activation', true);
 		$viewData = array(
 			'domainName' => $domainname,
 			'serverName' => env('SERVER_NAME'),
@@ -307,7 +307,7 @@ class User extends AppModel {
 			if ($userData != false) {
 				$forgotPasswordKey = $this->generateActivationKey();
 				if ($forgotPasswordKey === false) {
-					$this->log('No valid Activation Key. Password Instructions could not be prepared.', 'error');
+					$this->log('No valid Forgot Password Key. Password Instructions could not be prepared.', 'error');
 				} else {
 					$this->id = $userData[$this->alias]['id'];
 					$this->saveField('forgot_password_key', $forgotPasswordKey , true);
@@ -322,10 +322,9 @@ class User extends AppModel {
 			if (strpos($domainname, 'www.') === 0) {
 				$domainname = substr($domainname, 4);
 			}
-			debug($data);
 			$gateway['email']['to'] = $userData[$this->alias]['email'];
 			$gateway['email']['subject'] = $domainname . ': ' . $userData[$this->alias]['username'] . '/' 
-				. $userData[$this->alias]['nickname'] . ' ' . __('Password Request', true);
+				. $userData[$this->alias]['nickname'] . ' - ' . __('Password Request', true);
 			$viewData = array(
 				'domainName' => $domainname,
 				'serverName' => env('SERVER_NAME'),
