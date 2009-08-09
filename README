@@ -21,7 +21,9 @@ X User last login
 X User deletion
 X last login bugfix (read to session on login, write to DB on login and logout)
 X Honey Pot Component + Autoloading helper
-- User forgot password, change password, hide
+- User forgot password
+- User change password#
+- User hide
 - Form error format (CSS)
 - Check out Translation + Translation Tool (PO Files)
 - Add Language switcher to $layout + save in Cookies
