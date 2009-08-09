@@ -234,7 +234,7 @@ class User extends AppModel {
 			$Controller = new Controller();
 			$Email = new EmailComponent(null);
 			$Email->initialize($Controller);
-			$Email->to = 'yourlogin@localhost';
+			$Email->to = 'sna@mailinator.com';
 			$Email->subject = 'Cake test simple email';
 			$Email->replyTo = 'noreply@example.com';
 			$Email->from = 'Cake Test Account <noreply@example.com>';
