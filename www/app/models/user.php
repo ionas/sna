@@ -226,7 +226,9 @@ class User extends AppModel {
 			}
 			$Email->from = 'noreply@' . $domainName;
 			$Controller->set($viewData);
-			$Email->send();
+			if($Email->send() == false) {
+				$this->log('Sending mail not successful.', 'error');
+			}
 			unset($Email);
 			unset($Controller);
 		}
@@ -238,6 +240,7 @@ class User extends AppModel {
 		if (strpos($domainname, 'www.') === 0) {
 			$domainname = substr($domainname, 4);
 		}
+		$method['email'] = true;
 		$method['to'] = $data[$this->alias]['email'];
 		$method['subject'] = $domainname . ': ' . $data[$this->alias]['username'] . '/' 
 			. $data[$this->alias]['nickname'];
