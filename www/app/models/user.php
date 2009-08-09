@@ -209,49 +209,8 @@ class User extends AppModel {
 		}
 	}
 	
-	function _messageUser($viewData, $template, $gateway) {
-		if(isset($gateway['email'])) {
-			// We need this fake controller
-			/*
-			$Controller = new Controller();
-			$Email = new EmailComponent(null);
-			$Email->initialize($Controller);
-			$Email->to = $gateway['email']['to'];
-			$Email->subject = $gateway['email']['subject'];
-			$domainName = env('SERVER_NAME');
-			if (strpos($domainName, 'www.') === 0) {
-				$domainName = substr($domainName, 4);
-			}
-			$Email->from = 'noreply@' . $domainName;
-			$Controller->set($viewData);
-			if($Email->send() == false) {
-				$this->log('Sending mail not successful.', 'error');
-			}
-			*/
-			
-			App::import('Core', 'Controller');
-			App::import('Component', 'Email');
-			$Controller = new Controller();
-			$Email = new EmailComponent(null);
-			$Email->initialize($Controller);
-			$Email->to = 'sna@mailinator.com';
-			$Email->subject = 'Cake test simple email';
-			$Email->replyTo = 'noreply@example.com';
-			$Email->from = 'Cake Test Account <noreply@example.com>';
-			//Set the body of the mail as we send it.
-			//Note: the text can be an array, each element will appear as a
-			//seperate line in the message body.
-			if($Email->send('Here is the body of the email') == false) {
-				$this->log('Sending mail not successful.', 'error');
-			}
-			unset($Email);
-			unset($Controller);
-		}
-		// ENH: SMS-Gateway
-	}
 	
 	function sendActivation($data, $activationKey, $isNewUser, $passwordInClearText) {
-		// ENH: SMS-Gateway
 		$domainname = env('SERVER_NAME');
 		if (strpos($domainname, 'www.') === 0) {
 			$domainname = substr($domainname, 4);
@@ -263,7 +222,7 @@ class User extends AppModel {
 			'domainName' => $domainname,
 			'serverName' => env('SERVER_NAME'),
 			'title' => $gateway['email']['subject'],
-			'activationKey' => $activationKey
+			'activationKey' => $activationKey,
 		);
 		if ($isNewUser) {
 			$template = 'registration';
@@ -284,7 +243,7 @@ class User extends AppModel {
 				)
 			);
 		}
-		$this->_messageUser($data, $template, $gateway);
+		$this->_messageUser($viewData, $template, $gateway);
 	}
 	
 	function activate($data, $doSendEmail = true) {
@@ -340,22 +299,41 @@ class User extends AppModel {
 	}
 	
 	function sendPasswordInstructions($data) {
+		$doSendPasswordInstructionEMail = false;
 		if ($this->validates($data)) {
-			$data = $this->find('first', array('conditions' => array(
+			$userData = $this->find('first', array('conditions' => array(
 						'username' => $data[$this->alias]['username'],
 						'email' => $data[$this->alias]['email'])));
-			if($data != false) {
+			if($userData != false) {
 				$forgotPasswordKey = $this->generateActivationKey();
 				if ($forgotPasswordKey === false) {
 					$this->log('No valid Activation Key. Password Instructions could not be prepared.', 'error');
 				} else {
-					$this->id = $data[$this->alias]['id'];
+					$this->id = $userData[$this->alias]['id'];
 					$this->saveField('forgot_password_key', $forgotPasswordKey , true);
-					// $this->sendPasswordInstructionsEmail($data, $forgotPasswordKey);
+					$doSendPasswordInstructionEMail = true;
 				}
 			} else {
 				$this->invalidate('forgot_password', __('No User Account having that Login name and Email address found.', true));
 			}
+		}
+		if($doSendPasswordInstructionEMail) {
+			$domainname = env('SERVER_NAME');
+			if (strpos($domainname, 'www.') === 0) {
+				$domainname = substr($domainname, 4);
+			}
+			debug($data);
+			$gateway['email']['to'] = $userData[$this->alias]['email'];
+			$gateway['email']['subject'] = $domainname . ': ' . $userData[$this->alias]['username'] . '/' 
+				. $userData[$this->alias]['nickname'];
+			$viewData = array(
+				'domainName' => $domainname,
+				'serverName' => env('SERVER_NAME'),
+				'title' => $gateway['email']['subject'],
+				'forgotPasswordKey' => $forgotPasswordKey,
+			);
+			$template = 'forgot_password';
+			$this->_messageUser($viewData, $template, $gateway);
 		}
 	}
 	
@@ -371,6 +349,38 @@ class User extends AppModel {
 			// $this->save($purgeData, null, false);
 		}
 		return true;
+	}
+	
+	// Wrapper around EMailComponent (and possibly SMSGatewayComponent in future)
+	function _messageUser($viewData, $template, $gateway) {
+		if(isset($gateway['email'])) {
+			App::import('Core', 'Controller');
+			App::import('Component', 'Email');
+			// We need this fake controller
+			$Controller = new Controller();
+			$Email = new EmailComponent(null);
+			$Email->initialize($Controller);
+			$Email->to = $gateway['email']['to'];
+			$Email->subject = $gateway['email']['subject'];
+			$Email->template = $template;
+			$EMail->sendAs = 'both';
+			$domainName = env('SERVER_NAME');
+			if (strpos($domainName, 'www.') === 0) {
+				$domainName = substr($domainName, 4);
+			}
+			$Email->from = 'noreply@' . $domainName;
+			
+			//Set the body of the mail as we send it.
+			//Note: the text can be an array, each element will appear as a
+			//seperate line in the message body.
+			$Controller->set($viewData);
+			if($Email->send() == false) {
+				$this->log('Sending mail not successful.', 'error');
+			}
+			unset($Email);
+			unset($Controller);
+		}
+		// ENH: SMS-Gateway
 	}
 	
 }
