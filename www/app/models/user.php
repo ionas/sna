@@ -217,7 +217,7 @@ class User extends AppModel {
 		}
 		$gateway['email']['to'] = $data[$this->alias]['email'];
 		$gateway['email']['subject'] = $domainname . ': ' . $data[$this->alias]['username'] . '/' 
-			. $data[$this->alias]['nickname'];
+			. $data[$this->alias]['nickname'] . ' ' . __('Activation', true);
 		$viewData = array(
 			'domainName' => $domainname,
 			'serverName' => env('SERVER_NAME'),
@@ -304,7 +304,7 @@ class User extends AppModel {
 			$userData = $this->find('first', array('conditions' => array(
 						'username' => $data[$this->alias]['username'],
 						'email' => $data[$this->alias]['email'])));
-			if($userData != false) {
+			if ($userData != false) {
 				$forgotPasswordKey = $this->generateActivationKey();
 				if ($forgotPasswordKey === false) {
 					$this->log('No valid Activation Key. Password Instructions could not be prepared.', 'error');
@@ -317,7 +317,7 @@ class User extends AppModel {
 				$this->invalidate('forgot_password', __('No User Account having that Login name and Email address found.', true));
 			}
 		}
-		if($doSendPasswordInstructionEMail) {
+		if ($doSendPasswordInstructionEMail) {
 			$domainname = env('SERVER_NAME');
 			if (strpos($domainname, 'www.') === 0) {
 				$domainname = substr($domainname, 4);
@@ -325,7 +325,7 @@ class User extends AppModel {
 			debug($data);
 			$gateway['email']['to'] = $userData[$this->alias]['email'];
 			$gateway['email']['subject'] = $domainname . ': ' . $userData[$this->alias]['username'] . '/' 
-				. $userData[$this->alias]['nickname'];
+				. $userData[$this->alias]['nickname'] . ' ' . __('Password Request', true);
 			$viewData = array(
 				'domainName' => $domainname,
 				'serverName' => env('SERVER_NAME'),
@@ -340,7 +340,7 @@ class User extends AppModel {
 	function del($id = null, $cascade = true) {
 		$fields = array_keys($this->_schema);
 		$keepFields = array('id', 'created', 'modified');
-		if($id != null) {
+		if ($id != null) {
 			$purgeData = array_diff($fields, $keepFields);
 			$purgeData = Set::normalize($purgeData);
 			$purgeData = array_fill_keys(array_keys($purgeData), null);
@@ -353,7 +353,7 @@ class User extends AppModel {
 	
 	// Wrapper around EMailComponent (and possibly SMSGatewayComponent in future)
 	function _messageUser($viewData, $template, $gateway) {
-		if(isset($gateway['email'])) {
+		if (isset($gateway['email'])) {
 			App::import('Core', 'Controller');
 			App::import('Component', 'Email');
 			// We need this fake controller
@@ -374,7 +374,7 @@ class User extends AppModel {
 			//Note: the text can be an array, each element will appear as a
 			//seperate line in the message body.
 			$Controller->set($viewData);
-			if($Email->send() == false) {
+			if ($Email->send() == false) {
 				$this->log('Sending mail not successful.', 'error');
 			}
 			unset($Email);
