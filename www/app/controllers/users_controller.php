@@ -7,14 +7,16 @@ class UsersController extends AppController {
 	
 	function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow(array('register', 'activate', 'forgot_password', 'logout', 'login', 'home'));
+		$this->Auth->allow(array('login', 'register', 'activate', 'forgot_password', 'new_password', 'home'));
 		// Active users may login
 		$this->Auth->userScope = array(
 			'User.activation_key' => '',
 			'User.is_deleted' => false,
 			'User.is_disabled' => false,
 		);
-		if ($this->action == 'register') {
+		if ($this->action == 'register'
+		OR $this->action == 'change_password'
+		OR $this->action == 'new_password') {
 			// Use User::hashPasswords instead Auth::hashPasswords
 			$this->Auth->authenticate = $this->User;
 		}
@@ -128,18 +130,49 @@ class UsersController extends AppController {
 	}
 	
 	function forgot_password() {
+		$this->Auth->logout();
 		if(!empty($this->data)) {
-			$this->User->sendPasswordInstructions($this->data);
+			if($this->User->sendPasswordInstructions($this->data) == true) {
+				$this->Session->setFlash(__('You should have recieved information on how to restore your password per email.', true));
+				$this->redirect(array('action' => 'home'));
+			} else {
+				$this->Session->setFlash(__('Password retrival information could not be send, try again.', true));
+			}
 		} else {
-			$this->Session->setFlash(__("Enter your Account's login name or Email address.", true));
+			if($this->referer() != $this->here) {
+				$this->Session->setFlash(__("Enter your Account's login name or Email address.", true));
+			}
 		}
 	}
 	
-	function retrieve_new_password() {
-		
+	function new_password() {
+		$this->Auth->logout();
+		if(!empty($this->data)) {
+			$this->User->create($this->data);
+			if ($this->User->saveNewPassword()) {
+				$this->Session->setFlash(__('Your new password has been set.', true));
+				$this->redirect(array('action' => 'login'));
+			} else {
+				$this->Session->setFlash(__('Your new password could not be set.', true));
+				unset($this->data['User']['password']);
+				unset($this->data['User']['password_confirmation']);
+			}
+		}
 	}
-
+	
 	function change_password() {
+		if(!empty($this->data)) {
+			$this->User->read();
+			if ($this->User->changePassword()) {
+				$this->Session->setFlash(__('Your new password has been set.', true));
+				$this->Auth->logout();
+				$this->redirect(array('action' => 'login'));
+			} else {
+				$this->Session->setFlash(__('Your new password could not be set.', true));
+				unset($this->data['User']['password']);
+				unset($this->data['User']['password_confirmation']);
+			}
+		}
 	}
 	
 	function change_email() {
@@ -173,7 +206,7 @@ class UsersController extends AppController {
 			$this->User->updateLastLogin($this->Auth->user());
 		}
 		$this->Auth->logout();
-		$this->redirect('home');
+		$this->redirect(array('action' => 'home'));
 	}
 	
 	function make_buddies() {

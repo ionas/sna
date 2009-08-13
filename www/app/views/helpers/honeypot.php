@@ -10,8 +10,8 @@ class HoneypotHelper extends AppHelper {
 		shuffle($this->honey);
 	}
 	
-	function spawn() {
-		if(($this->params['honeypotting']['spawnLikelyhood'] * 100) <= mt_rand(0, 100)) {
+	function spawn($forceSpawn = false) {
+		if($forceSpawn OR ($this->params['honeypotting']['spawnLikelyhood'] * 100) <= mt_rand(0, 100)) {
 			// change from Form->hidden to Form->input for debugging
 			$honeypot = $this->Form->hidden(current($this->honey));
 			// Generate next random honypot spawn

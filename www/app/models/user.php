@@ -4,7 +4,7 @@ class User extends AppModel {
 	
 	var $name = 'User';
 	
-	var $validate = array(); // See __construct(); It is there to enable use of__()
+	var $validate = array(); // See function __construct()
 	
 	var $displayField = 'nickname';
 	
@@ -26,103 +26,116 @@ class User extends AppModel {
 		),
 	);
 	
-	function __construct() {
+	function __construct($id = false, $table = null, $ds = null) {
+		parent::__construct();
 		$this->validate = array( 
-			'username' => array(
-				'isUnique' => array(
-					'rule' => 'isUnique',
-					'message' => __('This username is already in use.', true),
-				),
-				'alphaNumeric' => array(
-					'rule' => 'alphaNumeric',
-					'message' => __('Use letters from A to Z or numbers from 0 to 9 only.', true),
-				),
-				'minLength' => array(
-					'rule' => array('minLength', '3'),
-					'message' => __('Minimum length of 3 characters.', true),
-				),
-			),
-			'password' => array(
-				'alphaNumeric' => array(
-					'rule' => 'alphaNumeric',
-					'message' => __('Use letters from A to Z or numbers from 0 to 9 only.', true),
-				),
-				'minLength' => array(
-					'rule' => array('minLength', '3'),
-					'message' => __('Minimum length of 3 characters.', true),
-				),
-				'validateEqualData' => array(
-					'rule' => array(
-						'validateEqualData',
-						__('You may have misstyped your Password or your Password Confirmation is wrong.', true),
-						'password_confirmation',
-					),
-					'message' => __('Your Password does not match with your Password Confirmation.', true),
-				),
-			),
-			'nickname' => array(
-				'isUnique' => array(
-					'rule' => 'isUnique',
-					'message' => __('This nickname is already in use.', true),
-				),
-				'alphaNumeric' => array(
-					'rule' => 'alphaNumeric',
-					'message' => __('Nickname must only contain letters and numbers.', true),
-				),
-				'minLength' => array(
-					'rule' => array('minLength', '3'),
-					'message' => __('Minimum length of 3 characters.', true),
-				),
-			),
-			'email' => array(
-				'isUnique' => array(
-					'rule' => 'isUnique',
-					'message' => __('This email address is already in use.', true),
-				),
-				'email' => array(
-					'rule' => 'email',
-					'message' => __('Must be a valid email address.', true),
-				),
-				'validateEqualData' => array(
-					'rule' => array(
-						'validateEqualData',
-						__('You may have misstyped your Email or your Email Confirmation is wrong.', true),
-						'email_confirmation',
-					),
-					'message' => __('Your Email does not match with your Email Confirmation.', true),
-				),
-			),
-			'has_accepted_tos' => array(
-				'boolean' => array(
-					'rule' => array('boolean'),
-					'message' => __('You may only accept or deny the Terms of Service.', true),
-				),
-				'equalTo' => array(
-					'rule' => array('equalTo', '1'),
-					'on' => 'create',
-					'message' => __('You must accept the Terms of Service on User Account registration.', true),
-				),
-			),
-			'last_login' => array(
-				'validateDatetime' => array(
-					'rule' => array('validateDatetime', 'last_login'),
-					'message' => __('Last Login must be a valid datetime (yyyy-mm-dd hh:mm:ss).', true),
-				),
-			),
+'username' => array(
+	'isUnique' => array(
+		'rule' => 'isUnique',
+		'message' => __('This username is already in use.', true),
+	),
+	'alphaNumeric' => array(
+		'rule' => 'alphaNumeric',
+		'message' => __('Use letters from A to Z or numbers from 0 to 9 only.', true),
+	),
+	'minLength' => array(
+		'rule' => array('minLength', '3'),
+		'message' => __('Minimum length of 3 characters.', true),
+	),
+),
+'password' => array(
+	'alphaNumeric' => array(
+		'rule' => 'alphaNumeric',
+		'message' => __('Use letters from A to Z or numbers from 0 to 9 only.', true),
+	),
+	'minLength' => array(
+		'rule' => array('minLength', '3'),
+		'message' => __('Minimum length of 3 characters.', true),
+	),
+	'validateEqualData' => array(
+		'rule' => array(
+			'validateEqualData',
+			'password_confirmation',
+			__('You may have misstyped your Password or your Password Confirmation is wrong.', true),
+		),
+		'message' => __('Your Password does not match with your Password Confirmation.', true),
+	),
+),
+'nickname' => array(
+	'isUnique' => array(
+		'rule' => 'isUnique',
+		'message' => __('This nickname is already in use.', true),
+	),
+	'alphaNumeric' => array(
+		'rule' => 'alphaNumeric',
+		'message' => __('Nickname must only contain letters and numbers.', true),
+	),
+	'minLength' => array(
+		'rule' => array('minLength', '3'),
+		'message' => __('Minimum length of 3 characters.', true),
+	),
+),
+'email' => array(
+	'isUnique' => array(
+		'rule' => 'isUnique',
+		'message' => __('This email address is already in use.', true),
+	),
+	'email' => array(
+		'rule' => 'email',
+		'message' => __('Must be a valid email address.', true),
+	),
+	'validateEqualData' => array(
+		'rule' => array(
+			'validateEqualData',
+			'email_confirmation',
+			__('You may have misstyped your Email or your Email Confirmation is wrong.', true),
+		),
+		'message' => __('Your Email does not match with your Email Confirmation.', true),
+	),
+),
+'has_accepted_tos' => array(
+	'boolean' => array(
+		'rule' => array('boolean'),
+		'message' => __('You may only accept or deny the Terms of Service.', true),
+	),
+	'equalTo' => array(
+		'rule' => array('equalTo', '1'),
+		'on' => 'create',
+		'message' => __('You must accept the Terms of Service on User Account registration.', true),
+	),
+),
+'last_login' => array(
+	'validateDatetime' => array(
+		'rule' => array('validateDatetime', 'last_login'),
+		'message' => __('Last Login must be a valid datetime (yyyy-mm-dd hh:mm:ss).', true),
+	),
+),
+'activation_key' => array(
+	'minLength' => array(
+		'rule' => array('minLength', '3'),
+		'message' => __('Minimum length of 3 characters.', true),
+	),
+),
+'password_request_key' => array(
+	'minLength' => array(
+		'rule' => array('minLength', '3'),
+		'message' => __('Minimum length of 3 characters.', true),
+	),
+),
 		);
 		$this->passwordInClearText = null;
-		parent::__construct();
 	}
 	
 	function afterFind(&$results) {
-		foreach ($results as $index => $data) {
-			if (!empty($results[$index][$this->alias]['nickname'])) {
-				$results[$index][$this->alias]['nicename'] = $results[$index][$this->alias]['nickname'];
+		// Create virtual field nicename out of username and nickname
+		foreach ($results as $i => $data) {
+			if (!empty($results[$i][$this->alias]['nickname'])) {
+				$results[$i][$this->alias]['nicename'] = $results[$i][$this->alias]['nickname'];
 			}
-			if (!empty($results[$index][$this->alias]['nickname'])
-			&& !empty($results[$index][$this->alias]['username'])) {
-				if ($results[$index][$this->alias]['nickname'] != $results[$index][$this->alias]['username']) {
-					$results[$index][$this->alias]['nicename'] .= ':' . $results[$index][$this->alias]['username'];
+			if (!empty($results[$i][$this->alias]['nickname'])
+			&& !empty($results[$i][$this->alias]['username'])) {
+				if ($results[$i][$this->alias]['nickname'] != $results[$i][$this->alias]['username']) {
+					$results[$i][$this->alias]['nicename'] .= ':' . $results[$i][$this->alias]['username'];
 				}
 			}
 		}
@@ -130,12 +143,14 @@ class User extends AppModel {
 	}
 	
 	function beforeValidate() {
-		// be nice to the user, starting and trailing whitespaces are ignored and removed before validation
+		// Be nice to the user:
+		// Starting and trailing whitespaces are ignored and removed before validation and/or save
 		if (!empty($this->data[$this->alias]['email'])) {
 			$this->data[$this->alias]['email'] = trim($this->data[$this->alias]['email']);
 		}
 		if (!empty($this->data[$this->alias]['email_confirmation'])) {
-			$this->data[$this->alias]['email_confirmation'] = trim($this->data[$this->alias]['email_confirmation']);
+			$this->data[$this->alias]['email_confirmation'] =
+				trim($this->data[$this->alias]['email_confirmation']);
 		}
 		if (!empty($this->data[$this->alias]['username'])) {
 			$this->data[$this->alias]['username'] = trim($this->data[$this->alias]['username']);
@@ -152,7 +167,8 @@ class User extends AppModel {
 			$this->data[$this->alias]['is_deleted'] = 0;
 			unset($this->data[$this->alias]['email_confirmation']);
 			unset($this->data[$this->alias]['password_confirmation']);
-			if (isset($this->data[$this->alias]['send_copy_via_email']) && $this->data[$this->alias]['send_copy_via_email'] == 1) {
+			if (isset($this->data[$this->alias]['send_copy_via_email'])
+			&& $this->data[$this->alias]['send_copy_via_email'] == 1) {
 				$this->passwordInClearText = $this->data[$this->alias]['password'];
 			}
 		}
@@ -168,23 +184,6 @@ class User extends AppModel {
 		}
 	}
 	
-	function generateActivationKey($i = 0) {
-		// Defensive loop stopper.
-		$i++;
-		if ($i > 10) {
-			$this->log('Issue with User::generateActivationKey(). Failed at generating a valid key.', 'error');
-			return false;
-		} else {
-			// Key looks like D7E9-F3E4-479A-838C
-			$activationKey = substr(strtoupper(String::uuid()), 4, -13);
-			if ($this->find('first', array('conditions' => array('activation_key' => $activationKey))) !== false) {
-				$activationKey = $this->generateActivationKey($i);
-			} else {
-				return $activationKey;
-			}
-		}
-	}
-	
 	function hashPasswords($data, $enforce = false) {
 		// $this->log('User::hashPasswords()', 'debug');
 		if ($enforce && isset($this->data[$this->alias]['password'])) {
@@ -197,7 +196,7 @@ class User extends AppModel {
 	}
 	
 	function deactivate($passwordInClearText, $isNewUser = true) {
-		$activationKey = $this->generateActivationKey();
+		$activationKey = $this->_generateAuthKey('activation_key');
 		$data = $this->read();
 		if ($activationKey === false) {
 			$this->log('No valid Activation Key. Disabling User.', 'error');
@@ -209,6 +208,101 @@ class User extends AppModel {
 		}
 	}
 	
+	function activate($data, $doSendEmail = true) {
+		// TODO: treat $doSendEmail
+		if (empty($data[$this->alias]['activation_key'])) {
+			$this->invalidate('activation_key', __('Enter your Activation Key.', true));
+			return false;
+		}
+		$data[$this->alias]['activation_key'] = strtoupper($data[$this->alias]['activation_key']);
+		$data = $this->find('first', array(
+				'fields' => array('id'),
+				'conditions' => array('activation_key' => $data[$this->alias]['activation_key']),
+				'recursive' => 0,
+			)
+		);
+		if (!empty($data[$this->alias]['id'])) {
+			$this->id = $data[$this->alias]['id'];
+			if ($this->saveField('activation_key', null)) {
+				return true;
+			}
+		} else {
+			$this->invalidate('activation_key',
+				__('The Activation Key you have entered is invalid.', true));
+			return false;
+		}
+	}
+	
+	function setTos($data, $switch = 0) {
+		$this->id = $data[$this->alias]['id'];
+		if ($this->saveField('has_accepted_tos', $switch, true)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	function setDisabled($data, $switch) {
+		$this->id = $data[$this->alias]['id'];
+		if ($this->saveField('is_disabled', $switch, true)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	function updateLastLogin($data) {
+		$this->id = $data[$this->alias]['id'];
+		if ($this->saveField('last_login', date('Y-m-d H:i:s'), true)) {
+			return true;
+		} else {
+			$this->log('Could not update last_login on user ' . $this->id . true);
+			return false;
+		}
+	}
+	
+	function saveNewPassword() {
+		$data = $this->find('first', array(
+				'fields' => array($this->primaryKey),
+				'conditions' => array(
+					'username' => $this->data[$this->alias]['username'],
+					'password_request_key' =>
+						strtoupper($this->data[$this->alias]['password_request_key']))));
+		$this->id = $data[$this->alias][$this->primaryKey];
+		if($this->id == null) {
+			$this->invalidate('password_request_key', __('Passwort request keys invalid.', true));
+		} else if($this->validates(array('username', 'password'))) {
+			if($this->changePassword()) {
+				$this->saveField('password_request_key', null);
+				return true;
+			}
+		} else {
+			return false;
+		}
+	}
+	
+	function changePassword() {
+		$isSaved = $this->save(null, true, array('password'));
+		if ($isSaved) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	function del($id = null, $cascade = true) {
+		$fields = array_keys($this->_schema);
+		$keepFields = array('id', 'created', 'modified');
+		if ($id != null) {
+			$purgeData = array_diff($fields, $keepFields);
+			$purgeData = Set::normalize($purgeData);
+			$purgeData = array_fill_keys(array_keys($purgeData), null);
+			$purgeData['is_deleted'] = '1';
+			$this->id = $id;
+			// $this->save($purgeData, null, false);
+		}
+		return true;
+	}
 	
 	function sendActivation($data, $activationKey, $isNewUser, $passwordInClearText) {
 		$domainname = env('SERVER_NAME');
@@ -243,87 +337,41 @@ class User extends AppModel {
 				)
 			);
 		}
-		$this->_messageUser($viewData, $template, $gateway);
-	}
-	
-	function activate($data, $doSendEmail = true) {
-		// TODO: treat $doSendEmail
-		if (empty($data[$this->alias]['activation_key'])) {
-			$this->invalidate('activation_key', __('Enter your Activation Key.', true));
-			return false;
-		}
-		$data[$this->alias]['activation_key'] = strtoupper($data[$this->alias]['activation_key']);
-		$data = $this->find('first', array(
-				'fields' => array('id'),
-				'conditions' => array('activation_key' => $data[$this->alias]['activation_key']),
-				'recursive' => 0,
-			)
-		);
-		if (!empty($data[$this->alias]['id'])) {
-			$this->id = $data[$this->alias]['id'];
-			if ($this->saveField('activation_key', null)) {
-				return true;
-			}
-		} else {
-			$this->invalidate('activation_key', __('The Activation Key you have entered is invalid.', true));
-			return false;
-		}
-	}
-	
-	function setTos($data, $switch = 0) {
-		$this->id = $data[$this->alias]['id'];
-		if ($this->saveField('has_accepted_tos', $switch, true)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	function setDisabled($data, $switch) {
-		$this->id = $data[$this->alias]['id'];
-		if ($this->saveField('is_disabled', $switch, true)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	function updateLastLogin($data) {
-		$this->id = $data[$this->alias]['id'];
-		if ($this->saveField('last_login', date('Y-m-d H:i:s'), true)) {
-			return true;
-		} else {
-			$this->log('Could not update last_login on user ' . $this->id . true);
-			return false;
-		}
+		return $this->_sendMessage($viewData, $template, $gateway);
 	}
 	
 	function sendPasswordInstructions($data) {
+		$this->data = $data;
 		$doSendPasswordInstructionEMail = false;
-		if ($this->validates($data)) {
+		$this->pauseValidation('username', 'isUnique');
+		$this->pauseValidation('email', 'isUnique');
+		if ($this->validates(array('fieldList' => array('username', 'email')))) {
 			$userData = $this->find('first', array('conditions' => array(
 						'username' => $data[$this->alias]['username'],
 						'email' => $data[$this->alias]['email'])));
 			if ($userData != false) {
-				$forgotPasswordKey = $this->generateActivationKey();
+				$forgotPasswordKey = $this->_generateAuthKey('password_request_key');
 				if ($forgotPasswordKey === false) {
-					$this->log('No valid Forgot Password Key. Password Instructions could not be prepared.', 'error');
+					$this->log('No valid Forgot Password Key.', 'error');
 				} else {
 					$this->id = $userData[$this->alias]['id'];
-					$this->saveField('forgot_password_key', $forgotPasswordKey , true);
+					$this->saveField('password_request_key', $forgotPasswordKey , true);
 					$doSendPasswordInstructionEMail = true;
 				}
 			} else {
-				$this->invalidate('forgot_password', __('No User Account having that Login name and Email address found.', true));
+				$this->invalidate('forgot_password',
+					__('No User Account having that Login name and Email address found.', true));
 			}
 		}
+		$isSend = false;
 		if ($doSendPasswordInstructionEMail) {
 			$domainname = env('SERVER_NAME');
 			if (strpos($domainname, 'www.') === 0) {
 				$domainname = substr($domainname, 4);
 			}
 			$gateway['email']['to'] = $userData[$this->alias]['email'];
-			$gateway['email']['subject'] = $domainname . ': ' . $userData[$this->alias]['username'] . '/' 
+			$gateway['email']['subject'] = $domainname . ': '
+				. $userData[$this->alias]['username'] . '/' 
 				. $userData[$this->alias]['nickname'] . ' - ' . __('Password Request', true);
 			$viewData = array(
 				'domainName' => $domainname,
@@ -332,54 +380,37 @@ class User extends AppModel {
 				'forgotPasswordKey' => $forgotPasswordKey,
 			);
 			$template = 'forgot_password';
-			$this->_messageUser($viewData, $template, $gateway);
+			$isSend = $this->_sendMessage($viewData, $template, $gateway);
+		}
+		$this->unpauseValidation('username', 'isUnique');
+		$this->unpauseValidation('email', 'isUnique');
+		return $isSend;
+	}
+	
+	function _generateAuthKey($fieldname, $i = 0) {
+		$i++; if ($i > 10) { // Defensive loop stopper.
+			$this->log('Issue with User::_generateAuthKey(). Failed at generating a valid key.',
+				'error');
+			return false;
+		} else {
+			// Key looks like D7E9-F3E4-479A-838C.
+			$authKey = substr(strtoupper(String::uuid()), 4, -13);
+			if ($this->find('first', 
+					array('conditions' => array($fieldname => $authKey))) !== false) {
+				$authKey = $this->_generateAuthKey($i);
+			} else {
+				return $authKey;
+			}
 		}
 	}
 	
-	function del($id = null, $cascade = true) {
-		$fields = array_keys($this->_schema);
-		$keepFields = array('id', 'created', 'modified');
-		if ($id != null) {
-			$purgeData = array_diff($fields, $keepFields);
-			$purgeData = Set::normalize($purgeData);
-			$purgeData = array_fill_keys(array_keys($purgeData), null);
-			$purgeData['is_deleted'] = '1';
-			$this->id = $id;
-			// $this->save($purgeData, null, false);
+	function validates($options = array()) {
+		$errors = $this->invalidFields($options);
+		if (is_array($errors)) {
+			$this->log($errors, 'debug');
+			return count($errors) === 0;
 		}
-		return true;
-	}
-	
-	// Wrapper around EMailComponent (and possibly SMSGatewayComponent in future)
-	function _messageUser($viewData, $template, $gateway) {
-		if (isset($gateway['email'])) {
-			App::import('Core', 'Controller');
-			App::import('Component', 'Email');
-			// We need this fake controller
-			$Controller = new Controller();
-			$Email = new EmailComponent(null);
-			$Email->initialize($Controller);
-			$Email->to = $gateway['email']['to'];
-			$Email->subject = $gateway['email']['subject'];
-			$Email->template = $template;
-			$EMail->sendAs = 'both';
-			$domainName = env('SERVER_NAME');
-			if (strpos($domainName, 'www.') === 0) {
-				$domainName = substr($domainName, 4);
-			}
-			$Email->from = 'noreply@' . $domainName;
-			
-			//Set the body of the mail as we send it.
-			//Note: the text can be an array, each element will appear as a
-			//seperate line in the message body.
-			$Controller->set($viewData);
-			if ($Email->send() == false) {
-				$this->log('Sending mail not successful.', 'error');
-			}
-			unset($Email);
-			unset($Controller);
-		}
-		// ENH: SMS-Gateway
+		return $errors;
 	}
 	
 }

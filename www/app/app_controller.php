@@ -28,6 +28,7 @@ class AppController extends Controller {
 			if (in_array($this->name, $this->termsOfServiceRequired)
 			&& !($this->name == 'Users' && in_array($this->action, array(
 							'forgot_password',
+							'new_password',
 							'login',
 							'logout',
 							'terms_of_service',
@@ -48,7 +49,7 @@ class AppController extends Controller {
 		// $this->log('$this->name: ' . $this->name . ' | $this->action: ' 
 		//	. $this->action . ' | Auth->redirect: ' . $authRedirect, 'debug');
 		if(stripos($authRedirect, '/users/activate') === 0
-		OR stripos($authRedirect, '/users/retrieve_new_password') === 0) {
+		OR stripos($authRedirect, '/users/new_password') === 0) {
 			$this->Session->write('Auth.redirect', '/users/home');
 		}
 	}

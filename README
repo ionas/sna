@@ -21,9 +21,10 @@ X User last login
 X User deletion
 X last login bugfix (read to session on login, write to DB on login and logout)
 X Honey Pot Component + Autoloading helper
-0 User forgot password
-- User change password#
+X User forgot password
+- User change password
 - User hide
+- User: move from $data parameter to $this->Model->data
 - Form error format (CSS)
 - Check out Translation + Translation Tool (PO Files)
 - Add Language switcher to $layout + save in Cookies

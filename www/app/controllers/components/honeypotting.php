@@ -14,6 +14,7 @@ class HoneypottingComponent extends Object {
 			'Pingback',
 			'Trackback',
 			'Link',
+			'Message',
 		),
 		'fakeFields' => array(
 			'nickname',
@@ -21,16 +22,25 @@ class HoneypottingComponent extends Object {
 			'nick',
 			'name',
 			'user',
+			'login',
+			'account',
 			'from',
 			'email',
 			'url',
+			'link',
 			'title',
+			'comment',
+			'body',
+			'text',
+			'message',
+			'subject',
 		),
 	);
 	var $storedHoneypots = array();
 	
 	function initialize(&$Controller, $settings = array()) {
-		$this->settings['fakeModels'] = array_diff($this->settings['fakeModels'], $settings['formModels']);
+		$this->settings['fakeModels'] = array_diff($this->settings['fakeModels'],
+				$settings['formModels']);
 		$this->Controller =& $Controller;
 		$this->settings = array_merge($this->settings, $settings);
 		$this->Controller->helpers[] = 'Honeypot';
@@ -40,7 +50,8 @@ class HoneypottingComponent extends Object {
 				$this->storedHoneypots[$fakeModel][$fakeField] = null;
 			}
 		}
-		$this->Controller->params['honeypotting']['spawnLikelyhood'] = $this->settings['spawnLikelyHood'];
+		$this->Controller->params['honeypotting']['spawnLikelyhood'] =
+			$this->settings['spawnLikelyHood'];
 		$this->Controller->params['honeypotting']['honey'] = $honey;
 	}
 	
@@ -48,7 +59,8 @@ class HoneypottingComponent extends Object {
 		$this->Controller =& $Controller;
 		if (isset($this->Controller->data)) {
 			$captured = false;
-			$collectedHoneypots = array_intersect_assoc($this->Controller->data, $this->storedHoneypots);
+			$collectedHoneypots = array_intersect_assoc($this->Controller->data,
+				$this->storedHoneypots);
 			foreach ($collectedHoneypots as $fakeModelname => $fakeModel) {
 				foreach ($fakeModel as $fakeFieldname => $fakeField) {
 					if ($collectedHoneypots[$fakeModelname][$fakeFieldname] != null) {
@@ -59,8 +71,8 @@ class HoneypottingComponent extends Object {
 			}
 			if ($captured) {
 				$this->Controller->Session->setFlash(__("You don't seem to be human!", true));
-				empty($this->data);
-				$this->Controller->redirect($this->Controller->referer());
+				$this->Controller->redirect($this->Controller->here);
+				exit();
 			}
 		}
 	}
