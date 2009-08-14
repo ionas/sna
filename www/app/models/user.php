@@ -272,15 +272,16 @@ class User extends AppModel {
 		if($this->id == null) {
 			$this->invalidate('password_request_key', __('Passwort request keys invalid.', true));
 		} else if($this->validates(array('username', 'password'))) {
-			if($this->changePassword()) {
-				$this->saveField('password_request_key', null);
-				return true;
-			}
+			$this->changePassword();
+			$this->saveField('password_request_key', null);
+			return true;
 		} else {
 			return false;
 		}
 	}
 	
+	// TODO: still a bug with password validation (entering '' password works)
+	// maybe has to do with $this->data thingy.
 	function changePassword() {
 		$isSaved = $this->save(null, true, array('password'));
 		if ($isSaved) {
