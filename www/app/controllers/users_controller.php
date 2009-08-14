@@ -132,6 +132,7 @@ class UsersController extends AppController {
 	function forgot_password() {
 		$this->Auth->logout();
 		if(!empty($this->data)) {
+			// TODO (validation not working)
 			if($this->User->sendPasswordInstructions($this->data) == true) {
 				$this->Session->setFlash(__('You should have recieved information on how to restore your password per email.', true));
 				$this->redirect(array('action' => 'home'));
@@ -145,7 +146,7 @@ class UsersController extends AppController {
 		}
 	}
 	
-	function new_password() {
+	function new_password($passwordRequestKey = null) {
 		$this->Auth->logout();
 		if(!empty($this->data)) {
 			if ($this->User->saveNewPassword($this->data)) {
@@ -156,6 +157,9 @@ class UsersController extends AppController {
 				unset($this->data['User']['password']);
 				unset($this->data['User']['password_confirmation']);
 			}
+		}
+		if ($passwordRequestKey) {
+			$this->data['User']['activation_key'] = $activationKey;
 		}
 	}
 	
