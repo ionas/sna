@@ -261,13 +261,13 @@ class User extends AppModel {
 		}
 	}
 	
-	function saveNewPassword() {
+	function saveNewPassword($data) {
 		$data = $this->find('first', array(
 				'fields' => array($this->primaryKey),
 				'conditions' => array(
-					'username' => $this->data[$this->alias]['username'],
+					'username' => $data[$this->alias]['username'],
 					'password_request_key' =>
-						strtoupper($this->data[$this->alias]['password_request_key']))));
+						strtoupper($data[$this->alias]['password_request_key']))));
 		$this->id = $data[$this->alias][$this->primaryKey];
 		if($this->id == null) {
 			$this->invalidate('password_request_key', __('Passwort request keys invalid.', true));

@@ -22,9 +22,9 @@ X User deletion
 X last login bugfix (read to session on login, write to DB on login and logout)
 X Honey Pot Component + Autoloading helper
 X User forgot password
-- User change password
+o User change password
 - User hide
-- User: move from $data parameter to $this->Model->data
+- User: move from $data parameter to $this->Model->data for all model methods (wherever possible)
 - Form error format (CSS)
 - Check out Translation + Translation Tool (PO Files)
 - Add Language switcher to $layout + save in Cookies
@@ -34,10 +34,10 @@ X User forgot password
 - Profile page
 - Profile picture uploads
 - Profile visibility options
-- Messaging
-- Messaging auth challenge (see ICQ)
 - Buddylists
 - Buddy auth challenge
+- Messaging
+- Messaging auth challenge (see ICQ)
 - ACL
 - Security Features and Double Salts
   See also: http://devedge.jonas-hartmann.com/documents/Securing_authentication_and_data_manipulation_via_HTTP.html

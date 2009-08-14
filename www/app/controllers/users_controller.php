@@ -148,8 +148,7 @@ class UsersController extends AppController {
 	function new_password() {
 		$this->Auth->logout();
 		if(!empty($this->data)) {
-			$this->User->create($this->data);
-			if ($this->User->saveNewPassword()) {
+			if ($this->User->saveNewPassword($this->data)) {
 				$this->Session->setFlash(__('Your new password has been set.', true));
 				$this->redirect(array('action' => 'login'));
 			} else {
@@ -160,6 +159,7 @@ class UsersController extends AppController {
 		}
 	}
 	
+	// TODO
 	function change_password() {
 		if(!empty($this->data)) {
 			$this->User->read();
