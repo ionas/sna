@@ -1,7 +1,7 @@
 <div class="users form">
 <?=$form->create('User', array('action' => 'forgot_password'))?>
 	<fieldset>
-		<legend><?php __('Forgot Password?')?></legend>
+		<legend><?php __('Get new Password')?></legend>
 	<?php
 		echo $form->error('could_not_send', String::insert(
 				__('Our service at :domain is currently not able to send an Email. We are working on the problem. Try again later.', true),

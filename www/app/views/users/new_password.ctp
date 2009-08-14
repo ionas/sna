@@ -5,7 +5,7 @@
 	<?php
 		echo $honeypot->spawn();
 		echo $honeypot->spawn();
-		echo $form->input('password_request_key');
+		echo $form->input('password_reset_key');
 		echo $form->input('username', array('label' => 'Login name'));
 		echo $honeypot->spawn(true);
 		echo $form->input('password', array('label' => 'New Password'));

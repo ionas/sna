@@ -61,6 +61,8 @@ class AppController extends Controller {
 */
 class Func {
 	
+	// transforms "controller=>users, action=>view, somebody"
+	// into "array('controller' => 'users', 'action' => 'view', 'somebody')"
 	function toRoute($stringRoute) {
 		// format key=>value, key=>value
 		$explodedRoute = explode(', ', $stringRoute);

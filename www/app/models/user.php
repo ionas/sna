@@ -25,10 +25,10 @@ class User extends AppModel {
 			'dependent' => true,
 		),
 	);
-	
+
 	function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct();
-		$this->validate = array( 
+		$this->validate = array(
 'username' => array(
 	'isUnique' => array(
 		'rule' => 'isUnique',
@@ -56,9 +56,20 @@ class User extends AppModel {
 		'rule' => array(
 			'validateEqualData',
 			'password_confirmation',
-			__('You may have misstyped your Password or your Password Confirmation is wrong.', true),
+			__('You may have misstyped your Password or your Password Confirmation is wrong.',
+			 	true),
 		),
 		'message' => __('Your Password does not match with your Password Confirmation.', true),
+	),
+),
+'password_current' => array( // virtual
+	'alphaNumeric' => array(
+		'rule' => 'alphaNumeric',
+		'message' => __('Use letters from A to Z or numbers from 0 to 9 only.', true),
+	),
+	'minLength' => array(
+		'rule' => array('minLength', '3'),
+		'message' => __('Minimum length of 3 characters.', true),
 	),
 ),
 'nickname' => array(
@@ -115,18 +126,26 @@ class User extends AppModel {
 		'rule' => array('minLength', '3'),
 		'message' => __('Minimum length of 3 characters.', true),
 	),
+	'validateAuthKey' => array(
+		'rule' => array('validateAuthKey', 'activation_key'),
+		'message' => __('Enter a correct key which looks like 1A2B-C3D4-EFG5-678H.', true),
+	),
 ),
-'password_request_key' => array(
+'password_reset_key' => array(
 	'minLength' => array(
 		'rule' => array('minLength', '3'),
 		'message' => __('Minimum length of 3 characters.', true),
+	),
+	'validateAuthKey' => array(
+		'rule' => array('validateAuthKey', 'password_reset_key'),
+		'message' => __('Enter a correct key which looks like 1A2B-C3D4-EFG5-678H.', true),
 	),
 ),
 		);
 		$this->passwordInClearText = null;
 	}
 	
-	function afterFind(&$results) {
+	function afterFind($results) {
 		// Create virtual field nicename out of username and nickname
 		foreach ($results as $i => $data) {
 			if (!empty($results[$i][$this->alias]['nickname'])) {
@@ -134,8 +153,10 @@ class User extends AppModel {
 			}
 			if (!empty($results[$i][$this->alias]['nickname'])
 			&& !empty($results[$i][$this->alias]['username'])) {
-				if ($results[$i][$this->alias]['nickname'] != $results[$i][$this->alias]['username']) {
-					$results[$i][$this->alias]['nicename'] .= ':' . $results[$i][$this->alias]['username'];
+				if ($results[$i][$this->alias]['nickname'] !=
+						$results[$i][$this->alias]['username']) {
+					$results[$i][$this->alias]['nicename'] .=
+						':' . $results[$i][$this->alias]['username'];
 				}
 			}
 		}
@@ -145,6 +166,11 @@ class User extends AppModel {
 	function beforeValidate() {
 		// Be nice to the user:
 		// Starting and trailing whitespaces are ignored and removed before validation and/or save
+		foreach($this->data[$this->alias] as $key => $value) {
+			debug($key);
+			debug($value);
+			// TODO - get this working
+		}
 		if (!empty($this->data[$this->alias]['email'])) {
 			$this->data[$this->alias]['email'] = trim($this->data[$this->alias]['email']);
 		}
@@ -157,6 +183,14 @@ class User extends AppModel {
 		}
 		if (!empty($this->data[$this->alias]['nickname'])) {
 			$this->data[$this->alias]['nickname'] = trim($this->data[$this->alias]['nickname']);
+		}
+		if (!empty($this->data[$this->alias]['activation_key'])) {
+			$this->data[$this->alias]['activation_key'] =
+				strtoupper($this->data[$this->alias]['activation_key']);
+		}
+		if (!empty($this->data[$this->alias]['password_reset_key'])) {
+			$this->data[$this->alias]['password_reset_key'] =
+				strtoupper($this->data[$this->alias]['password_reset_key']);
 		}
 	}
 	
@@ -184,12 +218,11 @@ class User extends AppModel {
 		}
 	}
 	
-	function hashPasswords($data, $enforce = false) {
-		// $this->log('User::hashPasswords()', 'debug');
-		if ($enforce && isset($this->data[$this->alias]['password'])) {
-			if (!empty($this->data[$this->alias]['password'])) {
-				$this->data[$this->alias]['password'] =
-					Security::hash($this->data[$this->alias]['password'], null, true);
+	function hashPasswords($data, $enforce = false, $fieldname = 'password') {
+		if ($enforce && isset($this->data[$this->alias][$fieldname])) {
+			if (!empty($this->data[$this->alias][$fieldname])) {
+				$this->data[$this->alias][$fieldname] =
+					Security::hash($this->data[$this->alias][$fieldname], null, true);
 			}
 		}
 		return $data;
@@ -262,18 +295,24 @@ class User extends AppModel {
 	}
 	
 	function saveNewPassword($data) {
-		$data = $this->find('first', array(
+		$this->data = $data;
+		unset($data);
+		$this->pauseValidation('username', 'isUnique');
+		$doesValidate = $this->validates(array('username', 'password'));
+		$this->unpauseValidation('username', 'isUnique');
+		if ($doesValidate) {
+			$passwordData = $this->find('first', array(
 				'fields' => array($this->primaryKey),
-				'conditions' => array(
-					'username' => $data[$this->alias]['username'],
-					'password_request_key' =>
-						strtoupper($data[$this->alias]['password_request_key']))));
-		$this->id = $data[$this->alias][$this->primaryKey];
-		if($this->id == null) {
-			$this->invalidate('password_request_key', __('Passwort request keys invalid.', true));
-		} else if($this->validates(array('username', 'password'))) {
-			$this->changePassword();
-			$this->saveField('password_request_key', null);
+					'conditions' => array(
+						'password_reset_key' =>
+							strtoupper($this->data[$this->alias]['password_reset_key']))));
+			if ($passwordData === false) {
+				$this->invalidate('password_reset_key', __('Passwort request keys invalid.', true));
+				return false;
+			}
+			$this->id = $passwordData[$this->alias][$this->primaryKey];
+			$this->save(null, false, array('password'));
+			$this->saveField('password_reset_key', '');
 			return true;
 		} else {
 			return false;
@@ -282,13 +321,29 @@ class User extends AppModel {
 	
 	// TODO: still a bug with password validation (entering '' password works)
 	// maybe has to do with $this->data thingy.
-	function changePassword() {
-		$isSaved = $this->save(null, true, array('password'));
-		if ($isSaved) {
-			return true;
-		} else {
-			return false;
+	function changePassword($authData, $data) {
+		$this->id = $authData[$this->alias][$this->primaryKey];
+		unset($authData);
+		$this->data = $data;
+		unset($data);
+		if ($this->id != null
+		&& $this->validates(array('password_current', 'password', 'password_confirmation'))) {
+			$passwordData = $this->find('count', array(
+					'conditions' => array(
+						'id' => $this->id,
+						'password' => Security::hash(
+							$this->data[$this->alias]['password_current'], null, true))));
+			if ($passwordData != 1) {
+				$this->invalidate('password_current',
+					__('You did not enter your current password.', true));
+			} else {
+				if ($this->save(null, false, array('password'))) {
+					return true;
+				}
+			}
+			
 		}
+		return false;
 	}
 	
 	function del($id = null, $cascade = true) {
@@ -351,12 +406,12 @@ class User extends AppModel {
 						'username' => $data[$this->alias]['username'],
 						'email' => $data[$this->alias]['email'])));
 			if ($userData != false) {
-				$forgotPasswordKey = $this->_generateAuthKey('password_request_key');
+				$forgotPasswordKey = $this->_generateAuthKey('password_reset_key');
 				if ($forgotPasswordKey === false) {
 					$this->log('No valid Forgot Password Key.', 'error');
 				} else {
 					$this->id = $userData[$this->alias]['id'];
-					$this->saveField('password_request_key', $forgotPasswordKey , true);
+					$this->saveField('password_reset_key', $forgotPasswordKey , true);
 					$doSendPasswordInstructionEMail = true;
 				}
 			} else {

@@ -14,7 +14,7 @@ echo $honeypot->spawn();
 echo $form->input('password', array('label' => __('Password', true)));
 echo $honeypot->spawn();
 echo $form->input('password_confirmation', array('type'=>'password', 'label' => __('Password Confirmation', true)));
-echo $honeypot->spawn();
+echo $honeypot->spawn(true);
 echo $form->input('email', array('label' => __('EMail Address', true)));
 echo $honeypot->spawn();
 echo $form->input('email_confirmation', array('label' => __('EMail Address Confirmation', true)));

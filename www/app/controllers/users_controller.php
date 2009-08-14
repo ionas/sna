@@ -146,10 +146,10 @@ class UsersController extends AppController {
 		}
 	}
 	
-	function new_password($passwordRequestKey = null) {
-		$this->Auth->logout();
+	function new_password($passwordResetKey = null) {
 		if(!empty($this->data)) {
 			if ($this->User->saveNewPassword($this->data)) {
+				$this->Auth->logout();
 				$this->Session->setFlash(__('Your new password has been set.', true));
 				$this->redirect(array('action' => 'login'));
 			} else {
@@ -158,39 +158,42 @@ class UsersController extends AppController {
 				unset($this->data['User']['password_confirmation']);
 			}
 		}
-		if ($passwordRequestKey) {
-			$this->data['User']['password_request_key'] = $passwordRequestKey;
+		if ($passwordResetKey) {
+			$this->data['User']['password_reset_key'] = $passwordResetKey;
 		}
 	}
 	
-	// TODO
 	function change_password() {
 		if(!empty($this->data)) {
-			$this->User->read();
-			if ($this->User->changePassword()) {
-				$this->Session->setFlash(__('Your new password has been set.', true));
+			if ($this->User->changePassword($this->Auth->user(), $this->data)) {
 				$this->Auth->logout();
+				$this->Session->setFlash(__('Your new password has been set.', true));
 				$this->redirect(array('action' => 'login'));
 			} else {
 				$this->Session->setFlash(__('Your new password could not be set.', true));
 				unset($this->data['User']['password']);
 				unset($this->data['User']['password_confirmation']);
+				unset($this->data['User']['password_current']);
 			}
 		}
 	}
 	
 	function change_email() {
-		
+		// TODO
 	}
 
 	function hide() {
-		
+		// TODO
 	}
 	
 	function home() {
 		$landingPage = $this->User->UserOption->get($this->Auth->user('id'), array('landingPage'));
+//		var_dump($landingPage);
+//passwordResetKey		die();
 		if (!empty($landingPage)) {
-			$this->redirect(Func::toRoute($landingPage));
+			debug(Router::parse($landingPage));
+			die();
+			$this->redirect(Router::parse($landingPage));
 		} else {
 			$this->redirect(array('controller' => 'pages', 'action' => 'display', 'home'));
 		}

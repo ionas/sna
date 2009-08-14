@@ -29,7 +29,8 @@ class AppModel extends Model {
 	
 	function validateAuthKey($data = null, $fieldname) {
 		if (is_array($data)) {
-			if (preg_match("/^[12][0-9]{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01]) ([01][0-9]|[2][0-4]):([0-5][0-9]|[0-9]):([0-5][0-9]|[0-9])$/",
+			// Matches AB42-KD24-D2JS-24M6 and alike
+			if (preg_match("/^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/",
 					$data[$fieldname])) {
 				return true;
 			}
