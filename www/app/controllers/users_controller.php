@@ -159,7 +159,7 @@ class UsersController extends AppController {
 			}
 		}
 		if ($passwordRequestKey) {
-			$this->data['User']['activation_key'] = $activationKey;
+			$this->data['User']['password_request_key'] = $passwordRequestKey;
 		}
 	}
 	
