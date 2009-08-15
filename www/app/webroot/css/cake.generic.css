@@ -1,73 +1,57 @@
-/* SVN FILE: $Id: cake.generic.css 7945 2008-12-19 02:16:01Z gwoo $ */
 /**
- *
- * PHP versions 4 and 5
- *
- * CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
- * Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+ * Copyright 2005-2008, Cake Software Foundation, Inc. (http: //www.cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
- *
- * @filesource
- * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
- * @link          http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
- * @package       cake
- * @subpackage    cake.app.webroot.css
- * @since         CakePHP(tm)
- * @version       $Revision: 7945 $
- * @modifiedby    $LastChangedBy: gwoo $
- * @lastmodified  $Date: 2008-12-18 18:16:01 -0800 (Thu, 18 Dec 2008) $
- * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
  */
 
 * {
-	margin:0;
-	padding:0;
+	margin: 0;
+	padding: 0;
 }
 
 /* General Style Info */
 body {
 	background: #003d4c;
 	color: #fff;
-	font-family:'lucida grande',verdana,helvetica,arial,sans-serif;
-	font-size:90%;
+	font-family: 'lucida grande',verdana,helvetica,arial,sans-serif;
+	font-size: 90%;
 	margin: 0;
 }
 a {
-	background:#fff;
+	background: #fff;
 	color: #003d4c;
 	text-decoration: underline;
 	font-weight: bold;
 }
 a:hover {
-	background:#fff;
+	background: #fff;
 	color: #003d4c;
-	text-decoration:none;
+	text-decoration: none;
 }
 a img {
-	border:none;
+	border: none;
 }
 h1, h2, h3, h4 {
 	font-weight: normal;
 }
 h1 {
-	background:#fff;
+	background: #fff;
 	color: #003d4c;
 	font-size: 100%;
 	margin: 0.1em 0;
 }
 h2 {
-	background:#fff;
+	background: #fff;
 	color: #e32;
-	font-family:'Gill Sans','lucida grande',helvetica, arial, sans-serif;
+	font-family: 'Gill Sans','lucida grande',helvetica, arial, sans-serif;
 	font-size: 190%;
 	margin: 0.3em 0;
 	padding-top: 0.8em;
 }
 h3 {
 	color: #993;
-	font-family:'Gill Sans','lucida grande',helvetica, arial, sans-serif;
+	font-family: 'Gill Sans','lucida grande',helvetica, arial, sans-serif;
 	font-size: 165%;
 	padding-top: 1.5em;
 }
@@ -120,8 +104,8 @@ ul, li {
 /* Tables */
 table {
 	background: #fff;
-	border:1px solid #ccc;
-	border-right:0;
+	border: 1px solid #ccc;
+	border-right: 0;
 	clear: both;
 	color: #333;
 	margin-bottom: 10px;
@@ -129,13 +113,13 @@ table {
 }
 th {
 	background: #f2f2f2;
-	border:1px solid #bbb;
+	border: 1px solid #bbb;
 	border-top: 1px solid #fff;
 	border-left: 1px solid #fff;
 	text-align: center;
 }
 th a {
-	background:#f2f2f2;
+	background: #f2f2f2;
 	display: block;
 	padding: 2px 4px;
 	text-decoration: none;
@@ -172,7 +156,7 @@ td.actions a {
 
 /* Paging */
 div.paging {
-	background:#fff;
+	background: #fff;
 	color: #ccc;
 	margin-bottom: 2em;
 }
@@ -221,7 +205,7 @@ fieldset {
 	padding: 16px 20px;
 }
 fieldset legend {
-	background:#fff;
+	background: #fff;
 	color: #e32;
 	font-size: 160%;
 	font-weight: bold;
@@ -289,8 +273,8 @@ input[type=checkbox] {
 	width: auto;
 }
 input[type=radio] {
-	float:left;
-	width:auto;
+	float: left;
+	width: auto;
 	margin: 0 3px 7px 0;
 }
 div.radio label {
@@ -359,7 +343,7 @@ div.actions li {
 	white-space: nowrap;
 }
 div.actions ul li a {
-	background:#fff;
+	background: #fff;
 	color: #003d4c;
 	text-decoration: none;
 }
@@ -423,50 +407,50 @@ div.cake-code-dump span.code-highlight {
 	padding: 4px;
 }
 div.code-coverage-results div.code-line {
-	padding-left:5px;
-	display:block;
-	margin-left:10px;
+	padding-left: 5px;
+	display: block;
+	margin-left: 10px;
 }
 div.code-coverage-results div.uncovered span.content {
-	background:#ecc;
+	background: #ecc;
 }
 div.code-coverage-results div.covered span.content {
-	background:#cec;
+	background: #cec;
 }
 div.code-coverage-results div.ignored span.content {
-	color:#aaa;
+	color: #aaa;
 }
 div.code-coverage-results span.line-num {
-	color:#666;
-	display:block;
-	float:left;
-	width:20px;
-	text-align:right;
-	margin-right:5px;
+	color: #666;
+	display: block;
+	float: left;
+	width: 20px;
+	text-align: right;
+	margin-right: 5px;
 }
 div.code-coverage-results span.line-num strong {
-	color:#666;
+	color: #666;
 }
 div.code-coverage-results div.start {
-	border:1px solid #aaa;
-	border-width:1px 1px 0px 1px;
-	margin-top:30px;
-	padding-top:5px;
+	border: 1px solid #aaa;
+	border-width: 1px 1px 0px 1px;
+	margin-top: 30px;
+	padding-top: 5px;
 }
 div.code-coverage-results div.end {
-	border:1px solid #aaa;
-	border-width:0px 1px 1px 1px;
-	margin-bottom:30px;
-	padding-bottom:5px;
+	border: 1px solid #aaa;
+	border-width: 0px 1px 1px 1px;
+	margin-bottom: 30px;
+	padding-bottom: 5px;
 }
 div.code-coverage-results div.realstart {
-	margin-top:0px;
+	margin-top: 0px;
 }
 div.code-coverage-results p.note {
-	color:#bbb;
-	padding:5px;
-	margin:5px 0 10px;
-	font-size:10px;
+	color: #bbb;
+	padding: 5px;
+	margin: 5px 0 10px;
+	font-size: 10px;
 }
 div.code-coverage-results span.result-bad {
 	color: #a00;

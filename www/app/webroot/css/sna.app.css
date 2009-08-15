@@ -9,3 +9,73 @@
 	padding-bottom: 1em;
 	color: #fff;
 }
+div.input label {
+	padding-left: 8px;
+}
+form fieldset {
+	padding-right: 30px;
+	width: 40em;
+}
+form legend {
+	padding-left: 6px;
+	padding-right: 6px;
+}
+form div.input.text input,
+form div.input.password input,
+form div.submit input,
+form fieldset,
+form textarea {
+	border: 1px solid #999;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+form div.input.text input,
+form div.input.password input,
+form textarea {
+	color: #333;
+	background: #fafafa;
+	letter-spacing: .2pt;
+	padding-left: 6px;
+	padding-right: 4px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	margin-top: 3px;
+	background-image: url('../images/input_field_fade.gif');
+	background-repeat: repeat-x;
+}
+form textarea {
+	line-height: 150%;
+}
+form div.input.text input:hover,
+form div.input.password input:hover,
+form textarea:hover {
+	color: #000;
+	text-decoration: none;
+	border-color: #555;
+	background: #eeffcc;
+	background-image: url('../images/input_field_hover.gif');
+}
+form div.submit {
+	margin-left: 20px;
+}
+form div.submit input {
+	font-family: Arial;
+	cursor: pointer;
+	background-color: #ddd;
+	background-image: url('../images/input_button_fade.gif');
+	background-repeat: repeat-x;
+}
+form div.submit input:hover {
+	color: #000;
+	text-decoration: none;
+	border-color: #555;
+	background: #eeffbb;
+	background-image: url('../images/input_button_hover.gif');
+}
+form p {
+	padding-left: 9px;
+}
+div#flashMessage {
+	padding-left: 27px;
+}

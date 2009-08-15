@@ -8,7 +8,6 @@ Exceptions, source code in following files is licensed under different licenses,
 - sourcecode of any files in www/cake/*
 - sourcecode in any file that explicitly states a different license
 
-
 TODO:
 X Logging in and out
 X User TOS Check on Login
@@ -46,3 +45,7 @@ X Chang default layout a bit - gives it a nice feeling
 - Routing (index => list, add => register/create/whatever, delete => remove (OR disable))
 - FAQ (cakephp book application?) - FAQ explains double use: username + nickname (security bonus), about, browser stuff and more
 - Research Akismet: http://sethcardoza.com/posts/view/8/title/integrating-akismet-with-cakephp http://akismet.com/ http://cakeforge.org/snippet/detail.php?type=snippet&id=95
+
+NOTICES:
+- 5.2 <= PHP_VERSION < 5.3
+- Only works with short_tags = on 

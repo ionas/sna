@@ -14,6 +14,8 @@
 	$honeypot->spawn(),
 	$form->input('email'),
 	$honeypot->spawn(),
-	$honeypot->spawn(),
-$form->end(__('Send instructions', true))?>
+	$honeypot->spawn()
+?>
+	</fieldset>
+<?=$form->end(__('Send instructions', true))?>
 </div>

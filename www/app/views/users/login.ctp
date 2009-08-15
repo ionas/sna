@@ -1,13 +1,17 @@
-<h2>Login</h2>
 <div class="users form">
 <?php $session->check('Message.auth') ? $session->flash('auth') : ''?>
-<?php if($nicename != null):?>
-<p><?=__('You are currently logged in as')?> <strong><?=$nicename?></strong>.</p>
-<br>
-<?php endif?>
 <?=$form->create('User', array('action' => 'login'))?>
-<?=$form->input('username', array('label' => __('Login name', true)))?>
-<?=$form->input('password', array('label' => __('Password', true)))?>
+	<fieldset>
+		<legend><?php __('Login');?></legend>
+	<?php if($nicename != null):?>
+	<p><?=__('You are currently logged in as')?> <strong><?=$nicename?></strong>.</p>
+	<br>
+	<?php endif?>
+
+<?=$form->input('username', array('label' => __('Login name', true))),
+	$form->input('password', array('label' => __('Password', true)))
+?>
+	</fieldset>
 <?=$form->end('Let me in')?>
 </div>
 <div class="actions">
