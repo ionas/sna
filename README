@@ -26,7 +26,7 @@ X User forgot password
 X User change password
 X Chang default layout a bit - gives it a nice feeling
 - User hide
-- User: move from $data parameter to $this->Model->data for all model methods (wherever possible)
+- Cleanup User Controller
 - Form error format (CSS)
 - Check out Translation + Translation Tool (PO Files)
 - Add Language switcher to $layout + save in Cookies

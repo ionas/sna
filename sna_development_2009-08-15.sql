@@ -1,10 +1,10 @@
 # Sequel Pro dump
-# Version 1180
+# Version 1211
 # http://code.google.com/p/sequel-pro
 #
 # Host: localhost (MySQL 5.0.67)
 # Database: sna_development
-# Generation Time: 2009-08-09 18:27:40 +0200
+# Generation Time: 2009-08-15 06:29:03 +0200
 # ************************************************************
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -87,9 +87,8 @@ LOCK TABLES `user_options` WRITE;
 /*!40000 ALTER TABLE `user_options` DISABLE KEYS */;
 INSERT INTO `user_options` (`id`,`modified`,`user_id`,`key`,`value`)
 VALUES
-	(1,'2009-07-28 17:43:20','4a648ce4-08a4-46e2-91f8-024a8784ca84','landingPage',''),
-	(2,'2009-07-28 17:53:07','4a6c68a7-7b94-4370-8b37-02378784ca84','landingPage','controller=>users, action=>view, somebody'),
-	(3,'0000-00-00 00:00:00','4a76e294-2b98-4913-a931-03a08784ca84','landingPage','controller=>messages');
+	(2,'2009-07-28 17:53:07','4a648ce4-08a4-46e2-91f8-024a8784ca84','landingPage','users/view/4a648ce4-08a4-46e2-91f8-024a8784ca84'),
+	(3,'0000-00-00 00:00:00','4a841aaa-6be4-4851-a666-00e38784ca84','landingPage','/messages');
 
 /*!40000 ALTER TABLE `user_options` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -114,7 +113,7 @@ CREATE TABLE `users` (
   `email` varchar(200) NOT NULL,
   `activation_key` varchar(19) NOT NULL default '',
   `last_login` datetime default NULL,
-  `forgot_password_key` varchar(19) default NULL,
+  `password_request_key` varchar(19) default NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `UNIQUE_USERNAME` (`username`),
   UNIQUE KEY `UNIQUE_NICKNAME` (`nickname`)
@@ -122,10 +121,10 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` (`id`,`created`,`modified`,`is_deleted`,`is_disabled`,`has_accepted_tos`,`is_hidden`,`username`,`password`,`nickname`,`email`,`activation_key`,`last_login`,`forgot_password_key`)
+INSERT INTO `users` (`id`,`created`,`modified`,`is_deleted`,`is_disabled`,`has_accepted_tos`,`is_hidden`,`username`,`password`,`nickname`,`email`,`activation_key`,`last_login`,`password_request_key`)
 VALUES
-	('4a648ce4-08a4-46e2-91f8-024a8784ca84','2009-08-03 16:15:22','2009-08-09 18:03:20',0,0,1,0,'ionas','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b','Jonas','foo@bar.com','','2009-08-09 16:38:52','F348-E690-4CCE-B360'),
-	('4a7ef8b6-da50-4a76-b5cf-0a8f8784ca84','2009-08-09 18:26:30','2009-08-09 18:26:30',0,0,1,0,'abc','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b','foo','M8R-sx51ch@mailinator.com','F8B6-030C-4BED-AC59','2009-08-09 18:26:30',NULL);
+	('4a648ce4-08a4-46e2-91f8-024a8784ca84','2009-08-03 16:15:22','2009-08-15 03:04:48',0,0,1,0,'ionas','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b','Jonas','foo@bar.com','','2009-08-15 03:04:48',''),
+	('4a841aaa-6be4-4851-a666-00e38784ca84','2009-08-13 15:52:42','2009-08-14 21:49:30',0,0,1,0,'abc','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b','foo','sna@mailinator.com','','2009-08-14 21:49:30','');
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
