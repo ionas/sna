@@ -132,7 +132,6 @@ class UsersController extends AppController {
 	function forgot_password() {
 		$this->Auth->logout();
 		if(!empty($this->data)) {
-			// TODO (validation not working)
 			if($this->User->sendPasswordInstructions($this->data) == true) {
 				$this->Session->setFlash(__('You should have recieved information on how to restore your password per email.', true));
 				$this->redirect(array('action' => 'home'));
@@ -187,13 +186,31 @@ class UsersController extends AppController {
 	}
 	
 	function home() {
-		$landingPage = $this->User->UserOption->get($this->Auth->user('id'), array('landingPage'));
-//		var_dump($landingPage);
-//passwordResetKey		die();
+		$landingPage = $this->User->UserOption->get($this->Auth->user(), array('landingPage'));
 		if (!empty($landingPage)) {
 			debug(Router::parse($landingPage));
-			die();
-			$this->redirect(Router::parse($landingPage));
+			// die();
+			// $this->redirect(Router::parse($landingPage));
+			
+			$foo = Array
+			(
+			    'pass' => Array
+			        (
+			            '4a648ce4-08a4-46e2-91f8-024a8784ca84'
+			        ),
+
+			    'named' => Array
+			        (
+			        ),
+
+			    'controller' => 'users',
+			    'action' => 'view',
+			    'plugin' => '',
+	            '4a648ce4-08a4-46e2-91f8-024a8784ca84'
+			);
+			debug($foo);
+			$this->redirect($foo, $foo['pass'][0]);
+			
 		} else {
 			$this->redirect(array('controller' => 'pages', 'action' => 'display', 'home'));
 		}

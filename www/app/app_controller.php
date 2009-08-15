@@ -21,6 +21,7 @@ class AppController extends Controller {
 		$this->Auth->logoutRedirect = '/';
 		$this->Auth->loginRedirect = array('controller' => 'users', 'action' => 'home');
 		$this->Auth->autoRedirect = true;
+		$this->Auth->allow(array('*'));
 	}
 	
 	function _checkHasAcceptedTos() {
@@ -54,6 +55,12 @@ class AppController extends Controller {
 		}
 	}
 	
+	function beforeRender() {
+		$app = APP::getInstance();
+		$loaded = array_keys($app->__loaded);
+		sort($loaded);
+		$this->set('loaded', $loaded);
+	}
 }
 /**
 * Namespace for general helper functions

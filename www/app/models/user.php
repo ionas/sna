@@ -164,26 +164,7 @@ class User extends AppModel {
 	}
 	
 	function beforeValidate() {
-		// Be nice to the user:
-		// Starting and trailing whitespaces are ignored and removed before validation and/or save
-		foreach($this->data[$this->alias] as $key => $value) {
-			debug($key);
-			debug($value);
-			// TODO - get this working
-		}
-		if (!empty($this->data[$this->alias]['email'])) {
-			$this->data[$this->alias]['email'] = trim($this->data[$this->alias]['email']);
-		}
-		if (!empty($this->data[$this->alias]['email_confirmation'])) {
-			$this->data[$this->alias]['email_confirmation'] =
-				trim($this->data[$this->alias]['email_confirmation']);
-		}
-		if (!empty($this->data[$this->alias]['username'])) {
-			$this->data[$this->alias]['username'] = trim($this->data[$this->alias]['username']);
-		}
-		if (!empty($this->data[$this->alias]['nickname'])) {
-			$this->data[$this->alias]['nickname'] = trim($this->data[$this->alias]['nickname']);
-		}
+		// Case Insensitvity for Auth Keys
 		if (!empty($this->data[$this->alias]['activation_key'])) {
 			$this->data[$this->alias]['activation_key'] =
 				strtoupper($this->data[$this->alias]['activation_key']);

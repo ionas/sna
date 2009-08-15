@@ -1,0 +1,35 @@
+SocialNetwork Application
+Enchancement List
+
+###########
+
+LazyLoader for Speed
+http://github.com/mcurry/lazy_loader/tree/master
+http://bin.cakephp.org/view/698654285
+
+###########
+
+// Be nice to the user:
+// Starting and trailing whitespaces are ignored and removed before validation and/or save
+foreach($this->data[$this->alias] as $fieldname => $value) {
+	if(in_array($fieldname, array(
+			// Ignore trailing spaces on any fields with the exception of:
+			'username',
+			'password',
+			'password_confirmation',
+			'password_current',
+			)
+	) === false) {
+		$this->data[$this->alias][$fieldname] = trim($value);
+	}
+}
+
+###########
+
+SMS Auth (instead of Email Auth)
+OpenID?
+
+###########
+
+Speed:
+Move /cake/* and /app/* to RAM based file system ?
