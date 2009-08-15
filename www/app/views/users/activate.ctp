@@ -6,7 +6,7 @@
 	$honeypot->spawn(),
 	$form->input('activation_key'),
 	$honeypot->spawn(),
-	$honeypot->spawn(),
+	$honeypot->spawn()
 ?>
 	</fieldset>
 <?=$form->end(__('Finish Activation', true))?>
