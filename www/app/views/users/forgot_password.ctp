@@ -9,6 +9,7 @@
 		echo $form->error('forgot_password');
 		echo $honeypot->spawn();
 		echo $honeypot->spawn();
+		echo $form->input('username', array('label' => __('Login name', true)));
 		echo $form->input('username');
 		echo $honeypot->spawn(true);
 		echo $honeypot->spawn();
