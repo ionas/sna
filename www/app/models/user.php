@@ -210,7 +210,7 @@ class User extends AppModel {
 	}
 	
 	function deactivate($passwordInClearText, $isNewUser = true) {
-		$activationKey = $this->_generateAuthKey('activation_key');
+		$activationKey = $this->__generateAuthKey('activation_key');
 		$data = $this->read();
 		if ($activationKey === false) {
 			$this->log('No valid Activation Key. Disabling User.', 'error');
@@ -387,7 +387,7 @@ class User extends AppModel {
 						'username' => $data[$this->alias]['username'],
 						'email' => $data[$this->alias]['email'])));
 			if ($userData != false) {
-				$forgotPasswordKey = $this->_generateAuthKey('password_reset_key');
+				$forgotPasswordKey = $this->__generateAuthKey('password_reset_key');
 				if ($forgotPasswordKey === false) {
 					$this->log('No valid Forgot Password Key.', 'error');
 				} else {
@@ -424,9 +424,9 @@ class User extends AppModel {
 		return $isSend;
 	}
 	
-	function _generateAuthKey($fieldname, $i = 0) {
+	function __generateAuthKey($fieldname, $i = 0) {
 		$i++; if ($i > 10) { // Defensive loop stopper.
-			$this->log('Issue with User::_generateAuthKey(). Failed at generating a valid key.',
+			$this->log('Issue with User::__generateAuthKey(). Failed at generating a valid key.',
 				'error');
 			return false;
 		} else {
@@ -434,7 +434,7 @@ class User extends AppModel {
 			$authKey = substr(strtoupper(String::uuid()), 4, -13);
 			if ($this->find('first', 
 					array('conditions' => array($fieldname => $authKey))) !== false) {
-				$authKey = $this->_generateAuthKey($i);
+				$authKey = $this->__generateAuthKey($i);
 			} else {
 				return $authKey;
 			}

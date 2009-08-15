@@ -8,7 +8,7 @@
 	$form->input('username', array(
 		'label' => __('Login name', true) . ' ('
 			. __('For better security, choose a Login name, different from your Nickname or EMail address!', true) . ')',
-		'onfocus' => "if(this.value == '') { this.value = getElementById('UserNickname').value, }")),
+		'onfocus' => "if(this.value == '') { this.value = getElementById('UserNickname').value; }")),
 	$honeypot->spawn(),
 	$form->input('password', array('label' => __('Password', true))),
 	$honeypot->spawn(),

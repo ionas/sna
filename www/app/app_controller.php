@@ -6,12 +6,12 @@ class AppController extends Controller {
 	var $termsOfServiceRequired = array('Users', 'Messages', 'Shouts');
 	
 	function beforeFilter() {
-		$this->_setupAuth();
-		$this->_checkHasAcceptedTos();
-		$this->_authAutoRedirectFixes();
+		$this->__setupAuth();
+		$this->__checkHasAcceptedTos();
+		$this->__authAutoRedirectFixes();
 	}
 	
-	function _setupAuth() {
+	function __setupAuth() {
 		Security::setHash('sha256');
 		// ENCH: Functionize, pass Array with 'ControllerA' => array('ActionA')?
 		if ($this->name == 'Pages') {
@@ -24,7 +24,7 @@ class AppController extends Controller {
 		$this->Auth->allow(array('*'));
 	}
 	
-	function _checkHasAcceptedTos() {
+	function __checkHasAcceptedTos() {
 		if ($this->Auth->isAuthorized()) {
 			if (in_array($this->name, $this->termsOfServiceRequired)
 			&& !($this->name == 'Users' && in_array($this->action, array(
@@ -45,7 +45,7 @@ class AppController extends Controller {
 	}
 	
 	/* TODO: Could this be in UsersController? */
-	function _authAutoRedirectFixes() {
+	function __authAutoRedirectFixes() {
 		$authRedirect = $this->Session->read('Auth.redirect');
 		// $this->log('$this->name: ' . $this->name . ' | $this->action: ' 
 		//	. $this->action . ' | Auth->redirect: ' . $authRedirect, 'debug');

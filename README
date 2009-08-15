@@ -46,6 +46,7 @@ X Chang default layout a bit - gives it a nice feeling
 - FAQ (cakephp book application?) - FAQ explains double use: username + nickname (security bonus), about, browser stuff and more
 - Research Akismet: http://sethcardoza.com/posts/view/8/title/integrating-akismet-with-cakephp http://akismet.com/ http://cakeforge.org/snippet/detail.php?type=snippet&id=95
 - Shared Hosting Problem: http://blog.thaichaiguy.com/847/mediatemple-with-cakephp-session-lost-during-refresh/ http://www.cakephp-forum.com/installation-und-konfiguration/installation-konfiguration-t217.html#p880
+- Check Codebase against: https://trac.cakephp.org/wiki/Developement/CodingStandards
 
 NOTICES:
 - 5.2 <= PHP_VERSION < 5.3
