@@ -4,7 +4,7 @@
 #
 # Host: localhost (MySQL 5.0.67)
 # Database: sna_development
-# Generation Time: 2009-08-15 06:29:03 +0200
+# Generation Time: 2009-08-15 17:59:46 +0200
 # ************************************************************
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -113,7 +113,7 @@ CREATE TABLE `users` (
   `email` varchar(200) NOT NULL,
   `activation_key` varchar(19) NOT NULL default '',
   `last_login` datetime default NULL,
-  `password_request_key` varchar(19) default NULL,
+  `password_reset_key` varchar(19) default NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `UNIQUE_USERNAME` (`username`),
   UNIQUE KEY `UNIQUE_NICKNAME` (`nickname`)
@@ -121,9 +121,9 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` (`id`,`created`,`modified`,`is_deleted`,`is_disabled`,`has_accepted_tos`,`is_hidden`,`username`,`password`,`nickname`,`email`,`activation_key`,`last_login`,`password_request_key`)
+INSERT INTO `users` (`id`,`created`,`modified`,`is_deleted`,`is_disabled`,`has_accepted_tos`,`is_hidden`,`username`,`password`,`nickname`,`email`,`activation_key`,`last_login`,`password_reset_key`)
 VALUES
-	('4a648ce4-08a4-46e2-91f8-024a8784ca84','2009-08-03 16:15:22','2009-08-15 03:04:48',0,0,1,0,'ionas','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b','Jonas','foo@bar.com','','2009-08-15 03:04:48',''),
+	('4a648ce4-08a4-46e2-91f8-024a8784ca84','2009-08-03 16:15:22','2009-08-15 15:15:19',0,0,1,0,'ionas','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b','Jonas','foo@bar.com','','2009-08-15 15:15:19',''),
 	('4a841aaa-6be4-4851-a666-00e38784ca84','2009-08-13 15:52:42','2009-08-14 21:49:30',0,0,1,0,'abc','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b','foo','sna@mailinator.com','','2009-08-14 21:49:30','');
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;

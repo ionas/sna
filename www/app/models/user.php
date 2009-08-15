@@ -431,6 +431,10 @@ class User extends AppModel {
 			return false;
 		} else {
 			// Key looks like D7E9-F3E4-479A-838C.
+			// TODO better use something like
+			// substr(Security::hash(Configure::read('Security.salt').mktime()),0,8);
+			// add mt_rand  and mt_srand
+			// http://us2.php.net/manual/en/function.uniqid.php
 			$authKey = substr(strtoupper(String::uuid()), 4, -13);
 			if ($this->find('first', 
 					array('conditions' => array($fieldname => $authKey))) !== false) {

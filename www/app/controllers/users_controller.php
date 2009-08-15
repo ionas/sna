@@ -191,7 +191,7 @@ class UsersController extends AppController {
 			debug(Router::parse($landingPage));
 			// die();
 			// $this->redirect(Router::parse($landingPage));
-			
+			// TODO
 			$foo = Array
 			(
 			    'pass' => Array
@@ -217,9 +217,16 @@ class UsersController extends AppController {
 	}
 	
 	function login() {
+		$autoRedirect = $this->Auth->autoRedirect;
+		$this->Auth->autoRedirect = false;
 		$this->set('nicename', $this->Auth->user('nicename'));
-		if($this->Auth->isAuthorized() == true) {
-			$this->User->updateLastLogin($this->Auth->user());
+		if(!empty($this->data)) {
+			if($this->Auth->isAuthorized() == true) {
+				$this->User->updateLastLogin($this->Auth->user());
+			}
+			if($autoRedirect === true) {
+				$this->redirect($this->Session->read('Auth.redirect'));
+			}
 		}
 	}
 	
