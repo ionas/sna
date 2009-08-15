@@ -217,13 +217,13 @@ class UsersController extends AppController {
 	}
 	
 	function login() {
+		$this->set('nicename', $this->Auth->user('nicename'));
 		$autoRedirect = $this->Auth->autoRedirect;
 		$this->Auth->autoRedirect = false;
-		$this->set('nicename', $this->Auth->user('nicename'));
+		if($this->Auth->isAuthorized() === true) {
+			$this->User->updateLastLogin($this->Auth->user());
+		}
 		if(!empty($this->data)) {
-			if($this->Auth->isAuthorized() == true) {
-				$this->User->updateLastLogin($this->Auth->user());
-			}
 			if($autoRedirect === true) {
 				$this->redirect($this->Session->read('Auth.redirect'));
 			}
