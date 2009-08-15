@@ -23,7 +23,8 @@ X User deletion
 X last login bugfix (read to session on login, write to DB on login and logout)
 X Honey Pot Component + Autoloading helper
 X User forgot password
-o User change password
+X User change password
+X Chang default layout a bit - gives it a nice feeling
 - User hide
 - User: move from $data parameter to $this->Model->data for all model methods (wherever possible)
 - Form error format (CSS)

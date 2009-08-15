@@ -1,0 +1,11 @@
+#header h1 {
+	background-image: url('../img/sna.icon.gif');
+	background-repeat: no-repeat left;
+	background-position: left -8px;
+	padding-left: 40px;
+}
+.cake-sql-log caption {
+	font-size: 90%;
+	padding-bottom: 1em;
+	color: #fff;
+}

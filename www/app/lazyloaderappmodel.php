@@ -25,6 +25,15 @@
 *			 in this case we called the association 'MyCoursesProfessor' b/c if you call it 'CoursesProfessor' it will not load since
 *			 cake has already auto-loaded the fake association earlier
 */
+/*
+Debugging in Controller
+function beforeRender() {
+	$app = APP::getInstance();
+	$loaded = array_keys($app->__loaded);
+	sort($loaded);
+	$this->set('loaded', $loaded);
+}
+*/
 class LazyLoaderAppModel extends AppModel
 {
 	var $__backInnerAssociation = array();

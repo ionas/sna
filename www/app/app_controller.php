@@ -55,12 +55,6 @@ class AppController extends Controller {
 		}
 	}
 	
-	function beforeRender() {
-		$app = APP::getInstance();
-		$loaded = array_keys($app->__loaded);
-		sort($loaded);
-		$this->set('loaded', $loaded);
-	}
 }
 /**
 * Namespace for general helper functions
