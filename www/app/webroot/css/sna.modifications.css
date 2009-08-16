@@ -1,0 +1,8 @@
+#tos_window {
+	overflow: auto; height: 20em; margin-bottom: 10px
+}
+#tos_window h2 {
+	margin-top: 0;
+	padding-top: 0;
+	padding-left: 8px;
+}

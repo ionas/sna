@@ -3,12 +3,11 @@ class AppController extends Controller {
 	
 	var $components = array('Auth');
 	
-	var $termsOfServiceRequired = array('Users', 'Messages', 'Shouts');
+	var $tosProtectedControllers = array('Users', 'Messages', 'Shouts');
 	
 	function beforeFilter() {
 		$this->__setupAuth();
 		$this->__checkHasAcceptedTos();
-		$this->__authAutoRedirectFixes();
 	}
 	
 	function __setupAuth() {
@@ -26,15 +25,17 @@ class AppController extends Controller {
 	
 	function __checkHasAcceptedTos() {
 		if ($this->Auth->isAuthorized()) {
-			if (in_array($this->name, $this->termsOfServiceRequired)
+			if (in_array($this->name, $this->tosProtectedControllers)
 			&& !($this->name == 'Users' && in_array($this->action, array(
+							// Exception List: these actions require no TOS acceptance
+							'terms_of_service',
 							'forgot_password',
 							'new_password',
-							'login',
+							'change_password',
+							'hide',
 							'logout',
-							'terms_of_service',
-						)
-			))
+							'login',
+				)))
 			&& $this->Auth->user('has_accepted_tos') != 1) {
 				$this->Session->setFlash(
 					__('You have accepted the Terms of Service before continuing.', true));
@@ -44,41 +45,5 @@ class AppController extends Controller {
 		}
 	}
 	
-	/* TODO: Could this be in UsersController? */
-	function __authAutoRedirectFixes() {
-		$authRedirect = $this->Session->read('Auth.redirect');
-		// $this->log('$this->name: ' . $this->name . ' | $this->action: ' 
-		//	. $this->action . ' | Auth->redirect: ' . $authRedirect, 'debug');
-		if(stripos($authRedirect, '/users/activate') === 0
-		OR stripos($authRedirect, '/users/new_password') === 0) {
-			$this->Session->write('Auth.redirect', '/users/home');
-		}
-	}
-	
 }
-/**
-* Namespace for general helper functions
-* 
-*/
-class Func {
-	
-	// transforms "controller=>users, action=>view, somebody"
-	// into "array('controller' => 'users', 'action' => 'view', 'somebody')"
-	function toRoute($stringRoute) {
-		// format key=>value, key=>value
-		$explodedRoute = explode(', ', $stringRoute);
-		$route = array();
-		foreach ($explodedRoute as $pair) {
-			if (strstr($pair, '=>')) {
-				$pair = explode('=>', $pair);
-				$route[$pair[0]] = $pair[1];
-			} else {
-				$route[] = $pair;
-			}
-		}
-		return $route;
-	}
-	
-}
-
 ?>

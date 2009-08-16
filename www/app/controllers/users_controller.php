@@ -7,6 +7,7 @@ class UsersController extends AppController {
 	
 	function beforeFilter() {
 		parent::beforeFilter();
+		$this->__authAutoRedirectFixes();
 		$this->Auth->allow(array('login', 'register', 'activate', 'forgot_password', 'new_password', 'home'));
 		// Active users may login
 		$this->Auth->userScope = array(
@@ -20,28 +21,33 @@ class UsersController extends AppController {
 			// Use User::hashPasswords instead Auth::hashPasswords
 			$this->Auth->authenticate = $this->User;
 		}
-	}
-	
-	function index() {
-		$this->User->recursive = 0;
-		$this->set('users', $this->paginate());
+		if($this->action == 'login') {
+			$this->Auth->autoRedirect = false;
+		}
 	}
 	
 	function view($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid User.', true));
-			$this->redirect(array('action' => 'index'));
-		}
-		// no UUID, try finding user by nickname
-		if (strlen($id) != 36) {
-			$user = $this->User->find('first', array(
-					'User.id',
-					'conditions' => array('User.nickname' => $id),
-				)
-			);
-			$id = $user['User']['id'];
-		}
-		$this->set('user', $this->User->read(null, $id));
+			if (!$id) {
+				$this->Session->setFlash(__('Invalid User.', true));
+				$this->redirect(array('action' => 'index'));
+			}
+			// No UUID => try finding user by nickname
+			if (strlen($id) != 36) {
+				$user = $this->User->find('first', array(
+						'User.id',
+						'conditions' => array('User.nickname' => $id),
+					)
+				);
+				$id = $user['User']['id'];
+			}
+			if($id == $this->Auth->user('id')) {
+				$this->set('user', $this->User->read(null, $id));
+			} else {
+				$this->Session->setFlash(
+					__('You may only access your own User Account.', true));
+				// TODO Routing bugs again
+				// $this->redirect(array('home'));
+			}
 	}
 	
 	function register() {
@@ -123,7 +129,13 @@ class UsersController extends AppController {
 			$this->Session->setFlash(__('You have accepted the Terms of Service.', true));
 			$this->Session->write('Auth', $this->User->find('first',
 					array('conditions' => array('id' => $this->Auth->user('id')))));
-			$this->redirect($this->Session->read('TermsOfService.redirect'));
+			$termsOfServiceRedirect = $this->Session->read('TermsOfService.redirect');
+			$this->Session->del('TermsOfService.redirect');
+			if($termsOfServiceRedirect != null) {
+				$this->redirect($termsOfServiceRedirect);
+			} else {
+				$this->redirect(array('action' => 'home'));
+			}
 		}
 		$this->set('hasAcceptedTos', $this->Auth->user('has_accepted_tos'));
 		$this->set('termsOfService', $this->requestAction('/pages/public/terms_of_service'));
@@ -188,28 +200,7 @@ class UsersController extends AppController {
 	function home() {
 		$landingPage = $this->User->UserOption->get($this->Auth->user(), array('landingPage'));
 		if (!empty($landingPage)) {
-			debug(Router::parse($landingPage));
-			// die();
-			// $this->redirect(Router::parse($landingPage));
-			// TODO
-			$foo = Array
-			(
-			    'pass' => Array
-			        (
-			            '4a648ce4-08a4-46e2-91f8-024a8784ca84'
-			        ),
-
-			    'named' => Array
-			        (
-			        ),
-
-			    'controller' => 'users',
-			    'action' => 'view',
-			    'plugin' => '',
-	            '4a648ce4-08a4-46e2-91f8-024a8784ca84'
-			);
-			debug($foo);
-			$this->redirect($foo, $foo['pass'][0]);
+			$this->redirect($landingPage);
 			
 		} else {
 			$this->redirect(array('controller' => 'pages', 'action' => 'display', 'home'));
@@ -218,14 +209,14 @@ class UsersController extends AppController {
 	
 	function login() {
 		$this->set('nicename', $this->Auth->user('nicename'));
-		$autoRedirect = $this->Auth->autoRedirect;
-		$this->Auth->autoRedirect = false;
 		if($this->Auth->isAuthorized() === true) {
 			$this->User->updateLastLogin($this->Auth->user());
-		}
-		if(!empty($this->data)) {
-			if($autoRedirect === true) {
-				$this->redirect($this->Session->read('Auth.redirect'));
+			if(!empty($this->data)) {
+				if($this->Session->read('Auth.redirect') == null) {
+					$this->redirect(array('action' => 'home'));
+				} else {
+					$this->redirect($this->Session->read('Auth.redirect'));
+				}
 			}
 		}
 	}
@@ -246,6 +237,15 @@ class UsersController extends AppController {
 	
 	function ignore_user() {
 		
+	}
+	
+	function __authAutoRedirectFixes() {
+		$sessionAuthRedirect = $this->Session->read('Auth.redirect');
+		if(stripos($sessionAuthRedirect, '/users/activate') === 0
+		OR stripos($sessionAuthRedirect, '/users/new_password') === 0) {
+			$this->Session->write('Auth.redirect', '/users/home');
+		}
+		unset($sessionAuthRedirect);
 	}
 	
 }

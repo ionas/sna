@@ -448,7 +448,7 @@ class User extends AppModel {
 	function validates($options = array()) {
 		$errors = $this->invalidFields($options);
 		if (is_array($errors)) {
-			$this->log($errors, 'debug');
+			// $this->log($errors, 'debug');
 			return count($errors) === 0;
 		}
 		return $errors;

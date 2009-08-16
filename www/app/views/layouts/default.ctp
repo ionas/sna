@@ -10,6 +10,7 @@
 		echo $html->css('cake.generic');
 		echo $html->css('sna.basic');
 		echo $html->css('sna.app');
+		echo $html->css('sna.modifications');
 		echo $scripts_for_layout;
 	?>
 </head>

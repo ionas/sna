@@ -9,7 +9,6 @@
 	$honeypot->spawn(),
 	$honeypot->spawn(),
 	$form->input('username', array('label' => __('Login name', true))),
-	$form->input('username'),
 	$honeypot->spawn(true),
 	$honeypot->spawn(),
 	$form->input('email'),

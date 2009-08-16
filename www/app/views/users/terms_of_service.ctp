@@ -4,21 +4,28 @@
 <p>
 <?php
 if($hasAcceptedTos != 1) {
-	echo __('Currently you do not have accepted the Terms of Service.', true);
+	echo String::insert(
+		__('Currently :b you do not accept :/b the Terms of Service.', true),
+		array('b' => '<strong>', '/b' => '</strong>'));
 } else {
-	echo __('Currently you have accepted the Terms of Service.', true);
+	echo String::insert(
+		__('Currently :b you do accept :/b the Terms of Service.', true),
+		array('b' => '<strong>', '/b' => '</strong>'));
 }
 ?>
 </p>
+<fieldset id="tos_window">
 <?=$termsOfService?>
+<br>
 <p>
 For later reference, you can find a copy of our <?=$html->link(__('Terms of Service', true), array('controller'=> 'pages', 'action'=>'display', 'public/terms_of_service'))?> at <?=$html->link(env('SERVER_NAME') . '/public/terms_of_service', array('controller'=> 'pages', 'action'=>'display', 'public/terms_of_service'))?>, all time.
 </p>
+</fieldset>
 <?php
 if($hasAcceptedTos != 1) {
-	echo $form->submit(__('Accept', true), array('name' => 'accept'));
+	echo $form->submit(__('Accept Terms of Service', true), array('name' => 'accept'));
 } else {
-	echo $form->submit(__('Decline', true), array('name' => 'decline'));
+	echo $form->submit(__('Decline Terms of Service', true), array('name' => 'decline'));
 }
 ?>
 </div>
