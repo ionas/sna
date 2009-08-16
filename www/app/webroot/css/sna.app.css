@@ -46,10 +46,11 @@ form textarea {
 }
 form textarea {
 	line-height: 150%;
+	height: 7.5em;
 }
-form div.input.text input:hover,
-form div.input.password input:hover,
-form textarea:hover {
+form div.input.text input:focus,
+form div.input.password input:focus,
+form textarea:focus {
 	color: #000;
 	text-decoration: none;
 	border-color: #555;
@@ -66,7 +67,8 @@ form div.submit input {
 	background-image: url('../images/input_button_fade.gif');
 	background-repeat: repeat-x;
 }
-form div.submit input:hover {
+form div.submit input:hover,
+form div.submit input:focus {
 	color: #000;
 	text-decoration: none;
 	border-color: #555;
