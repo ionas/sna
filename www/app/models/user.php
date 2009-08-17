@@ -238,6 +238,10 @@ class User extends AppModel {
 		if (!empty($data[$this->alias]['id'])) {
 			$this->id = $data[$this->alias]['id'];
 			if ($this->saveField('activation_key', null)) {
+				// TODO implement
+				// $this->User->UserOption->setUser($data);
+				// $this->User->UserOption->set('landingPage',
+				//	'/users/view/' . $data['User']['id']);
 				return true;
 			}
 		} else {

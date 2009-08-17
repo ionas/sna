@@ -193,8 +193,18 @@ class UsersController extends AppController {
 		// TODO
 	}
 
-	function hide() {
-		// TODO
+	function hide($switch = 'yes') {
+		$this->User->id = $this->Auth->user('id');
+		if($this->User->id != null && $switch == 'yes') {
+			if($this->User->saveField('is_hidden', 1)) {
+				$this->Session->setFlash(__('You are now invisible.', true));
+			}
+		} else if ($this->User->id != null && $switch == 'no') {
+			if($this->User->saveField('is_hidden', 0)) {
+				$this->Session->setFlash(__('You are now visible.', true));
+			}
+		}
+		$this->redirect($this->referer());
 	}
 	
 	function home() {

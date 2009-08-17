@@ -24,17 +24,17 @@ X Honey Pot Component + Autoloading helper
 X User forgot password
 X User change password
 X Chang default layout a bit - gives it a nice feeling
-- User hide
-- Cleanup User Controller
+X User hide
+X Cleanup User Controller
 - Form error format (CSS)
 - Check out Translation + Translation Tool (PO Files)
 - Add Language switcher to $layout + save in Cookies
 - Add Language autodetection (browser, geo location/ip) + save in Cookies
-- Shoutbox
-- Shout hiding
 - Profile page
 - Profile picture uploads
 - Profile visibility options
+- Shoutbox
+- Shout hiding
 - Buddylists
 - Buddy auth challenge
 - Messaging

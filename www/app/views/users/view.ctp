@@ -65,10 +65,11 @@
 </div>
 <div class="actions">
 	<ul>
+		<li><?php echo $html->link(__('Hide', true), array('action' => 'hide', 'yes')); ?> </li>
+		<li><?php echo $html->link(__('Unhide', true), array('action' => 'hide', 'no')); ?> </li>
+		<li><?php echo $html->link(__('Change Password', true), array('action' => 'change_password')); ?> </li>
 		<li><?php echo $html->link(__('Edit User', true), array('action'=>'edit', $user['User']['id'])); ?> </li>
 		<li><?php echo $html->link(__('Delete User', true), array('action'=>'delete', $user['User']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $user['User']['id'])); ?> </li>
-		<li><?php echo $html->link(__('List Users', true), array('action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__('New User', true), array('action'=>'add')); ?> </li>
 		<li><?php echo $html->link(__('List User Options', true), array('controller'=> 'user_options', 'action'=>'index')); ?> </li>
 		<li><?php echo $html->link(__('New User Option', true), array('controller'=> 'user_options', 'action'=>'add')); ?> </li>
 		<li><?php echo $html->link(__('List Messages', true), array('controller'=> 'messages', 'action'=>'index')); ?> </li>

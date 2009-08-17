@@ -4,9 +4,8 @@
  		<legend><?php __('Edit User Account');?></legend>
 	<?php
 		echo $form->input('id');
-		echo $form->input('has_accepted_tos');
-		echo $form->input('is_hidden');
 		echo $form->input('nickname');
+		echo $form->input('username');
 	?>
 	</fieldset>
 <?php echo $form->end('Submit');?>
