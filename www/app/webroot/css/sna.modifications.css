@@ -1,5 +1,5 @@
 #tos_window {
-	overflow: auto; height: 20em; margin-bottom: 10px
+	margin-bottom: 10px
 }
 #tos_window h2 {
 	margin-top: 0;
@@ -59,7 +59,7 @@ form div.input.textarea.error .error-message {
 }
 div#authMessage.message,
 div#flashMessage.message {
-	float: left;
+	width: 30em;
 	margin: 0;
 	margin-left: .5em;
 	border: 1px solid #900;

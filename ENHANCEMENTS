@@ -38,3 +38,7 @@ Move /cake/* and /app/* to RAM based file system ?
 
 Security:
 	Configure::write('Session.cookie', 'CAKEPHP');
+
+###########
+
+AJAX Live Validation of Forms

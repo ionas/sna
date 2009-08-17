@@ -21,6 +21,7 @@
 		</div>
 		<div id="content">
 			<?php $session->flash()?>
+			<hr style="visibility: hidden; height: 0; width: 0; border:0; margin: 0; padding: 0; display: inline; clear: both" />
 			<?=$content_for_layout?>
 		</div>
 		<div id="footer">
