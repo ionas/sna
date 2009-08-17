@@ -9,6 +9,9 @@
 form fieldset {
 	width: 60em;
 }
+form div.input {
+	margin-bottom: 1em;
+}
 form div.input.text input,
 form div.input.password input {
 	width: 20em;
@@ -18,6 +21,7 @@ form div.input.error.password input {
 	float: left;
 	width: 20em;
 	clear: none;
+	margin-bottom: 1em;
 }
 form div.input.checkbox input,
 form div.input.checkbox label {
