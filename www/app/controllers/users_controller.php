@@ -5,6 +5,10 @@ class UsersController extends AppController {
 	var $components = array('Honeypotting' => array('formModels' => array('User', 'UserOption')));
 	var $helpers = array('Html', 'Form', 'Honeypot');
 	
+	function index() {
+		$this->redirect('home');
+	}
+	
 	function beforeFilter() {
 		parent::beforeFilter();
 		$this->__authAutoRedirectFixes();

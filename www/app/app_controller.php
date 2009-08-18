@@ -6,6 +6,7 @@ class AppController extends Controller {
 	var $tosProtectedControllers = array('Users', 'Messages', 'Shouts');
 	
 	function beforeFilter() {
+		Configure::write('Config.language', 'ger');
 		$this->__setupAuth();
 		$this->__checkHasAcceptedTos();
 	}
@@ -46,4 +47,24 @@ class AppController extends Controller {
 	}
 	
 }
+?>
+<?php
+/*function list_system_locales(){
+    ob_start();
+    system('locale -a');
+    $str = ob_get_contents();
+    ob_end_clean();
+    return split("\\n", trim($str));
+}
+
+$locale = "de_DE.UTF8";
+$locales = list_system_locales();
+debug($locales);
+
+if(in_array($locale, $locales)){
+        echo "yes yes yes....";
+}else{
+        echo "no no no.......";
+}
+*/
 ?>

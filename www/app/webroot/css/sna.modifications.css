@@ -61,6 +61,7 @@ div#authMessage.message,
 div#flashMessage.message {
 	width: 30em;
 	margin: 0;
+	margin-top: 2em;
 	margin-left: .5em;
 	border: 1px solid #900;
 	border-radius: 4px;
