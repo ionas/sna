@@ -49,7 +49,7 @@ class AppController extends Controller {
 }
 ?>
 <?php
-/*function list_system_locales(){
+function list_system_locales(){
     ob_start();
     system('locale -a');
     $str = ob_get_contents();
@@ -59,12 +59,12 @@ class AppController extends Controller {
 
 $locale = "de_DE.UTF8";
 $locales = list_system_locales();
-debug($locales);
 
 if(in_array($locale, $locales)){
         echo "yes yes yes....";
 }else{
         echo "no no no.......";
 }
+debug($locales);
 */
 ?>
