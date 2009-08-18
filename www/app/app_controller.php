@@ -66,5 +66,4 @@ if(in_array($locale, $locales)){
         echo "no no no.......";
 }
 debug($locales);
-*/
 ?>
