@@ -1,12 +1,15 @@
 <?php
 class AppController extends Controller {
 	
-	var $components = array('Auth');
+	var $components = array('Auth', 'Session');
 	
 	var $tosProtectedControllers = array('Users', 'Messages', 'Shouts');
 	
 	function beforeFilter() {
-		Configure::write('Config.language', 'ger');
+		$lang = 'de_DE';
+		define('DEFAULT_LANGUAGE', $lang);
+		Configure::write('Config.language', $lang);
+		$this->Session->write('Config.language', $lang); 
 		$this->__setupAuth();
 		$this->__checkHasAcceptedTos();
 	}
@@ -39,7 +42,7 @@ class AppController extends Controller {
 				)))
 			&& $this->Auth->user('has_accepted_tos') != 1) {
 				$this->Session->setFlash(
-					__('You have accepted the Terms of Service before continuing.', true));
+					__('You have to accept the Terms of Service before continuing.', true));
 				$this->Session->write('TermsOfService.redirect', $this->here);
 				$this->redirect(array('controller' => 'users', 'action' => 'terms_of_service'));
 			}
@@ -49,6 +52,7 @@ class AppController extends Controller {
 }
 ?>
 <?php
+/*
 function list_system_locales(){
     ob_start();
     system('locale -a');
@@ -66,4 +70,5 @@ if(in_array($locale, $locales)){
         echo "no no no.......";
 }
 debug($locales);
+*/
 ?>
