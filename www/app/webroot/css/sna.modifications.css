@@ -59,7 +59,7 @@ form div.input.textarea.error .error-message {
 }
 div#authMessage.message,
 div#flashMessage.message {
-	width: 30em;
+	width: 50.1em;
 	margin: 0;
 	margin-top: 2em;
 	margin-left: .5em;
@@ -79,3 +79,24 @@ div#flashMessage.message {
 	font-size: 110%;
 	background-color: #fffff7;
 }
+#header {
+	position: relative;
+}
+#lang_selector {
+	position: absolute;
+	top: 1em;
+	right: 1em;
+}
+#lang_selector p {
+	float: left;
+		line-height: 80%;
+}
+#lang_selector p a {
+	background: transparent;
+	color: white;
+	font-weight: normal;
+}
+#lang_selector p:first-child {
+	padding-right: .5em;
+	margin-right: .5em;
+	border-right: 1px solid white;

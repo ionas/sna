@@ -18,6 +18,10 @@
 	<div id="container">
 		<div id="header">
 			<h1><?=$html->link(__('Social Network Application', true), '/')?></h1>
+			<div id="lang_selector">
+				<p><?php echo $html->link('In English', array('lang' => 'eng'))?></p>
+				<p><?php echo $html->link('In Deutsch', array('lang' => 'deu'))?></p>
+			</div>
 		</div>
 		<div id="content">
 			<?php $session->flash()?>

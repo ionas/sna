@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2009-08-18 13:09+0200\n"
-"PO-Revision-Date: 2009-08-18 13:13+0100\n"
+"PO-Revision-Date: 2009-08-20 18:13+0100\n"
 "Last-Translator: Jonas Hartmann <code@jonas-hartmann.com>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -16,11 +16,11 @@ msgstr ""
 
 #: /app_controller.php:45
 msgid "You have to accept the Terms of Service before continuing."
-msgstr ""
+msgstr "Vorher Terms Accepten"
 
 #: /controllers/users_controller.php:35
 msgid "Invalid User."
-msgstr ""
+msgstr "Ungültiger Benutzer."
 
 #: /controllers/users_controller.php:51
 msgid "You may only access your own User Account."
@@ -76,11 +76,11 @@ msgstr ""
 
 #: /controllers/users_controller.php:155
 msgid "Password retrival information could not be send, try again."
-msgstr ""
+msgstr "Passwordwiederherstellungsinformationen konnten nicht gesendet werden, siehe unten."
 
 #: /controllers/users_controller.php:159
 msgid "Enter your Account's login name or Email address."
-msgstr ""
+msgstr "Geben Sie ihr Kontoname und ihre EMail Adresse an."
 
 #: /controllers/users_controller.php:168;185
 msgid "Your new password has been set."
@@ -455,7 +455,7 @@ msgstr ""
 #: /views/users/register.ctp:25
 #: /views/users/terms_of_service.ctp:21
 msgid "Terms of Service"
-msgstr ""
+msgstr "Nutzungsbedingungen"
 
 #: /views/users/register.ctp:32
 msgid "Sign up"

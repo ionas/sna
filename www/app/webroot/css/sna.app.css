@@ -66,11 +66,16 @@ form div.submit input {
 	background-image: url('../images/input_button_fade.gif');
 	background-repeat: repeat-x;
 }
+form div.submit input {
+	margin-bottom: 1px;
+}
 form div.submit input:hover,
 form div.submit input:focus {
 	color: #000;
 	text-decoration: none;
 	border-color: #555;
+	border-bottom-width: 2px;
+	margin-bottom: 0;
 	background: #eeffbb;
 	background-image: url('../images/input_button_hover.gif');
 }

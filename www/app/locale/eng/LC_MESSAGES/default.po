@@ -1,0 +1,603 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from file: Revision: 7945 /app/webroot/test.php
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2009-08-18 13:09+0200\n"
+"PO-Revision-Date: 2009-08-18 13:11+0100\n"
+"Last-Translator: Jonas Hartmann <code@jonas-hartmann.com>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: /app_controller.php:45
+msgid "You have to accept the Terms of Service before continuing."
+msgstr ""
+
+#: /controllers/users_controller.php:35
+msgid "Invalid User."
+msgstr ""
+
+#: /controllers/users_controller.php:51
+msgid "You may only access your own User Account."
+msgstr ""
+
+#: /controllers/users_controller.php:64
+msgid "Your registration has been successful. However, you will still need to activate your user account."
+msgstr ""
+
+#: /controllers/users_controller.php:70
+msgid "Your registration could not be completed, see below."
+msgstr ""
+
+#: /controllers/users_controller.php:80
+msgid "Your User Account has been activated. You may now login."
+msgstr ""
+
+#: /controllers/users_controller.php:84
+msgid "The User Account Activation failed. Please correct your Activation Key and try again."
+msgstr ""
+
+#: /controllers/users_controller.php:94
+msgid "Invalid User Accuont ID."
+msgstr ""
+
+#: /controllers/users_controller.php:99
+msgid "Your User Account has been updated."
+msgstr ""
+
+#: /controllers/users_controller.php:103
+msgid "The User Account could not be updated. Please, try again."
+msgstr ""
+
+#: /controllers/users_controller.php:113
+msgid "Invalid id for User"
+msgstr ""
+
+#: /controllers/users_controller.php:118
+msgid "User Account :nicename removed."
+msgstr ""
+
+#: /controllers/users_controller.php:127
+msgid "You have declined the Terms of Service."
+msgstr ""
+
+#: /controllers/users_controller.php:133
+msgid "You have accepted the Terms of Service."
+msgstr ""
+
+#: /controllers/users_controller.php:152
+msgid "You should have recieved information on how to restore your password per email."
+msgstr ""
+
+#: /controllers/users_controller.php:155
+msgid "Password retrival information could not be send, try again."
+msgstr ""
+
+#: /controllers/users_controller.php:159
+msgid "Enter your Account's login name or Email address."
+msgstr ""
+
+#: /controllers/users_controller.php:168;185
+msgid "Your new password has been set."
+msgstr ""
+
+#: /controllers/users_controller.php:171;188
+msgid "Your new password could not be set."
+msgstr ""
+
+#: /controllers/users_controller.php:204
+msgid "You are now invisible."
+msgstr ""
+
+#: /controllers/users_controller.php:208
+msgid "You are now visible."
+msgstr ""
+
+#: /controllers/users_controller.php:241
+msgid "Goodbye"
+msgstr ""
+
+#: /controllers/components/honeypotting.php:73
+msgid "You don't seem to be human!"
+msgstr ""
+
+#: /models/user.php:35
+msgid "This username is already in use."
+msgstr ""
+
+#: /models/user.php:39;49;68
+msgid "Use letters from A to Z or numbers from 0 to 9 only."
+msgstr ""
+
+#: /models/user.php:43;53;72;86;127;137
+msgid "Minimum length of 3 characters."
+msgstr ""
+
+#: /models/user.php:59
+msgid "You may have misstyped your Password or your Password Confirmation is wrong."
+msgstr ""
+
+#: /models/user.php:62
+msgid "Your Password does not match with your Password Confirmation."
+msgstr ""
+
+#: /models/user.php:78
+msgid "This nickname is already in use."
+msgstr ""
+
+#: /models/user.php:82
+msgid "Nickname must only contain letters and numbers."
+msgstr ""
+
+#: /models/user.php:92
+msgid "This email address is already in use."
+msgstr ""
+
+#: /models/user.php:96
+msgid "Must be a valid email address."
+msgstr ""
+
+#: /models/user.php:102
+msgid "You may have misstyped your Email or your Email Confirmation is wrong."
+msgstr ""
+
+#: /models/user.php:104
+msgid "Your Email does not match with your Email Confirmation."
+msgstr ""
+
+#: /models/user.php:110
+msgid "You may only accept or deny the Terms of Service."
+msgstr ""
+
+#: /models/user.php:115
+msgid "You must accept the Terms of Service on User Account registration."
+msgstr ""
+
+#: /models/user.php:121
+msgid "Last Login must be a valid datetime (yyyy-mm-dd hh:mm:ss)."
+msgstr ""
+
+#: /models/user.php:131;141
+msgid "Enter a correct key which looks like 1A2B-C3D4-EFG5-678H."
+msgstr ""
+
+#: /models/user.php:228
+msgid "Enter your Activation Key."
+msgstr ""
+
+#: /models/user.php:249
+msgid "The Activation Key you have entered is invalid."
+msgstr ""
+
+#: /models/user.php:295
+msgid "Passwort request keys invalid."
+msgstr ""
+
+#: /models/user.php:323
+msgid "You did not enter your current password."
+msgstr ""
+
+#: /models/user.php:355
+msgid "Activation"
+msgstr ""
+
+#: /models/user.php:364
+msgid "User Account Activation"
+msgstr ""
+
+#: /models/user.php:368
+msgid "User Account Reactivation"
+msgstr ""
+
+#: /models/user.php:372
+msgid "including User Account Details"
+msgstr ""
+
+#: /models/user.php:404
+msgid "No User Account having that Login name and Email address found."
+msgstr ""
+
+#: /models/user.php:416
+msgid "Password Request"
+msgstr ""
+
+#: /views/elements/email/html/activation.ctp:1
+msgid "Your User Account still needs to be activated. Please click on this Activation Link:"
+msgstr ""
+
+#: /views/elements/email/html/activation.ctp:4
+#: /views/elements/email/text/activation.ctp:4
+msgid "If that does not work, copy and paste over this Activation Key"
+msgstr ""
+
+#: /views/elements/email/html/activation.ctp:8
+#: /views/elements/email/text/activation.ctp:8
+msgid "... into the Activation Key field at"
+msgstr ""
+
+#: /views/elements/email/html/activation_details.ctp:4
+#: /views/elements/email/html/registration_details.ctp:4
+msgid "User Account Details for"
+msgstr ""
+
+#: /views/elements/email/html/activation_details.ctp:6
+#: /views/elements/email/html/registration_details.ctp:6
+#: /views/elements/email/text/activation_details.ctp:6
+#: /views/elements/email/text/registration_details.ctp:6
+#: /views/users/view.ctp:49
+msgid "Nickname"
+msgstr ""
+
+#: /views/elements/email/html/activation_details.ctp:7
+#: /views/elements/email/html/registration_details.ctp:7
+#: /views/elements/email/text/activation_details.ctp:7
+#: /views/elements/email/text/registration_details.ctp:7
+#: /views/users/forgot_password.ctp:11
+#: /views/users/login.ctp:11
+#: /views/users/register.ctp:9
+msgid "Login name"
+msgstr ""
+
+#: /views/elements/email/html/activation_details.ctp:8
+#: /views/elements/email/html/registration_details.ctp:8
+#: /views/elements/email/text/activation_details.ctp:8
+#: /views/elements/email/text/registration_details.ctp:8
+#: /views/users/login.ctp:12
+#: /views/users/register.ctp:13
+#: /views/users/view.ctp:44
+msgid "Password"
+msgstr ""
+
+#: /views/elements/email/html/activation_details.ctp:9
+#: /views/elements/email/html/registration_details.ctp:9
+#: /views/elements/email/text/activation_details.ctp:9
+#: /views/elements/email/text/registration_details.ctp:9
+#: /views/users/register.ctp:17
+msgid "EMail Address"
+msgstr ""
+
+#: /views/elements/email/html/forgot_password.ctp:1
+#: /views/elements/email/text/forgot_password.ctp:1
+msgid "Request a new password for "
+msgstr ""
+
+#: /views/elements/email/html/forgot_password.ctp:3
+#: /views/elements/email/text/forgot_password.ctp:3
+msgid "To request a new password, please click on this Link:"
+msgstr ""
+
+#: /views/elements/email/html/forgot_password.ctp:6
+#: /views/elements/email/text/forgot_password.ctp:6
+msgid "If that does not work, copy and paste over this Password Request Key"
+msgstr ""
+
+#: /views/elements/email/html/forgot_password.ctp:10
+#: /views/elements/email/text/forgot_password.ctp:10
+msgid "... into the Password Request Key field at"
+msgstr ""
+
+#: /views/elements/email/html/registration.ctp:1
+#: /views/elements/email/text/registration.ctp:1
+msgid "Welcome to "
+msgstr ""
+
+#: /views/elements/email/text/activation.ctp:1
+msgid "Your User Account needs to be activated. Please click on this Activation Link:"
+msgstr ""
+
+#: /views/elements/email/text/activation_details.ctp:4
+#: /views/elements/email/text/registration_details.ctp:4
+msgid "User Account Details"
+msgstr ""
+
+#: /views/layouts/default.ctp:20
+msgid "Social Network Application"
+msgstr ""
+
+#: /views/layouts/default.ctp:30
+msgid "CakePHP: the rapid development php framework"
+msgstr ""
+
+#: /views/layouts/email/html/default.ctp:27
+#: /views/layouts/email/text/default.ctp:12
+msgid "This message has been generated. Do not reply to this message."
+msgstr ""
+
+#: /views/layouts/email/html/default.ctp:28
+#: /views/layouts/email/text/default.ctp:13
+msgid "If you require support, visit"
+msgstr ""
+
+#: /views/users/activate.ctp:4
+msgid "Activate User Account"
+msgstr ""
+
+#: /views/users/activate.ctp:12
+msgid "Finish Activation"
+msgstr ""
+
+#: /views/users/change_password.ctp:4
+#: /views/users/view.ctp:70
+msgid "Change Password"
+msgstr ""
+
+#: /views/users/change_password.ctp:6
+msgid "Current Password"
+msgstr ""
+
+#: /views/users/change_password.ctp:7
+#: /views/users/new_password.ctp:4
+msgid "New Password"
+msgstr ""
+
+#: /views/users/change_password.ctp:10
+msgid "New Password Confirmation"
+msgstr ""
+
+#: /views/users/change_password.ctp:13
+msgid "Set Password"
+msgstr ""
+
+#: /views/users/edit.ctp:4
+msgid "Edit User Account"
+msgstr ""
+
+#: /views/users/edit.ctp:15
+#: /views/users/view.ctp:110;156;200
+msgid "Delete"
+msgstr ""
+
+#: /views/users/edit.ctp:15
+#: /views/users/view.ctp:72;110;156;200
+msgid "Are you sure you want to delete # %s?"
+msgstr ""
+
+#: /views/users/edit.ctp:16
+msgid "List Users"
+msgstr ""
+
+#: /views/users/edit.ctp:17
+#: /views/users/view.ctp:73
+msgid "List User Options"
+msgstr ""
+
+#: /views/users/edit.ctp:18
+#: /views/users/view.ctp:74;119
+msgid "New User Option"
+msgstr ""
+
+#: /views/users/edit.ctp:19
+#: /views/users/view.ctp:75
+msgid "List Messages"
+msgstr ""
+
+#: /views/users/edit.ctp:20
+#: /views/users/view.ctp:76;165
+msgid "New Message"
+msgstr ""
+
+#: /views/users/edit.ctp:21
+#: /views/users/view.ctp:77
+msgid "List Shouts"
+msgstr ""
+
+#: /views/users/edit.ctp:22
+#: /views/users/view.ctp:78;209
+msgid "New Shout"
+msgstr ""
+
+#: /views/users/forgot_password.ctp:4
+msgid "Get new Password"
+msgstr ""
+
+#: /views/users/forgot_password.ctp:6
+msgid "Our service at :domain is currently not able to send an Email. We are working on the problem. Try again later."
+msgstr ""
+
+#: /views/users/forgot_password.ctp:19
+msgid "Send instructions"
+msgstr ""
+
+#: /views/users/login.ctp:5
+msgid "Login"
+msgstr ""
+
+#: /views/users/login.ctp:7
+msgid "You are currently logged in as"
+msgstr ""
+
+#: /views/users/login.ctp:19
+#: /views/users/register.ctp:37
+msgid "Forgot password?"
+msgstr ""
+
+#: /views/users/login.ctp:20
+msgid "New here? Sign up!"
+msgstr ""
+
+#: /views/users/new_password.ctp:15
+msgid "Set new password"
+msgstr ""
+
+#: /views/users/register.ctp:4
+msgid "New User Account"
+msgstr ""
+
+#: /views/users/register.ctp:6
+msgid "Nickname (public visible)"
+msgstr ""
+
+#: /views/users/register.ctp:10
+msgid "For better security, choose a Login name, different from your Nickname or EMail address!"
+msgstr ""
+
+#: /views/users/register.ctp:15
+msgid "Password Confirmation"
+msgstr ""
+
+#: /views/users/register.ctp:19
+msgid "EMail Address Confirmation"
+msgstr ""
+
+#: /views/users/register.ctp:22
+msgid "Yes, I want to receive a copy of my User Account details via email."
+msgstr ""
+
+#: /views/users/register.ctp:24
+msgid "Hereby, I accept the"
+msgstr ""
+
+#: /views/users/register.ctp:25
+#: /views/users/terms_of_service.ctp:21
+msgid "Terms of Service"
+msgstr ""
+
+#: /views/users/register.ctp:32
+msgid "Sign up"
+msgstr ""
+
+#: /views/users/register.ctp:36
+msgid "Login with an existing User Account"
+msgstr ""
+
+#: /views/users/terms_of_service.ctp:8
+msgid "Currently :b you do not accept :/b the Terms of Service."
+msgstr ""
+
+#: /views/users/terms_of_service.ctp:12
+msgid "Currently :b you do accept :/b the Terms of Service."
+msgstr ""
+
+#: /views/users/terms_of_service.ctp:26
+msgid "Accept Terms of Service"
+msgstr ""
+
+#: /views/users/terms_of_service.ctp:28
+msgid "Decline Terms of Service"
+msgstr ""
+
+#: /views/users/view.ctp:2
+msgid "User"
+msgstr ""
+
+#: /views/users/view.ctp:4;86;128;174
+msgid "Id"
+msgstr ""
+
+#: /views/users/view.ctp:9;129;175
+msgid "Created"
+msgstr ""
+
+#: /views/users/view.ctp:14;87;130;176
+msgid "Modified"
+msgstr ""
+
+#: /views/users/view.ctp:19
+msgid "Has Accepted Tos"
+msgstr ""
+
+#: /views/users/view.ctp:24
+msgid "Is Hidden"
+msgstr ""
+
+#: /views/users/view.ctp:29
+msgid "Is Disabled"
+msgstr ""
+
+#: /views/users/view.ctp:34
+msgid "Is Deleted"
+msgstr ""
+
+#: /views/users/view.ctp:39
+msgid "Username"
+msgstr ""
+
+#: /views/users/view.ctp:54
+msgid "Email"
+msgstr ""
+
+#: /views/users/view.ctp:59
+msgid "Activation Key"
+msgstr ""
+
+#: /views/users/view.ctp:68
+msgid "Hide"
+msgstr ""
+
+#: /views/users/view.ctp:69
+msgid "Unhide"
+msgstr ""
+
+#: /views/users/view.ctp:71
+msgid "Edit User"
+msgstr ""
+
+#: /views/users/view.ctp:72
+msgid "Delete User"
+msgstr ""
+
+#: /views/users/view.ctp:82
+msgid "Related User Options"
+msgstr ""
+
+#: /views/users/view.ctp:88;131;177
+msgid "User Id"
+msgstr ""
+
+#: /views/users/view.ctp:89
+msgid "Key"
+msgstr ""
+
+#: /views/users/view.ctp:90
+msgid "Value"
+msgstr ""
+
+#: /views/users/view.ctp:91;135;180
+msgid "Actions"
+msgstr ""
+
+#: /views/users/view.ctp:108;154;198
+msgid "View"
+msgstr ""
+
+#: /views/users/view.ctp:109;155;199
+msgid "Edit"
+msgstr ""
+
+#: /views/users/view.ctp:124
+msgid "Related Messages"
+msgstr ""
+
+#: /views/users/view.ctp:132
+msgid "Form User Id"
+msgstr ""
+
+#: /views/users/view.ctp:133
+msgid "Subject"
+msgstr ""
+
+#: /views/users/view.ctp:134
+msgid "Body"
+msgstr ""
+
+#: /views/users/view.ctp:170
+msgid "Related Shouts"
+msgstr ""
+
+#: /views/users/view.ctp:178
+msgid "From User Id"
+msgstr ""
+
+#: /views/users/view.ctp:179
+msgid "Text"
+msgstr ""
+
+#: /webroot/test.php:99
+msgid "Debug setting does not allow access to this url."
+msgstr ""
+

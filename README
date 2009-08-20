@@ -48,6 +48,8 @@ X Form error format (CSS)
 - Shared Hosting Problem: http://blog.thaichaiguy.com/847/mediatemple-with-cakephp-session-lost-during-refresh/ http://www.cakephp-forum.com/installation-und-konfiguration/installation-konfiguration-t217.html#p880
 - Check Codebase against: https://trac.cakephp.org/wiki/Developement/CodingStandards
 - Password Generator (JS Based or Ajax based)
+- http://book.cakephp.org/view/153/Data-Sanitization
+- LANG Urls
 
 NOTICES:
 - 5.2 <= PHP_VERSION < 5.3

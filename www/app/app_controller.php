@@ -1,18 +1,25 @@
 <?php
 class AppController extends Controller {
 	
-	var $components = array('Auth', 'Session');
+	var $components = array('Auth', 'Session', 'Cookie');
 	
 	var $tosProtectedControllers = array('Users', 'Messages', 'Shouts');
 	
 	function beforeFilter() {
-		$lang = 'de_DE';
-		define('DEFAULT_LANGUAGE', $lang);
-		Configure::write('Config.language', $lang);
-		$this->Session->write('Config.language', $lang); 
 		$this->__setupAuth();
 		$this->__checkHasAcceptedTos();
-	}
+		$this->__setLanguage();
+	} 
+	
+	function __setLanguage() {
+		if ($this->Cookie->read('lang') && !$this->Session->check('Config.language')) {
+		    $this->Session->write('Config.language', $this->Cookie->read('lang'));
+		} else if (isset($this->params['lang']) && ($this->params['lang']
+		         !=  $this->Session->read('Config.language'))) {     
+		    $this->Session->write('Config.language', $this->params['lang']);
+		    $this->Cookie->write('lang', $this->params['lang'], null, '20 days');
+		}
+	} 
 	
 	function __setupAuth() {
 		Security::setHash('sha256');
