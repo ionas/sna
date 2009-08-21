@@ -29,15 +29,16 @@ X Cleanup User Controller
 X Form error format (CSS)
 X Check out Translation + Translation Tool (PO Files)
 X Add Language switcher to $layout + save in Cookies
-- Profile page
+X Profile page
+X Profile visibility options
+X Shoutbox
+- Messaging
+- Messaging auth challenge (see ICQ)
 - Profile picture uploads
-- Profile visibility options
-- Shoutbox
+- Basic Profile View (with Shouts)
 - Shout hiding
 - Buddylists
 - Buddy auth challenge
-- Messaging
-- Messaging auth challenge (see ICQ)
 - ACL
 - Security Features and Double Salts
   See also: http://devedge.jonas-hartmann.com/documents/Securing_authentication_and_data_manipulation_via_HTTP.html
@@ -52,6 +53,9 @@ X Add Language switcher to $layout + save in Cookies
 - http://bakery.cakephp.org/articles/view/p28n-the-top-to-bottom-persistent-internationalization-tutorial
 - http://teknoid.wordpress.com/2008/11/28/cakephp-url-based-language-switching-for-i18n-and-l10n-internationalization-and-localization/
 - Add Language autodetection (browser, geo location/ip) + save in Cookies
+- User_Options => http://bakery.cakephp.org/articles/view/polymorphic-behavior - see also: http://trac.assembla.com/mi/browser/branches/base/models/behaviors/polymorphic.php
+- For Gender/Persontitle - see http://trac.assembla.com/mi/browser/branches/base/models/behaviors/enum.php
+- add UNIQUE_PROFILE_PER_USER to SQL
 
 NOTICES:
 - 5.2 <= PHP_VERSION < 5.3

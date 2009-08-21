@@ -3,8 +3,8 @@
 <?=$form->create('User', array('action' => 'login'))?>
 	<fieldset>
 		<legend><?php __('Login');?></legend>
-	<?php if($nicename != null):?>
-	<p><?=__('You are currently logged in as')?> <strong><?=$nicename?></strong>.</p>
+	<?php if($authedUser != null):?>
+	<p><?=__('You are currently logged in as')?> <strong><?=$authedUser?></strong>.</p>
 	<br>
 	<?php endif?>
 

@@ -6,28 +6,23 @@ class User extends AppModel {
 	
 	var $validate = array(); // See function __construct()
 	
-	var $displayField = 'nickname';
+	var $displayField = 'username';
 	
 	var $hasMany = array(
+		'Profile' => array(
+			'className' => 'Profile',
+			'foreignKey' => 'user_id',
+			'dependent' => true,
+		),
 		'UserOption' => array(
 			'className' => 'UserOption',
 			'foreignKey' => 'user_id',
 			'dependent' => true,
 		),
-		'Message' => array(
-			'className' => 'Message',
-			'foreignKey' => 'user_id',
-			'dependent' => true,
-		),
-		'Shout' => array(
-			'className' => 'Shout',
-			'foreignKey' => 'user_id',
-			'dependent' => true,
-		),
 	);
-
+	
 	function __construct($id = false, $table = null, $ds = null) {
-		parent::__construct();
+		$return = parent::__construct();
 		$this->validate = array(
 'username' => array(
 	'isUnique' => array(
@@ -66,20 +61,6 @@ class User extends AppModel {
 	'alphaNumeric' => array(
 		'rule' => 'alphaNumeric',
 		'message' => __('Use letters from A to Z or numbers from 0 to 9 only.', true),
-	),
-	'minLength' => array(
-		'rule' => array('minLength', '3'),
-		'message' => __('Minimum length of 3 characters.', true),
-	),
-),
-'nickname' => array(
-	'isUnique' => array(
-		'rule' => 'isUnique',
-		'message' => __('This nickname is already in use.', true),
-	),
-	'alphaNumeric' => array(
-		'rule' => 'alphaNumeric',
-		'message' => __('Nickname must only contain letters and numbers.', true),
 	),
 	'minLength' => array(
 		'rule' => array('minLength', '3'),
@@ -143,24 +124,7 @@ class User extends AppModel {
 ),
 		);
 		$this->passwordInClearText = null;
-	}
-	
-	function afterFind($results) {
-		// Create virtual field nicename out of username and nickname
-		foreach ($results as $i => $data) {
-			if (!empty($results[$i][$this->alias]['nickname'])) {
-				$results[$i][$this->alias]['nicename'] = $results[$i][$this->alias]['nickname'];
-			}
-			if (!empty($results[$i][$this->alias]['nickname'])
-			&& !empty($results[$i][$this->alias]['username'])) {
-				if ($results[$i][$this->alias]['nickname'] !=
-						$results[$i][$this->alias]['username']) {
-					$results[$i][$this->alias]['nicename'] .=
-						':' . $results[$i][$this->alias]['username'];
-				}
-			}
-		}
-		return $results;
+		return $return;
 	}
 	
 	function beforeValidate() {
@@ -332,17 +296,7 @@ class User extends AppModel {
 	}
 	
 	function del($id = null, $cascade = true) {
-		$fields = array_keys($this->_schema);
-		$keepFields = array('id', 'created', 'modified');
-		if ($id != null) {
-			$purgeData = array_diff($fields, $keepFields);
-			$purgeData = Set::normalize($purgeData);
-			$purgeData = array_fill_keys(array_keys($purgeData), null);
-			$purgeData['is_deleted'] = '1';
-			$this->id = $id;
-			// $this->save($purgeData, null, false);
-		}
-		return true;
+		return $this->purge($id);
 	}
 	
 	function sendActivation($data, $activationKey, $isNewUser, $passwordInClearText) {
@@ -351,8 +305,8 @@ class User extends AppModel {
 			$domainname = substr($domainname, 4);
 		}
 		$gateway['email']['to'] = $data[$this->alias]['email'];
-		$gateway['email']['subject'] = $domainname . ': ' . $data[$this->alias]['username'] . '/' 
-			. $data[$this->alias]['nickname'] . ' - ' . __('Activation', true);
+		$gateway['email']['subject'] = $domainname . ': ' . $data[$this->alias]['username']
+			. __('Activation', true);
 		$viewData = array(
 			'domainName' => $domainname,
 			'serverName' => env('SERVER_NAME'),
@@ -371,7 +325,6 @@ class User extends AppModel {
 			$template .= '_details';
 			$gateway['email']['subject'] .= ' ' . __('including User Account Details', true);
 			$viewData = array_merge($viewData, array(
-					'nickname' => $data[$this->alias]['nickname'],
 					'username' => $data[$this->alias]['username'],
 					'password' => $passwordInClearText,
 					'email' => $data[$this->alias]['email'],
@@ -412,8 +365,7 @@ class User extends AppModel {
 			}
 			$gateway['email']['to'] = $userData[$this->alias]['email'];
 			$gateway['email']['subject'] = $domainname . ': '
-				. $userData[$this->alias]['username'] . '/' 
-				. $userData[$this->alias]['nickname'] . ' - ' . __('Password Request', true);
+				. $userData[$this->alias]['username'] . ' - ' . __('Password Request', true);
 			$viewData = array(
 				'domainName' => $domainname,
 				'serverName' => env('SERVER_NAME'),

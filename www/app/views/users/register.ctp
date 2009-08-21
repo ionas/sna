@@ -3,16 +3,13 @@
 	<fieldset>
 		<legend><?php __('New User Account')?></legend>
 <?=$honeypot->spawn(),
-	$form->input('nickname', array('label' => __('Nickname (public visible)', true))),
 	$honeypot->spawn(),
-	$form->input('username', array(
-		'label' => __('Login name', true) . ' ('
-			. __('For better security, choose a Login name, different from your Nickname or EMail address!', true) . ')',
-		'onfocus' => "if(this.value == '') { this.value = getElementById('UserNickname').value; }")),
+	$form->input('username', array('label' => __('Login name', true))),
 	$honeypot->spawn(),
 	$form->input('password', array('label' => __('Password', true))),
 	$honeypot->spawn(),
-	$form->input('password_confirmation', array('type'=>'password', 'label' => __('Password Confirmation', true))),
+	$form->input('password_confirmation', array('type'=>'password', 'label' =>
+		__('Password Confirmation', true))),
 	$honeypot->spawn(true),
 	$form->input('email', array('label' => __('EMail Address', true))),
 	$honeypot->spawn(),

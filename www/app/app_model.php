@@ -37,7 +37,6 @@ class AppModel extends Model {
 		}
 		return false;
 	}
-
 	
 	function pauseValidation($fieldname, $rulename, $switch = true) {
 		if ($switch) {
@@ -86,6 +85,23 @@ class AppModel extends Model {
 			return $isSend;
 		}
 		// ENH: SMS-Gateway
+	}
+	
+	function purge($id) {
+		if(!isset($this->skipOnPurge)) {
+			$this->skipOnPurge = array('id', 'created', 'modified');
+		}
+		if ($id != null) {
+			$purgeData = array_diff(array_keys($this->_schema), $this->skipOnPurge);
+			$purgeData = Set::normalize($purgeData);
+			$purgeData[$this->alias] = array_fill_keys(array_keys($purgeData), null);
+			$purgeData[$this->alias]['is_deleted'] = '1';
+			$purgeData[$this->alias][$this->primaryKey] = $this->id;
+			if($this->save($purgeData, null, false) !== false) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

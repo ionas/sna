@@ -24,8 +24,9 @@ class AppController extends Controller {
 	function __setupAuth() {
 		Security::setHash('sha256');
 		// ENCH: Functionize, pass Array with 'ControllerA' => array('ActionA')?
-		if ($this->name == 'Pages') {
-			$this->Auth->allow(array('display'));
+		switch ($this->name) {
+			case 'Pages':
+				$this->Auth->allow(array('display'));
 		}
 		$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
 		$this->Auth->logoutRedirect = '/';
@@ -54,6 +55,13 @@ class AppController extends Controller {
 				$this->redirect(array('controller' => 'users', 'action' => 'terms_of_service'));
 			}
 		}
+	}
+	
+	function currentUser($modelalias = null) {
+		if($modelalias != null) {
+			$this->data[$modelalias]['user_id'] = $this->Auth->user('id');
+		}
+		return $this->Auth->user('id');
 	}
 	
 }

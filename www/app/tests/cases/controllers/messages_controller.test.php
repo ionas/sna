@@ -1,6 +1,6 @@
 <?php 
 /* SVN FILE: $Id$ */
-/* MessagesController Test cases generated on: 2009-07-26 13:07:19 : 1248609499*/
+/* MessagesController Test cases generated on: 2009-08-21 22:08:30 : 1250886330*/
 App::import('Controller', 'Messages');
 
 class TestMessages extends MessagesController {

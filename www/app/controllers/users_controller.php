@@ -31,27 +31,28 @@ class UsersController extends AppController {
 	}
 	
 	function view($id = null) {
-			if (!$id) {
-				$this->Session->setFlash(__('Invalid User.', true));
-				$this->redirect(array('action' => 'index'));
-			}
-			// No UUID => try finding user by nickname
-			if (strlen($id) != 36) {
-				$user = $this->User->find('first', array(
-						'User.id',
-						'conditions' => array('User.nickname' => $id),
-					)
-				);
-				$id = $user['User']['id'];
-			}
-			if($id == $this->Auth->user('id')) {
-				$this->set('user', $this->User->read(null, $id));
-			} else {
-				$this->Session->setFlash(
-					__('You may only access your own User Account.', true));
-				// TODO Routing bugs again
-				// $this->redirect(array('home'));
-			}
+		$this->User->recursive = 1;
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid User.', true));
+			$this->redirect(array('action' => 'index'));
+		}
+		// No UUID => try finding user by username
+		if (strlen($id) != 36) {
+			$user = $this->User->find('first', array(
+					'User.id',
+					'conditions' => array('User.username' => $id),
+				)
+			);
+			$id = $user['User']['id'];
+		}
+		if($id == $this->Auth->user('id')) {
+			$this->set('user', $this->User->read(null, $id));
+		} else {
+			$this->Session->setFlash(
+				__('You may only access your own User Account.', true));
+			// TODO Routing bugs again
+			// $this->redirect(array('home'));
+		}
 	}
 	
 	function register() {
@@ -59,7 +60,7 @@ class UsersController extends AppController {
 		if (!empty($this->data)) {
 			$this->User->create();
 			if ($this->User->save($this->data, true, array(
-						'has_accepted_tos', 'username', 'password', 'nickname', 'email'))) {
+						'has_accepted_tos', 'username', 'password', 'email'))) {
 				$this->Session->setFlash(
 					__('Your registration has been successful. However, you will still need to activate your user account.', true));
 				$this->redirect(array('action' => 'activate'));
@@ -115,8 +116,8 @@ class UsersController extends AppController {
 		}
 		if ($this->User->del($id)) {
 			$this->Session->setFlash(
-				String::insert(__('User Account :nicename removed.', true),
-					array('nicename' => $this->Auth->user('nicename'))));
+				String::insert(__('User Account :authedUser removed.', true),
+					array('authedUser' => $this->Auth->user('username'))));
 			$this->redirect($this->Auth->logout());
 		}
 	}
@@ -222,7 +223,7 @@ class UsersController extends AppController {
 	}
 	
 	function login() {
-		$this->set('nicename', $this->Auth->user('nicename'));
+		$this->set('authedUser', $this->Auth->user('username'));
 		if($this->Auth->isAuthorized() === true) {
 			$this->User->updateLastLogin($this->Auth->user());
 			if(!empty($this->data)) {
@@ -238,7 +239,7 @@ class UsersController extends AppController {
 	function logout() {
 		if($this->Auth->isAuthorized() == true) {
 			$this->Session->setFlash(
-				__('Goodbye', true) . ' ' . $this->Auth->user('nicename') . '...');
+				__('Goodbye', true) . ' ' . $this->Auth->user('username') . '...');
 			$this->User->updateLastLogin($this->Auth->user());
 		}
 		$this->Auth->logout();
