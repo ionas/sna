@@ -196,7 +196,7 @@ class UsersController extends AppController {
 	function change_email() {
 		// TODO
 	}
-
+	
 	function hide($switch = 'yes') {
 		$this->User->id = $this->Auth->user('id');
 		if($this->User->id != null && $switch == 'yes') {
@@ -243,14 +243,6 @@ class UsersController extends AppController {
 		}
 		$this->Auth->logout();
 		$this->redirect(array('action' => 'home'));
-	}
-	
-	function make_buddies() {
-		
-	}
-	
-	function ignore_user() {
-		
 	}
 	
 	function __authAutoRedirectFixes() {

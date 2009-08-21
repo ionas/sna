@@ -27,9 +27,8 @@ X Chang default layout a bit - gives it a nice feeling
 X User hide
 X Cleanup User Controller
 X Form error format (CSS)
-- Check out Translation + Translation Tool (PO Files)
-- Add Language switcher to $layout + save in Cookies
-- Add Language autodetection (browser, geo location/ip) + save in Cookies
+X Check out Translation + Translation Tool (PO Files)
+X Add Language switcher to $layout + save in Cookies
 - Profile page
 - Profile picture uploads
 - Profile visibility options
@@ -50,6 +49,9 @@ X Form error format (CSS)
 - Password Generator (JS Based or Ajax based)
 - http://book.cakephp.org/view/153/Data-Sanitization
 - LANG Urls
+- http://bakery.cakephp.org/articles/view/p28n-the-top-to-bottom-persistent-internationalization-tutorial
+- http://teknoid.wordpress.com/2008/11/28/cakephp-url-based-language-switching-for-i18n-and-l10n-internationalization-and-localization/
+- Add Language autodetection (browser, geo location/ip) + save in Cookies
 
 NOTICES:
 - 5.2 <= PHP_VERSION < 5.3
