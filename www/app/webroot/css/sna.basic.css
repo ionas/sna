@@ -1,3 +1,10 @@
+body {
+	font-family: 'Lucida Grande', 'Calibri', 'Helvetica', 'Arial', sans-serif;
+}
+h2,
+h3 {
+	font-family: 'Gill Sans', 'Lucida Grande', 'Calibri', 'Helvetica', 'Arial', sans-serif;
+}
 body,
 a:hover,
 h1,
