@@ -60,3 +60,4 @@ X Shoutbox
 NOTICES:
 - 5.2 <= PHP_VERSION < 5.3
 - Only works with short_tags = on 
+- ON GIT: http://blog.jrock.us/articles/Git%20merging%20by%20example.pod
