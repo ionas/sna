@@ -11,6 +11,7 @@
 }
 div.input label {
 	padding-left: 8px;
+	font-family: 'Lucida Grande', 'Calibri', 'Helvetica', sans-serif;
 }
 form fieldset {
 	padding-right: 30px;
