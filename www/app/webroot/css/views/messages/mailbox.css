@@ -1,0 +1,40 @@
+.messages.mailbox {
+	 position: relative;
+}
+.messages.mailbox .menu {
+	position: absolute;
+	top: 4.5em;
+	left: 0;
+	width: 10em;
+	height: 100%;
+	border-right: 1px solid silver;
+}
+.messages.mailbox .menu li {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.messages.mailbox .menu li li {
+	list-style: square;
+	margin-left: .2em;
+}
+.messages.mailbox .data {
+	margin-left: 13em;
+	height: 100;
+}
+.messages.mailbox .toFrom {
+	width: 14em;
+	overflow: hidden;
+}
+.messages.mailbox .date {
+	width: 11em;
+	overflow: hidden;
+}
+.messages.mailbox .subject {
+	width: auto;
+	overflow: hidden;
+}
+.messages.mailbox .actions {
+	width: 16em;
+	overflow: hidden;
+}

@@ -12,6 +12,8 @@
 		echo $html->css('sna.app');
 		echo $html->css('sna.app.jquery');
 		echo $html->css('sna.modifications');
+		echo $html->css($controller_css_for_layout);
+		echo $html->css($view_css_for_layout);
 		echo $javascript->link('jquery-1.3.2');
 		echo $javascript->link('jquery.timers');
 		echo $javascript->link('jquery.smoothScroll');

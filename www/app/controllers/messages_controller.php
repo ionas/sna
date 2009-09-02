@@ -12,10 +12,10 @@ class MessagesController extends AppController {
 	function mailbox($filter = null) {
 		$profileData = $this->getCurrentUser();
 		$profileId = $profileData['User']['current_profile_id'];
-		$this->Message->recursive = 2;
+		$this->Message->recursive = 0;
 		switch($filter) {
-			case 'recieved':
-				$this->set('messagesTitle', __('Recieved', true));
+			case 'inbox':
+				$this->set('messagesTitle', __('Inbox', true));
 				$conditions = array(
 					'Profile.id' => $profileId,
 					'NOT' => array('Message.from_profile_id' => $profileId),
@@ -52,8 +52,8 @@ class MessagesController extends AppController {
 					'Message.from_profile_id' => $profileId,
 					'Message.is_trashed' => 0);
 				break;
-			case 'trashed':
-				$this->set('messagesTitle', __('Trashed', true));
+			case 'trash':
+				$this->set('messagesTitle', __('Trash', true));
 				$conditions = array(
 					'Profile.id' => $profileId,
 					'Message.is_trashed' => 1);
@@ -68,6 +68,7 @@ class MessagesController extends AppController {
 				'Message.id',
 				'Message.profile_id',
 				'Message.from_profile_id',
+				'Message.to_profile_id',
 				'Message.created',
 				'Message.subject',
 				'Message.body',
@@ -76,7 +77,7 @@ class MessagesController extends AppController {
 				'Message.is_trashed',
 			),
 			'conditions' => $conditions,
-			'limit' => 1,
+			'limit' => 10,
 		);
 		$this->set('filter', $filter);
 		$this->set('messages', $this->paginate());

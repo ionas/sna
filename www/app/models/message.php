@@ -26,6 +26,10 @@ class Message extends AppModel {
 			'className' => 'Profile',
 			'foreignKey' => 'from_profile_id',
 		),
+		'ToProfile' => array(
+			'className' => 'Profile',
+			'foreignKey' => 'to_profile_id',
+		),
 	);
 
 }
