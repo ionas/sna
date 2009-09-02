@@ -56,7 +56,7 @@ form textarea:focus {
 	color: #000;
 	text-decoration: none;
 	border-color: #555;
-	background: #eeffcc;
+	background: #f4ffcc;
 	background-image: url('../images/input_field_hover.gif');
 }
 form div.submit {

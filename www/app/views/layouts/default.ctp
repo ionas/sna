@@ -10,7 +10,11 @@
 		echo $html->css('cake.generic');
 		echo $html->css('sna.basic');
 		echo $html->css('sna.app');
+		echo $html->css('sna.app.jquery');
 		echo $html->css('sna.modifications');
+		echo $javascript->link('jquery-1.3.2');
+		echo $javascript->link('jquery.timers');
+		echo $javascript->link('sna.app.jquery');
 		echo $scripts_for_layout;
 	?>
 </head>

@@ -56,6 +56,8 @@ X Shoutbox
 - User_Options => http://bakery.cakephp.org/articles/view/polymorphic-behavior - see also: http://trac.assembla.com/mi/browser/branches/base/models/behaviors/polymorphic.php
 - For Gender/Persontitle - see http://trac.assembla.com/mi/browser/branches/base/models/behaviors/enum.php
 - add UNIQUE_PROFILE_PER_USER to SQL
+- /users/register;lang=eng
+- http://book.cakephp.org/view/395/autoRedirect and https://trac.cakephp.org/ticket/3974
 
 NOTICES:
 - 5.2 <= PHP_VERSION < 5.3

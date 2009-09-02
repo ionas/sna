@@ -2,114 +2,87 @@
 class MessagesController extends AppController {
 	
 	var $name = 'Messages';
-	var $helpers = array('Html', 'Form');
+	var $components = array('Honeypotting' => array('formModels' => array('Profile', 'Message')));
+	var $helpers = array('Html', 'Form', 'Javascript', 'Honeypot');
 	
 	function index() {
-		$this->Message->recursive = 1;
-		if(isset($this->passedArgs['message_filter'])) {
-			$user_id        = $this->currentUser();
-			$message_filter = $this->passedArgs['message_filter']; 
-			switch($message_filter) {
-				
-				case 'recieved':
-					$this->set('message_center_title', __('Recieved', true));
-					$this->set('messages', $this->paginate(array('User.id' => $user_id,
-					                                             'NOT' => array('Message.sender_user_id' => $user_id),
-					                                             'Message.is_trashed' => 0)));
-					break;
-					
-				case 'unread':
-					$this->set('message_center_title', __('Unread', true));
-					$this->set('messages', $this->paginate(array('User.id' => $user_id,
-					                                             'NOT' => array('Message.sender_user_id' => $user_id),
-					                                             'Message.is_read'    => 0,
-					                                             'Message.is_trashed' => 0)));
-					break;
-					
-				case 'unreplyed':
-					$this->set('message_center_title', __('Unreplyed', true));
-					$this->set('messages', $this->paginate(array('User.id' => $user_id,
-					                                             'NOT' => array('Message.sender_user_id' => $user_id),
-					                                             'Message.is_replyed' => 0,
-					                                             'Message.is_trashed' => 0)));
-					break;
-					
-				case 'read':	
-					$this->set('message_center_title', __('Read', true));
-					$this->set('messages', $this->paginate(array('User.id' => $user_id,
-					                                             'NOT' => array('Message.sender_user_id' => $user_id),
-					                                             'Message.is_read'    => 1,
-					                                             'Message.is_trashed' => 0)));
-					break;
-					
-				case 'send':
-					$this->set('message_center_title', __('Send', true));
-					$this->set('messages', $this->paginate(array('User.id' => $user_id,
-					                                             'Message.sender_user_id' => $user_id,
-					                                             'Message.is_trashed' => 0)));
-					break;
-					
-				case 'trashed':
-					$this->set('message_center_title', __('Trashed', true));
-					$this->set('messages', $this->paginate(array('User.id' => $user_id,
-					                                             'Message.is_trashed' => 1)));
-					break;
-					
-				default:
-					$this->redirect(array('controller' => 'messages', 'action' => 'index/' . $user_id . '/unread'));
-			}
-		} else {
-			$this->Session->setFlash(__('Invalid User.', true));
-			$this->redirect('/');
-		}
+		$this->redirect(array('action' => 'mailbox', 'unread'));
 	}
 	
-	function view($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid Message.', true));
-			$this->redirect(array('action'=>'index'));
+	function mailbox($filter = null) {
+		$profileData = $this->getCurrentUser();
+		$profileId = $profileData['User']['current_profile_id'];
+		$this->Message->recursive = 2;
+		switch($filter) {
+			case 'recieved':
+				$this->set('messagesTitle', __('Recieved', true));
+				$conditions = array(
+					'Profile.id' => $profileId,
+					'NOT' => array('Message.from_profile_id' => $profileId),
+					'Message.is_trashed' => 0);
+				break;
+			case 'unread':
+				$this->set('messagesTitle', __('Unread', true));
+				$conditions = array(
+					'Profile.id' => $profileId,
+					'NOT' => array('Message.from_profile_id' => $profileId),
+					'Message.is_read'    => 0,
+					'Message.is_trashed' => 0);
+				break;
+			case 'unreplied':
+				$this->set('messagesTitle', __('Unreplied', true));
+				$conditions = array(
+					'Profile.id' => $profileId,
+					'NOT' => array('Message.from_profile_id' => $profileId),
+					'Message.is_replied' => 0,
+					'Message.is_trashed' => 0);
+				break;
+			case 'read':
+				$this->set('messagesTitle', __('Read', true));
+				$conditions = array(
+					'Profile.id' => $profileId,
+					'NOT' => array('Message.from_profile_id' => $profileId),
+					'Message.is_read'    => 1,
+					'Message.is_trashed' => 0);
+				break;
+			case 'sent':
+				$this->set('messagesTitle', __('Sent', true));
+				$conditions = array(
+					'Profile.id' => $profileId,
+					'Message.from_profile_id' => $profileId,
+					'Message.is_trashed' => 0);
+				break;
+			case 'trashed':
+				$this->set('messagesTitle', __('Trashed', true));
+				$conditions = array(
+					'Profile.id' => $profileId,
+					'Message.is_trashed' => 1);
+				break;
+			case null:
+			default:
+				$this->redirect(array('controller' => 'messages', 'action' => 'mailbox', 'unread'));
+				break;
 		}
-		$this->set('message', $this->Message->read(null, $id));
+		$this->paginate = array(
+			'fields' => array(
+				'Message.id',
+				'Message.profile_id',
+				'Message.from_profile_id',
+				'Message.created',
+				'Message.subject',
+				'Message.body',
+				'Message.is_read',
+				'Message.is_replied',
+				'Message.is_trashed',
+			),
+			'conditions' => $conditions,
+			'limit' => 1,
+		);
+		$this->set('filter', $filter);
+		$this->set('messages', $this->paginate());
+		
 	}
-
-	function add() {
-		if (!empty($this->data)) {
-			$this->Message->create();
-			if ($this->Message->save($this->data)) {
-				$this->Session->setFlash(__('The Message has been saved', true));
-				$this->redirect(array('action'=>'index'));
-			} else {
-				$this->Session->setFlash(__('The Message could not be saved. Please, try again.', true));
-			}
-		}
-		$users = $this->Message->User->find('list');
-		$profiles = $this->Message->Profile->find('list');
-		$fromProfiles = $this->Message->FromProfile->find('list');
-		$this->set(compact('users', 'profiles', 'fromProfiles'));
-	}
-
-	function edit($id = null) {
-		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(__('Invalid Message', true));
-			$this->redirect(array('action'=>'index'));
-		}
-		if (!empty($this->data)) {
-			if ($this->Message->save($this->data)) {
-				$this->Session->setFlash(__('The Message has been saved', true));
-				$this->redirect(array('action'=>'index'));
-			} else {
-				$this->Session->setFlash(__('The Message could not be saved. Please, try again.', true));
-			}
-		}
-		if (empty($this->data)) {
-			$this->data = $this->Message->read(null, $id);
-		}
-		$users = $this->Message->User->find('list');
-		$profiles = $this->Message->Profile->find('list');
-		$fromProfiles = $this->Message->FromProfile->find('list');
-		$this->set(compact('users','profiles','fromProfiles'));
-	}
-
+	
 	function delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for Message', true));
@@ -120,6 +93,6 @@ class MessagesController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 	}
-
+	
 }
 ?>

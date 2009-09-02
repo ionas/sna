@@ -3,7 +3,7 @@ class UsersController extends AppController {
 	
 	var $name = 'Users';
 	var $components = array('Honeypotting' => array('formModels' => array('User', 'UserOption')));
-	var $helpers = array('Html', 'Form', 'Honeypot');
+	var $helpers = array('Html', 'Form', 'Javascript', 'Honeypot');
 	
 	function index() {
 		$this->redirect('home');

@@ -2,7 +2,7 @@
 class ProfilesController extends AppController {
 	
 	var $name = 'Profiles';
-	var $helpers = array('Html', 'Form');
+	var $helpers = array('Html', 'Form', 'Javascript');
 	
 	function beforeFilter() {
 		$return = parent::beforeFilter();
@@ -24,11 +24,11 @@ class ProfilesController extends AppController {
 	}
 	
 	function add() {
-		if($profileData = $this->Profile->profileExists($this->currentUser())) {
+		if($profileData = $this->Profile->profileExists($this->getCurrentUser())) {
 			$this->redirect(array('action' => 'edit', $profileData['Profile']['id']));
 		}
 		if (!empty($this->data)) {
-			$this->currentUser('Profile');
+			$this->getCurrentUser('Profile');
 			$this->Profile->create();
 			if ($this->Profile->save($this->data, true, array(
 						'user_id', 'is_hidden', 'nickname', 'birthday', 'location'))) {
@@ -48,7 +48,7 @@ class ProfilesController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		if (!empty($this->data)) {
-			$this->currentUser('Profile');
+			$this->getCurrentUser('Profile');
 			if ($this->Profile->save($this->data, true, array(
 						'is_hidden', 'nickname', 'birthday', 'location'))) {
 				$this->Session->setFlash(__('The Profile has been saved', true));
@@ -64,7 +64,7 @@ class ProfilesController extends AppController {
 	}
 	
 	function delete($id = null) {
-		$id = $this->currentUser();
+		$id = $this->getCurrentUser();
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for Profile', true));
 		}

@@ -2,7 +2,7 @@
 class AppController extends Controller {
 	
 	var $components = array('Auth', 'Session', 'Cookie');
-	
+	var $helpers = array('Html','Javascript');
 	var $tosProtectedControllers = array('Users', 'Messages', 'Shouts');
 	
 	function beforeFilter() {
@@ -32,7 +32,6 @@ class AppController extends Controller {
 		$this->Auth->logoutRedirect = '/';
 		$this->Auth->loginRedirect = array('controller' => 'users', 'action' => 'home');
 		$this->Auth->autoRedirect = true;
-		$this->Auth->allow(array('*'));
 	}
 	
 	function __checkHasAcceptedTos() {
@@ -57,11 +56,22 @@ class AppController extends Controller {
 		}
 	}
 	
-	function currentUser($modelalias = null) {
-		if($modelalias != null) {
-			$this->data[$modelalias]['user_id'] = $this->Auth->user('id');
+	function getCurrentUser($setForModelalias = null) {
+		if($this->Auth->isAuthorized()) {
+			$authedUser = $this->Auth->user();
+			if($setForModelalias != null) {
+				$this->data[$setForModelalias]['user_id'] = $authedUser['User']['id'];
+			}
+			App::import('Profile');
+			$Profile = new Profile();
+			$profileData = $Profile->find('first', array(
+					'fields' => array('id'),
+					'conditions' => array('user_id' => $authedUser['User']['id'])));
+			$this->set('authedUser', $authedUser);
+			return $authedUser;
+		} else {
+			return false;
 		}
-		return $this->Auth->user('id');
 	}
 	
 }

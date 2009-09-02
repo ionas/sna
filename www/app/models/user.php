@@ -21,6 +21,13 @@ class User extends AppModel {
 		),
 	);
 	
+	var $belongsTo = array(
+		'CurrentProfile' => array(
+			'className' => 'Profile',
+			'foreignKey' => 'current_profile_id',
+		),
+	);
+	
 	function __construct($id = false, $table = null, $ds = null) {
 		$return = parent::__construct();
 		$this->validate = array(

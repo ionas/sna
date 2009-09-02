@@ -18,6 +18,14 @@ class Profile extends AppModel {
 		),
 	);
 	
+	// 0 or 1
+	var $hasOne = array(
+		'CurrentProfileUser' => array(
+			'className' => 'User',
+			'foreignKey' => 'current_profile_id',
+		),
+	);
+	
 	var $hasMany = array(
 		'Message' => array(
 			'className' => 'Message',
