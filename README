@@ -32,6 +32,7 @@ X Add Language switcher to $layout + save in Cookies
 X Profile page
 X Profile visibility options
 X Shoutbox
+- Move "user" and "profile" "current" naming to "active" (better readability)
 - Messaging
 - Messaging auth challenge (see ICQ)
 - Profile picture uploads

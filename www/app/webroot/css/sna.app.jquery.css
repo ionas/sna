@@ -6,7 +6,7 @@ form div.submit input.userHasSubmitted:focus {
 	border-color: #ddd;
 	border-width: 1px;
 	margin-bottom: 1px;
-	background-image: url('../img/loading_animation_grey.gif');
+	background-image: url('../img/loading_animation_trans.gif');
 	background-repeat: no-repeat;
 	background-position: right center;
 	padding-right: 22px;
