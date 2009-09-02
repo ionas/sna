@@ -1,10 +1,10 @@
 # Sequel Pro dump
-# Version 1239
+# Version 1295
 # http://code.google.com/p/sequel-pro
 #
 # Host: localhost (MySQL 5.0.67)
 # Database: sna_development
-# Generation Time: 2009-08-21 22:33:39 +0200
+# Generation Time: 2009-09-02 15:42:51 +0200
 # ************************************************************
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -29,6 +29,7 @@ CREATE TABLE `messages` (
   `user_id` char(36) NOT NULL,
   `profile_id` char(36) NOT NULL,
   `from_profile_id` char(36) NOT NULL,
+  `to_profile_id` char(36) NOT NULL,
   `subject` varchar(100) NOT NULL,
   `body` text NOT NULL,
   `is_read` tinyint(1) NOT NULL default '0',
@@ -39,10 +40,15 @@ CREATE TABLE `messages` (
 
 LOCK TABLES `messages` WRITE;
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
-INSERT INTO `messages` (`id`,`created`,`modified`,`user_id`,`profile_id`,`from_profile_id`,`subject`,`body`,`is_read`,`is_replied`,`is_trashed`)
+INSERT INTO `messages` (`id`,`created`,`modified`,`user_id`,`profile_id`,`from_profile_id`,`to_profile_id`,`subject`,`body`,`is_read`,`is_replied`,`is_trashed`)
 VALUES
-	('4a6c45fa-6200-47bb-aac7-02378784ca84','2009-07-26 14:03:06','2009-08-21 20:34:55','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a648ce4-08a4-46e2-91f8-024a8784ca84','Thats a Message From X to Y','Hai!',0,0,0),
-	('4a8f041b-54ac-49fd-8c8e-01008784ca84','2009-08-21 22:31:23','2009-08-21 22:31:23','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','bar','batz',1,1,0);
+	('4a6c45fa-6200-47bb-aac7-02378784ca84','2009-07-26 14:03:06','2009-08-21 20:34:55','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','Thats a Message From X to Y','Hai!',0,0,0),
+	('4a8f041b-54ac-49fd-8c8e-01008784ca84','2009-08-21 22:31:23','2009-08-21 22:31:23','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','bar','batz',0,0,0),
+	('4a93f7d8-c8f0-48e3-a7f7-01778784ca84','2009-08-25 16:40:24','2009-08-25 16:40:24','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','batz','bar',0,0,0),
+	('4a6c45fa-6200-47bb-aac7-02378784c284','2009-07-26 14:03:06','2009-08-21 20:34:55','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','Thats a Message From X to Y','Hai!',1,1,0),
+	('4a6c45fa-6200-47bb-aac7-02378784c684','2009-07-26 14:03:06','2009-08-21 20:34:55','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','Thats a Message From X to Y','Hai!',1,1,1),
+	('4a4c45fa-6200-47bb-aac7-02378784ca84','2009-07-26 14:03:06','2009-08-21 20:34:55','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','Thats a Message From X to Y','Hai!',1,0,0),
+	('4a93f7d8-c8f0-48e3-a7f7-01778784c284','2009-08-25 16:40:24','2009-08-25 16:40:24','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ga84','4a93f845-c860-40d4-81ec-00e68784ca84','batz','bar',0,0,0);
 
 /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -71,7 +77,8 @@ LOCK TABLES `profiles` WRITE;
 /*!40000 ALTER TABLE `profiles` DISABLE KEYS */;
 INSERT INTO `profiles` (`id`,`created`,`modified`,`user_id`,`is_deleted`,`is_hidden`,`nickname`,`birthday`,`location`)
 VALUES
-	('4a8f0408-6568-49bc-9b81-017a8784ca84','2009-08-21 22:31:04','2009-08-21 22:31:04','4a648ce4-08a4-46e2-91f8-024a8784ca84',0,0,'foo','1984-06-15 00:00:00','bar');
+	('4a8f0408-6568-49bc-9b81-017a8784ca84','2009-08-21 22:31:04','2009-08-25 16:42:38','4a648ce4-08a4-46e2-91f8-024a8784ca84',0,0,'Jones','1984-06-15 00:00:00','InTheBar'),
+	('4a93f845-c860-40d4-81ec-00e68784ca84','2009-08-25 16:42:13','2009-08-25 16:42:28','4a841aaa-6be4-4851-a666-00e38784ca84',0,0,'TheAbcGuy','1984-06-15 00:00:00','ABC');
 
 /*!40000 ALTER TABLE `profiles` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -149,16 +156,17 @@ CREATE TABLE `users` (
   `activation_key` varchar(19) NOT NULL default '',
   `last_login` datetime default NULL,
   `password_reset_key` varchar(19) default '',
+  `current_profile_id` char(36) default NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `UNIQUE_USERNAME` (`username`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` (`id`,`created`,`modified`,`is_deleted`,`is_disabled`,`has_accepted_tos`,`username`,`password`,`email`,`activation_key`,`last_login`,`password_reset_key`)
+INSERT INTO `users` (`id`,`created`,`modified`,`is_deleted`,`is_disabled`,`has_accepted_tos`,`username`,`password`,`email`,`activation_key`,`last_login`,`password_reset_key`,`current_profile_id`)
 VALUES
-	('4a648ce4-08a4-46e2-91f8-024a8784ca84','2009-08-03 16:15:22','2009-08-21 20:54:27',0,0,1,'ionas','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b','ionas@sna.dev','','2009-08-21 20:54:27',''),
-	('4a841aaa-6be4-4851-a666-00e38784ca84','2009-08-13 15:52:42','2009-08-14 21:49:30',0,0,0,'abc','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b','sna@mailinator.com','','2009-08-14 21:49:30','');
+	('4a648ce4-08a4-46e2-91f8-024a8784ca84','2009-08-03 16:15:22','2009-09-02 15:37:49',0,0,1,'ionas','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b','ionas@sna.dev','','2009-09-02 15:37:49','','4a8f0408-6568-49bc-9b81-017a8784ca84'),
+	('4a841aaa-6be4-4851-a666-00e38784ca84','2009-08-13 15:52:42','2009-08-25 17:04:20',0,0,1,'abc','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b','sna@mailinator.com','','2009-08-25 17:04:20','','4a93f845-c860-40d4-81ec-00e68784ca84');
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
