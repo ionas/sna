@@ -76,7 +76,7 @@ class AppController extends Controller {
 	
 	function beforeRender(){
 		$this->set('controller_css_for_layout', 'views' . DS  . '_empty');
-		$this->set('view_css_for_layout', '_empty');
+		$this->set('view_css_for_layout', 'views' . DS  . '_empty');
 		if (file_exists(CSS . 'views' . DS . strtolower($this->name) . '.css')) {
 			$this->set('controller_css_for_layout', 'views' . DS . strtolower($this->name));
 		}
