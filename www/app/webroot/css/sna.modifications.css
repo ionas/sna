@@ -101,3 +101,8 @@ div#flashMessage.message {
 	margin-right: .5em;
 	border-right: 1px solid white;
 }
+#footer a {
+	color: white;
+	text-decoration: none;
+	background: none;
+}

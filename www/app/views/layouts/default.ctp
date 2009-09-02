@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC
 	"-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" id="top">
 <head>
 	<?=$html->charset()?>
 	<title>Social Network Application &middot; <?=$title_for_layout?></title>
@@ -14,6 +14,7 @@
 		echo $html->css('sna.modifications');
 		echo $javascript->link('jquery-1.3.2');
 		echo $javascript->link('jquery.timers');
+		echo $javascript->link('jquery.smoothScroll');
 		echo $javascript->link('sna.app.jquery');
 		echo $scripts_for_layout;
 	?>
@@ -33,6 +34,7 @@
 			<?=$content_for_layout?>
 		</div>
 		<div id="footer">
+			<a href="#top">&uarr;</a>
 			<?=$html->link(
 					$html->image('cake.power.gif', array(
 						'alt'=> __("CakePHP: the rapid development php framework", true),
