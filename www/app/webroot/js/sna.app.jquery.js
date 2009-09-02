@@ -1,9 +1,9 @@
 $(window).load(function(){
-	$("div.message").oneTime(2000, function() {
-		$(this).fadeTo(1000, .01);
+	$("div.message").oneTime(2500, function() {
+		$(this).fadeTo(750, .01);
 	});
-	$("div.message").oneTime(2001, function() {
-		$(this).slideUp(500);
+	$("div.message").oneTime(2501, function() {
+		$(this).slideUp(200);
 	});
 	$("form").submit(function () { 
 		$("input[type=submit]").removeClass("userHasNotSubmitted");
