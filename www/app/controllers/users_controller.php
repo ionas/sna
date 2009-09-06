@@ -116,8 +116,8 @@ class UsersController extends AppController {
 		}
 		if ($this->User->del($id)) {
 			$this->Session->setFlash(
-				String::insert(__('User Account :authedUser removed.', true),
-					array('authedUser' => $this->Auth->user('username'))));
+				String::insert(__('User Account :activeUser removed.', true),
+					array('activeUser' => $this->Auth->user('username'))));
 			$this->redirect($this->Auth->logout());
 		}
 	}
@@ -223,7 +223,7 @@ class UsersController extends AppController {
 	}
 	
 	function login() {
-		$this->set('authedUser', $this->Auth->user('username'));
+		$this->getActiveUser();
 		if($this->Auth->isAuthorized() === true) {
 			$this->User->updateLastLogin($this->Auth->user());
 			if(!empty($this->data)) {

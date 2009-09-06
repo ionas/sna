@@ -18,7 +18,7 @@
 		<?php
 		// $paginateOptions = array('url' => array($this->passedArgs['0'])) */ $paginateOptions = array();
 		// // for urls like http://www.example.com/en/controller/action
-		// // that are routed as Router::connect('/:lang/:controller/:action/*', array(),array('lang'=>'ta|en'));
+		// // that are routed as Router::connect('/:lang/:controller/:action/*', array(),array('lang' => 'ta|en'));
 		// $paginator->options(array('url'=>array_merge(array('lang'=>$lang),$this->passedArgs)));
 		?>
 		<div class="paging">
@@ -29,11 +29,15 @@
 		<table cellpadding="0" cellspacing="0">
 			<tr>
 				<?php if ($filter == 'sent'):?>
-				<th class="toFrom"><?=$paginator->sort(__('To', true),      'to_profile_id')?></th>
+				<th class="toFrom"><?=$paginator->sort(__('To', true),   'to_profile_id')?>
+					<?=$paginator->sort(__('Date', true), 'created')?></th>
 				<?php else:?>
-				<th class="toFrom"><?=$paginator->sort(__('From', true),    'from_profile_id')?></th>
+				<th class="toFrom"><?=$paginator->sort(__('From', true), 'from_profile_id')?>
+					<?=$paginator->sort(__('Date', true), 'created')?></th>
 				<?php endif?>
-				<th class="date"><?=$paginator->sort(__('Date', true),    'created')?></th>
+				<?php if ($filter == 'trash'):?>
+				<th class="toFrom"><?=$paginator->sort(__('To', true),   'to_profile_id')?></th>
+				<?php endif?>
 				<th class="subject"><?=$paginator->sort(__('Subject', true), 'subject')?></th>
 				<th class="actions"><?php __('Actions')?></th>
 			</tr>
@@ -58,34 +62,33 @@ foreach ($messages as $message):
 ?>
 			<tr<?=$class?>>
 				<?php if ($filter == 'sent'):?>
-				<td>
-					<?=$html->link($message['Message']['to_profile_id'], array('controller' => 'profiles', 'action' => 'view', $message['Message']['to_profile_id']))?>
-				</td>
+				<td><?=$html->link($message['ToProfile']['nickname'], array('controller' => 'profiles', 'action' => 'view', $message['Message']['to_profile_id']))?>
+					<br /><?=__('On');?> <?=substr($message['Message']['created'], 0, -3)?></td>
 				<?php else:?>
-				<td>
-					<?=$html->link($message['Message']['from_profile_id'], array('controller' => 'profiles', 'action' => 'view', $message['Message']['from_profile_id']))?>
-				</td>
+				<td><?=$html->link($message['FromProfile']['nickname'], array('controller' => 'profiles', 'action' => 'view', $message['Message']['from_profile_id']))?>
+					<br /><?=__('On');?> <?=substr($message['Message']['created'], 0, -3)?></td>
 				<?php endif?>
-				<td>
-					<?=substr($message['Message']['created'], 0, -3)?>
+				<?php if ($filter == 'trash'):?>
+				<td><?=$html->link($message['ToProfile']['nickname'], array('controller' => 'profiles', 'action' => 'view', $message['Message']['to_profile_id']))?></td>
+				<?php endif?>
+				<td class="messageSubject">
+					<?=$message['Message']['subject']?>
 				</td>
-				<td>
-					<strong><?=$message['Message']['subject']?></strong>
-					<div class="clickForMore">
-					<?=$message['Message']['body'], 0, 5?>
-					</div>
-				</td>
-				<td class="actions">
-					<?=$html->link(__('View', true), array('action'=>'view', $message['Message']['id']))?>
+				<td class="actions" rowspan="2">
 					<?php if ($message['Message']['profile_id'] != $message['Message']['from_profile_id']):?>
-						<?=$html->link(__('Reply', true), array('action'=>'reply', $message['Message']['id']))?>
+						<?=$html->link(__('Reply', true), array('action' => 'reply', $message['Message']['id']), array('class' => 'iconLinkButton reply'))?>
 					<?php endif?>
 					<?php if ($message['Message']['is_trashed'] == 1):?>
-						<?=$html->link(__('Restore', true), array('action'=>'restore', $message['Message']['id']))?>
-						<?=$html->link(__('Remove', true), array('action'=>'delete', $message['Message']['id']), null, __('Are you sure you want to delete', true).' #' . $message['Message']['id'])?>
+						<?=$html->link(__('Restore', true), array('action' => 'restore', $message['Message']['id']), array('class' => 'iconLinkButton restore'))?>
+						<?=$html->link(__('Remove', true), array('action' => 'delete', $message['Message']['id']), array('class' => 'iconLinkButton delete'), __('Are you sure you want to remove', true).' "' . $message['Message']['subject'] . '" permanently?')?>
 					<?php else:?>
-						<?=$html->link(__('Move to Trash', true), array('action'=>'trash', $message['Message']['id']), null, __('Are you sure you want to move', true).' #' . $message['Message']['id'] . ' to the trash.')?>
+						<?=$html->link(__('Move to Trash', true), array('action' => 'trash', $message['Message']['id']), array('class' => 'iconLinkButton trash'), __('Are you sure you want to move', true).' "' . $message['Message']['subject'] . '" to the trash.')?>
 					<?php endif?>
+				</td>
+			</tr>
+			<tr<?=$class?>>
+				<td colspan="<?php echo ($filter == "trash") ? '4' : '3'?>" class="messageBody">
+					<?=$message['Message']['body'], 0, 5?>
 				</td>
 			</tr>
 <?php endforeach?>

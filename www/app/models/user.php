@@ -1,8 +1,9 @@
 <?php
-
 class User extends AppModel {
 	
 	var $name = 'User';
+	
+	var $actsAs = array('Containable');
 	
 	var $validate = array(); // See function __construct()
 	
@@ -22,9 +23,9 @@ class User extends AppModel {
 	);
 	
 	var $belongsTo = array(
-		'CurrentProfile' => array(
+		'ActiveProfile' => array(
 			'className' => 'Profile',
-			'foreignKey' => 'current_profile_id',
+			'foreignKey' => 'active_profile_id',
 		),
 	);
 	

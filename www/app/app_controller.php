@@ -9,7 +9,38 @@ class AppController extends Controller {
 		$this->__setupAuth();
 		$this->__checkHasAcceptedTos();
 		$this->__setLanguage();
-	} 
+	}
+	
+	function beforeRender(){
+		// Automagically load CSS files for controllers and actions/views
+		$this->set('controller_css_for_layout', 'views' . DS  . '_empty');
+		$this->set('view_css_for_layout', 'views' . DS  . '_empty');
+		if (file_exists(CSS . 'views' . DS . strtolower($this->name) . '.css')) {
+			$this->set('controller_css_for_layout', 'views' . DS . strtolower($this->name));
+		}
+		if (file_exists(CSS . 'views' . DS . strtolower($this->name) . DS . $this->action . '.css')) {
+			$this->set('view_css_for_layout', 'views' . DS . strtolower($this->name) . DS . $this->action);
+		}
+	}
+	
+	function getActiveUser($setForModelalias = null) {
+		if($this->Auth->isAuthorized()) {
+			$activeUser = $this->Auth->user();
+			if($setForModelalias != null) {
+				$this->data[$setForModelalias]['user_id'] = $activeUser['User']['id'];
+			}
+			App::import('Profile');
+			$Profile = new Profile();
+			$profileData = $Profile->find('first', array(
+					'fields' => array('id'),
+					'conditions' => array('user_id' => $activeUser['User']['id'])));
+			$this->set('activeUser', $activeUser);
+			return $activeUser;
+		} else {
+			$this->set('activeUser', null);
+			return false;
+		}
+	}
 	
 	function __setLanguage() {
 		if ($this->Cookie->read('lang') && !$this->Session->check('Config.language')) {
@@ -53,35 +84,6 @@ class AppController extends Controller {
 				$this->Session->write('TermsOfService.redirect', $this->here);
 				$this->redirect(array('controller' => 'users', 'action' => 'terms_of_service'));
 			}
-		}
-	}
-	
-	function getCurrentUser($setForModelalias = null) {
-		if($this->Auth->isAuthorized()) {
-			$authedUser = $this->Auth->user();
-			if($setForModelalias != null) {
-				$this->data[$setForModelalias]['user_id'] = $authedUser['User']['id'];
-			}
-			App::import('Profile');
-			$Profile = new Profile();
-			$profileData = $Profile->find('first', array(
-					'fields' => array('id'),
-					'conditions' => array('user_id' => $authedUser['User']['id'])));
-			$this->set('authedUser', $authedUser);
-			return $authedUser;
-		} else {
-			return false;
-		}
-	}
-	
-	function beforeRender(){
-		$this->set('controller_css_for_layout', 'views' . DS  . '_empty');
-		$this->set('view_css_for_layout', 'views' . DS  . '_empty');
-		if (file_exists(CSS . 'views' . DS . strtolower($this->name) . '.css')) {
-			$this->set('controller_css_for_layout', 'views' . DS . strtolower($this->name));
-		}
-		if (file_exists(CSS . 'views' . DS . strtolower($this->name) . DS . $this->action . '.css')) {
-			$this->set('view_css_for_layout', 'views' . DS . strtolower($this->name) . DS . $this->action);
 		}
 	}
 	

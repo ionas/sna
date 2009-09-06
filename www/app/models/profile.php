@@ -3,6 +3,8 @@ class Profile extends AppModel {
 	
 	var $name = 'Profile';
 	
+	var $actsAs = array('Containable');
+	
 	var $displayField = 'nickname';
 	
 	var $validate = array(
@@ -18,13 +20,14 @@ class Profile extends AppModel {
 		),
 	);
 	
-	// 0 or 1
+	/*
 	var $hasOne = array(
-		'CurrentProfileUser' => array(
+		'ActiveProfileUser' => array(
 			'className' => 'User',
-			'foreignKey' => 'current_profile_id',
+			'foreignKey' => 'active_profile_id',
 		),
 	);
+	*/
 	
 	var $hasMany = array(
 		'Message' => array(

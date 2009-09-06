@@ -1,7 +1,9 @@
 <?php
 class Message extends AppModel {
-
+	
 	var $name = 'Message';
+	
+	var $actsAs = array('Containable');
 	
 	var $validate = array(
 		'user_id' => array('notempty'),
@@ -12,7 +14,7 @@ class Message extends AppModel {
 		'is_replied' => array('numeric'),
 		'is_trashed' => array('numeric')
 	);
-		
+	
 	var $belongsTo = array(
 		'User' => array(
 			'className' => 'User',
@@ -31,6 +33,6 @@ class Message extends AppModel {
 			'foreignKey' => 'to_profile_id',
 		),
 	);
-
+	
 }
 ?>

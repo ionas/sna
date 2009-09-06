@@ -14,7 +14,7 @@ if($hasAcceptedTos != 1) {
 }
 ?>
 </p>
-<fieldset id="tos_window">
+<fieldset id="tosWindow">
 <?=$termsOfService?>
 <br>
 <p>

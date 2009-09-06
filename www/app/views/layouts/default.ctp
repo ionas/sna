@@ -8,10 +8,10 @@
 	<?php
 		echo $html->meta('icon');
 		echo $html->css('cake.generic');
-		echo $html->css('sna.basic');
-		echo $html->css('sna.app');
-		echo $html->css('sna.app.jquery');
-		echo $html->css('sna.modifications');
+		echo $html->css('app.generic');
+		echo $html->css('app.layout');
+		echo $html->css('app.form');
+		echo $html->css('app.jquery');
 		echo $html->css($controller_css_for_layout);
 		echo $html->css($view_css_for_layout);
 		echo $javascript->link('jquery-1.3.2');
@@ -25,7 +25,7 @@
 	<div id="container">
 		<div id="header">
 			<h1><?=$html->link(__('Social Network Application', true), '/')?></h1>
-			<div id="lang_selector">
+			<div id="langSelector">
 				<p><?php echo $html->link('In English', array('lang' => 'eng'))?></p>
 				<p><?php echo $html->link('In Deutsch', array('lang' => 'deu'))?></p>
 			</div>

@@ -3,8 +3,8 @@
 <?=$form->create('User', array('action' => 'login'))?>
 	<fieldset>
 		<legend><?php __('Login');?></legend>
-	<?php if($authedUser != null):?>
-	<p><?=__('You are currently logged in as')?> <strong><?=$authedUser?></strong>.</p>
+	<?php if($activeUser != null):?>
+	<p><?=__('You are currently logged in as')?> <strong><?=$activeUser['User']['username']?></strong>.</p>
 	<br>
 	<?php endif?>
 

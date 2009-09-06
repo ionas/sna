@@ -24,11 +24,11 @@ class ProfilesController extends AppController {
 	}
 	
 	function add() {
-		if($profileData = $this->Profile->profileExists($this->getCurrentUser())) {
+		if($profileData = $this->Profile->profileExists($this->getActiveUser())) {
 			$this->redirect(array('action' => 'edit', $profileData['Profile']['id']));
 		}
 		if (!empty($this->data)) {
-			$this->getCurrentUser('Profile');
+			$this->getActiveUser('Profile');
 			$this->Profile->create();
 			if ($this->Profile->save($this->data, true, array(
 						'user_id', 'is_hidden', 'nickname', 'birthday', 'location'))) {
@@ -48,7 +48,7 @@ class ProfilesController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		if (!empty($this->data)) {
-			$this->getCurrentUser('Profile');
+			$this->getActiveUser('Profile');
 			if ($this->Profile->save($this->data, true, array(
 						'is_hidden', 'nickname', 'birthday', 'location'))) {
 				$this->Session->setFlash(__('The Profile has been saved', true));
@@ -64,7 +64,7 @@ class ProfilesController extends AppController {
 	}
 	
 	function delete($id = null) {
-		$id = $this->getCurrentUser();
+		$id = $this->getActiveUser();
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for Profile', true));
 		}

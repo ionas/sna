@@ -1,0 +1,64 @@
+/* header */
+#header h1 {
+	background-image: url('../img/app.icon.gif');
+	background-repeat: no-repeat left;
+	background-position: left -8px;
+	padding-left: 40px;
+}
+
+/* lang selector */
+#header {
+	position: relative;
+}
+#langSelector {
+	position: absolute;
+	top: 1em;
+	right: 1em;
+}
+#langSelector p {
+	float: left;
+	line-height: 80%;
+}
+#langSelector p a {
+	background: transparent;
+	color: white;
+	font-weight: normal;
+}
+#langSelector p:first-child {
+	padding-right: .5em;
+	margin-right: .5em;
+	border-right: 1px solid white;
+}
+
+/* flash message */
+div#authMessage.message,
+div#flashMessage.message {
+	width: 48.4em;
+	margin: 0;
+	border: 1px solid #900;
+	border-radius: 4px; /* CSS 3 */
+	-o-border-radius: 4px; /* Opera */
+	-icab-border-radius: 4px; /* iCab */
+	-khtml-border-radius: 4px; /* Konqueror */
+	-moz-border-radius: 4px; /* Firefox */
+	-webkit-border-radius: 4px; /* Safari */
+	background-image: url('/img/error_bg_2.png');
+	background-repeat: no-repeat;
+	background-position: .1em -.1em;
+	padding-left: 2.2em;
+	padding-top: .4em;
+	padding-bottom: .4em;
+	padding-right: 1em;
+	margin-bottom: 2em;
+	margin-left: 1.4em;
+	margin-top: 2em;
+	font-size: 110%;
+	background-color: #fffff7;
+}
+
+/* debug */
+.cake-sql-log caption {
+	font-size: 90%;
+	padding-bottom: 1em;
+	color: #fff;
+}
