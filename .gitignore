@@ -1,6 +1,9 @@
 # Database configuration
 www/app/config/database.php
 
+# Deployment specific
+www/app/config/core.deployment.php
+
 # System specific .htaccess file
 www/app/webroot/.htaccess
 
