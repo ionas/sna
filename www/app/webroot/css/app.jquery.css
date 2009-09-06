@@ -12,11 +12,20 @@ form div.submit input.userHasSubmitted:focus {
 	padding-right: 20px;
 	outline: none;
 }
+.messageSubjectClicked {
+	color: transparent;
+	border-bottom-color: transparent;
+	border-right-color: transparent;
+}
 .messageSubjectClickable {
 	cursor: pointer;
+	visibility: visible;
+	color: inherit;
+	border-bottom-color: silver;
+	border-right-color: silver;
 }
 .messageSubjectClickable:before {
-	content: "↵";
+	content: "↓";
 	font-weight: bold;
 }
 .messageBody.messageBodyHidden {

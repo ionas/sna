@@ -19,10 +19,17 @@ $(window).load(function(){
 	});
 	// Messages clickToRead
 	$(".messageSubject").click(function(){
+		// Making subjects clickable
 		$(this).parent().parent().find(".messageSubject").addClass('messageSubjectClickable');
 		$(this).parent().find(".messageSubject").removeClass('messageSubjectClickable');
+		$(this).parent().find(".messageSubject").addClass('messageSubjectClicked');
+		// Toggling the messageBody
 		$(this).parent().parent().find(".messageBody").addClass('messageBodyHidden');
 		$(this).parent().next().find(".messageBody").removeClass('messageBodyHidden');
+		// Moving around the subject
+		$(this).parent().parent().find(".messageBodySubject").remove();
+		currentSubject = '<h3 class="messageBodySubject">' + $(this).html() + '</h3>';
+		$(this).parent().next().find(".messageBody").prepend(currentSubject);
 	});
 	// SmoothScroll
 	enable_smooth_scroll();

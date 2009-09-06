@@ -227,4 +227,6 @@
 	
 	Configure::write('Config.language', 'eng');
 	
+	require_once('core.deployment.php');
+	
 ?>

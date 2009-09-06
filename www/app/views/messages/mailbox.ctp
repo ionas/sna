@@ -1,3 +1,4 @@
+
 <div class="messages mailbox">
 	<h2><?php __('Messages')?> &mdash; <?=$messagesTitle?></h2>
 	<div class="menu">
@@ -88,7 +89,7 @@ foreach ($messages as $message):
 			</tr>
 			<tr<?=$class?>>
 				<td colspan="<?php echo ($filter == "trash") ? '4' : '3'?>" class="messageBody">
-					<?=$message['Message']['body'], 0, 5?>
+					<?=nl2br($message['Message']['body'])?>
 				</td>
 			</tr>
 <?php endforeach?>

@@ -79,7 +79,7 @@ class MessagesController extends AppController {
 				'FromProfile',
 			),
 			'conditions' => $conditions,
-			'limit' => 10,
+			'limit' => 3,
 		);
 		$this->set('filter', $filter);
 		$this->set('messages', $this->paginate());

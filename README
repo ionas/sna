@@ -59,6 +59,7 @@ X Shoutbox
 - add UNIQUE_PROFILE_PER_USER to SQL
 - /users/register;lang=eng
 - http://book.cakephp.org/view/395/autoRedirect and https://trac.cakephp.org/ticket/3974
+- Sanitize: <?php App::import('Sanitize')?> / Sanitize::html()
 
 NOTICES:
 - 5.2 <= PHP_VERSION < 5.3
