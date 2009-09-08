@@ -10,8 +10,7 @@ class MessagesController extends AppController {
 	}
 	
 	function mailbox($filter = null) {
-		$profileData = $this->getActiveUser();
-		$profileId = $profileData['User']['active_profile_id'];
+		$profileId = $this->Auth->user('active_profile_id');
 		switch($filter) {
 			case 'inbox':
 				$this->set('messagesTitle', __('Inbox', true));
@@ -83,6 +82,22 @@ class MessagesController extends AppController {
 		);
 		$this->set('filter', $filter);
 		$this->set('messages', $this->paginate());
+	}
+	
+	function send() {
+		
+	}
+	
+	function reply() {
+		
+	}
+	
+	function trash() {
+		
+	}
+	
+	function restore() {
+		
 	}
 	
 	function delete($id = null) {

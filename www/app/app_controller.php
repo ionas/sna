@@ -23,25 +23,6 @@ class AppController extends Controller {
 		}
 	}
 	
-	function getActiveUser($setForModelalias = null) {
-		if($this->Auth->isAuthorized()) {
-			$activeUser = $this->Auth->user();
-			if($setForModelalias != null) {
-				$this->data[$setForModelalias]['user_id'] = $activeUser['User']['id'];
-			}
-			App::import('Profile');
-			$Profile = new Profile();
-			$profileData = $Profile->find('first', array(
-					'fields' => array('id'),
-					'conditions' => array('user_id' => $activeUser['User']['id'])));
-			$this->set('activeUser', $activeUser);
-			return $activeUser;
-		} else {
-			$this->set('activeUser', null);
-			return false;
-		}
-	}
-	
 	function __setLanguage() {
 		if ($this->Cookie->read('lang') && !$this->Session->check('Config.language')) {
 		    $this->Session->write('Config.language', $this->Cookie->read('lang'));
@@ -63,6 +44,7 @@ class AppController extends Controller {
 		$this->Auth->logoutRedirect = '/';
 		$this->Auth->loginRedirect = array('controller' => 'users', 'action' => 'home');
 		$this->Auth->autoRedirect = true;
+		$this->set('activeUser', $this->Auth->user());
 	}
 	
 	function __checkHasAcceptedTos() {
@@ -88,25 +70,4 @@ class AppController extends Controller {
 	}
 	
 }
-?>
-<?php
-/*
-function list_system_locales(){
-    ob_start();
-    system('locale -a');
-    $str = ob_get_contents();
-    ob_end_clean();
-    return split("\\n", trim($str));
-}
-
-$locale = "de_DE.UTF8";
-$locales = list_system_locales();
-
-if(in_array($locale, $locales)){
-        echo "yes yes yes....";
-}else{
-        echo "no no no.......";
-}
-debug($locales);
-*/
 ?>

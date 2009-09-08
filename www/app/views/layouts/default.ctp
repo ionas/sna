@@ -5,29 +5,27 @@
 <head>
 	<?=$html->charset()?>
 	<title>Social Network Application &middot; <?=$title_for_layout?></title>
-	<?php
-		echo $html->meta('icon');
-		echo $html->css('cake.generic');
-		echo $html->css('app.generic');
-		echo $html->css('app.layout');
-		echo $html->css('app.form');
-		echo $html->css('app.jquery');
-		echo $html->css($controller_css_for_layout);
-		echo $html->css($view_css_for_layout);
-		echo $javascript->link('jquery-1.3.2');
-		echo $javascript->link('jquery.timers');
-		echo $javascript->link('jquery.smoothScroll');
-		echo $javascript->link('sna.app.jquery');
-		echo $scripts_for_layout;
-	?>
+	<?=$html->meta('icon')?> 
+	<?=$html->css('cake.generic')?> 
+	<?=$html->css('app.generic')?> 
+	<?=$html->css('app.layout')?> 
+	<?=$html->css('app.form')?> 
+	<?=$html->css('app.jquery')?> 
+	<?=$html->css($controller_css_for_layout)?> 
+	<?=$html->css($view_css_for_layout)?> 
+	<?=$javascript->link('jquery-1.3.2')?> 
+	<?=$javascript->link('jquery.timers')?> 
+	<?=$javascript->link('jquery.smoothScroll')?> 
+	<?=$javascript->link('app.jquery')?> 
+	<?=$scripts_for_layout?> 
 </head>
 <body>
 	<div id="container">
 		<div id="header">
 			<h1><?=$html->link(__('Social Network Application', true), '/')?></h1>
 			<div id="langSelector">
-				<p><?php echo $html->link('In English', array('lang' => 'eng'))?></p>
-				<p><?php echo $html->link('In Deutsch', array('lang' => 'deu'))?></p>
+				<p><?=$html->link('In English', array('lang' => 'eng'))?></p>
+				<p><?=$html->link('In Deutsch', array('lang' => 'deu'))?></p>
 			</div>
 		</div>
 		<div id="content">
@@ -38,7 +36,7 @@
 		<div id="footer">
 			<a href="#top">&uarr;</a>
 			<?=$html->link(
-					$html->image('cake.power.gif', array(
+				$html->image('cake.power.gif', array(
 						'alt'=> __("CakePHP: the rapid development php framework", true),
 						'border'=>"0")),
 					'http://www.cakephp.org',

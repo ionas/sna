@@ -6,7 +6,13 @@ $(window).load(function(){
 	$("#flashMessage").oneTime(2500, function() {
 		$(this).fadeTo(750, .01);
 	});
+	$("#authMessage").oneTime(2500, function() {
+		$(this).fadeTo(750, .01);
+	});
 	$("#flashMessage").oneTime(2501, function() {
+		$(this).slideUp(200);
+	});
+	$("#authMessage").oneTime(2501, function() {
 		$(this).slideUp(200);
 	});
 	// FormSubmitAnimation

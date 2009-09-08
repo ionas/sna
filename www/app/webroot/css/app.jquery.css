@@ -6,12 +6,14 @@ form div.submit input.userHasSubmitted:focus {
 	border-color: #ddd;
 	border-width: 1px;
 	margin-bottom: 1px;
-	background-image: url('../img/loading_animation.gif');
+	background-image: url('/img/loading_animation.gif');
 	background-repeat: no-repeat;
 	background-position: right center;
 	padding-right: 20px;
 	outline: none;
 }
+
+/* /messages/mailbox */
 .messageSubjectClicked {
 	color: transparent;
 	border-bottom-color: transparent;

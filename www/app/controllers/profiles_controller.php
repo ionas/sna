@@ -5,9 +5,8 @@ class ProfilesController extends AppController {
 	var $helpers = array('Html', 'Form', 'Javascript');
 	
 	function beforeFilter() {
-		$return = parent::beforeFilter();
+		parent::beforeFilter();
 		$this->Auth->allow(array('view'));
-		return $return;
 	}
 	
 	function index() {
@@ -24,11 +23,11 @@ class ProfilesController extends AppController {
 	}
 	
 	function add() {
-		if($profileData = $this->Profile->profileExists($this->getActiveUser())) {
+		if($profileData = $this->Profile->profileExists($this->Auth->user())) {
 			$this->redirect(array('action' => 'edit', $profileData['Profile']['id']));
 		}
 		if (!empty($this->data)) {
-			$this->getActiveUser('Profile');
+			$this->data['Profile']['user_id'] = $this->Auth->user('id');
 			$this->Profile->create();
 			if ($this->Profile->save($this->data, true, array(
 						'user_id', 'is_hidden', 'nickname', 'birthday', 'location'))) {
@@ -48,7 +47,7 @@ class ProfilesController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		if (!empty($this->data)) {
-			$this->getActiveUser('Profile');
+			$this->data['Profile']['user_id'] = $this->Auth->user('id');
 			if ($this->Profile->save($this->data, true, array(
 						'is_hidden', 'nickname', 'birthday', 'location'))) {
 				$this->Session->setFlash(__('The Profile has been saved', true));

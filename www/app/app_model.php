@@ -70,10 +70,6 @@ class AppModel extends Model {
 				$domainName = substr($domainName, 4);
 			}
 			$Email->from = 'noreply@' . $domainName;
-			
-			//Set the body of the mail as we send it.
-			//Note: the text can be an array, each element will appear as a
-			//seperate line in the message body.
 			$Controller->set($viewData);
 			$isSend = $Email->send();
 			if ($isSend == false) {
@@ -104,4 +100,15 @@ class AppModel extends Model {
 		return false;
 	}
 	
+	function validates($options = array()) {
+		// Debug validation
+		$errors = $this->invalidFields($options);
+		if (is_array($errors) && !empty($errors)) {
+			$this->log($errors, 'debug');
+		}
+		// Validate
+		return parent::validates($options);
+	}
+	
 }
+?>

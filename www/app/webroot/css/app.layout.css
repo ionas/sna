@@ -31,8 +31,8 @@
 }
 
 /* flash message */
-div#authMessage.message,
-div#flashMessage.message {
+#authMessage,
+#flashMessage {
 	width: 48.4em;
 	margin: 0;
 	border: 1px solid #900;
@@ -44,7 +44,7 @@ div#flashMessage.message {
 	-webkit-border-radius: 4px; /* Safari */
 	background-image: url('/img/error_bg_2.png');
 	background-repeat: no-repeat;
-	background-position: .1em -.1em;
+	background-position: .1em 0;
 	padding-left: 2.2em;
 	padding-top: .4em;
 	padding-bottom: .4em;

@@ -9,10 +9,12 @@ class Message extends AppModel {
 		'user_id' => array('notempty'),
 		'profile_id' => array('notempty'),
 		'from_profile_id' => array('notempty'),
+		'to_profile_id' => array('notempty'),
 		'subject' => array('notempty'),
+		'body' => array('notempty'),
 		'is_read' => array('numeric'),
 		'is_replied' => array('numeric'),
-		'is_trashed' => array('numeric')
+		'is_trashed' => array('numeric'),
 	);
 	
 	var $belongsTo = array(
@@ -31,6 +33,18 @@ class Message extends AppModel {
 		'ToProfile' => array(
 			'className' => 'Profile',
 			'foreignKey' => 'to_profile_id',
+		),
+		'ParentMessage' => array(
+			'className' => 'Message',
+			'foreignKey' => 'parent_message_id',
+		),
+	);
+	
+	var $hasMany = array(
+		'ChildMessages' => array(
+			'className' => 'Message',
+			'foreignKey' => 'parent_message_id',
+			'dependent' => true,
 		),
 	);
 	

@@ -5,29 +5,31 @@ class UsersController extends AppController {
 	var $components = array('Honeypotting' => array('formModels' => array('User', 'UserOption')));
 	var $helpers = array('Html', 'Form', 'Javascript', 'Honeypot');
 	
-	function index() {
-		$this->redirect('home');
-	}
-	
 	function beforeFilter() {
 		parent::beforeFilter();
 		$this->__authAutoRedirectFixes();
-		$this->Auth->allow(array('login', 'register', 'activate', 'forgot_password', 'new_password', 'home'));
 		// Active users may login
 		$this->Auth->userScope = array(
 			'User.activation_key' => '',
 			'User.is_deleted' => false,
 			'User.is_disabled' => false,
 		);
+		// Public actions
+		$this->Auth->allow(array('login', 'register', 'activate', 'forgot_password', 'new_password', 'home'));
 		if ($this->action == 'register'
 		OR $this->action == 'change_password'
 		OR $this->action == 'new_password') {
 			// Use User::hashPasswords instead Auth::hashPasswords
 			$this->Auth->authenticate = $this->User;
 		}
+		// Disable autoRedirect for login page
 		if($this->action == 'login') {
 			$this->Auth->autoRedirect = false;
 		}
+	}
+	
+	function index() {
+		$this->redirect('home');
 	}
 	
 	function view($id = null) {
@@ -223,7 +225,6 @@ class UsersController extends AppController {
 	}
 	
 	function login() {
-		$this->getActiveUser();
 		if($this->Auth->isAuthorized() === true) {
 			$this->User->updateLastLogin($this->Auth->user());
 			if(!empty($this->data)) {

@@ -32,8 +32,8 @@ X Add Language switcher to $layout + save in Cookies
 X Profile page
 X Profile visibility options
 X Shoutbox
-- Move "user" and "profile" "current" naming to "active" (better readability)
-- Messaging
+X Move "user" and "profile" "current" naming to "active" (better readability)
+o Messaging
 - Messaging auth challenge (see ICQ)
 - Profile picture uploads
 - Basic Profile View (with Shouts)
@@ -41,6 +41,7 @@ X Shoutbox
 - Buddylists
 - Buddy auth challenge
 - ACL
+- Move user_options to profile_options (options per profile, user specific options per users booleans)
 - Security Features and Double Salts
   See also: http://devedge.jonas-hartmann.com/documents/Securing_authentication_and_data_manipulation_via_HTTP.html
 - Routing (index => list, add => register/create/whatever, delete => remove (OR disable))
