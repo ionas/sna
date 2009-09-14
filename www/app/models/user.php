@@ -30,7 +30,7 @@ class User extends AppModel {
 	);
 	
 	function __construct($id = false, $table = null, $ds = null) {
-		$return = parent::__construct();
+		parent::__construct();
 		$this->validate = array(
 'username' => array(
 	'isUnique' => array(
@@ -132,7 +132,6 @@ class User extends AppModel {
 ),
 		);
 		$this->passwordInClearText = null;
-		return $return;
 	}
 	
 	function beforeValidate() {

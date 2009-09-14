@@ -38,6 +38,16 @@ class AppModel extends Model {
 		return false;
 	}
 	
+	function validateUuid($data = null, $fieldname) {
+		if (is_array($data)) {
+			if (preg_match("/[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}/",
+					$data[$fieldname])) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	function pauseValidation($fieldname, $rulename, $switch = true) {
 		if ($switch) {
 			$this->pausedValidate[$fieldname][$rulename] = $this->validate[$fieldname][$rulename];

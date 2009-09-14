@@ -34,13 +34,11 @@ X Profile visibility options
 X Shoutbox
 X Move "user" and "profile" "current" naming to "active" (better readability)
 o Messaging
-- Messaging auth challenge (see ICQ)
 - Profile picture uploads
 - Basic Profile View (with Shouts)
 - Shout hiding
 - Buddylists
-- Buddy auth challenge
-- ACL
+- ACL (if required)
 - Move user_options to profile_options (options per profile, user specific options per users booleans)
 - Security Features and Double Salts
   See also: http://devedge.jonas-hartmann.com/documents/Securing_authentication_and_data_manipulation_via_HTTP.html
@@ -61,6 +59,8 @@ o Messaging
 - /users/register;lang=eng
 - http://book.cakephp.org/view/395/autoRedirect and https://trac.cakephp.org/ticket/3974
 - Sanitize: <?php App::import('Sanitize')?> / Sanitize::html()
+- Messaging auth challenge (see ICQ)
+- Buddy auth challenge
 
 NOTICES:
 - 5.2 <= PHP_VERSION < 5.3

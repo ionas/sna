@@ -2,8 +2,8 @@
 <?=$form->create('User', array('action' => 'forgot_password'))?>
 	<fieldset>
 		<legend><?php __('Get new Password')?></legend>
-<?=$form->error('could_not_send', String::insert(
-			__('Our service at :domain is currently not able to send an Email. We are working on the problem. Try again later.', true),
+	<?=$form->error('could_not_send', String::insert(
+__('Our service at :domain is currently not able to send an Email. We are working on the problem. Try again later.', true),
 			array('domain' => env('SERVER_NAME')))),
 	$form->error('forgot_password'),
 	$honeypot->spawn(),
