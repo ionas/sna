@@ -65,10 +65,9 @@
 </div>
 <div class="actions">
 	<ul>
+		<li><?php echo $html->link(__('Change Email Adress', true), array('action' => 'change_email')); ?> </li>
 		<li><?php echo $html->link(__('Change Password', true), array('action' => 'change_password')); ?> </li>
 		<li><?php echo $html->link(__('Delete User', true), array('action'=>'delete', $user['User']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $user['User']['id'])); ?> </li>
-		<li><?php echo $html->link(__('List Profiles', true), array('controller'=> 'profiles', 'action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__('New Profile', true), array('controller'=> 'profiles', 'action'=>'add')); ?> </li>
 		<li><?php echo $html->link(__('List User Options', true), array('controller'=> 'user_options', 'action'=>'index')); ?> </li>
 		<li><?php echo $html->link(__('New User Option', true), array('controller'=> 'user_options', 'action'=>'add')); ?> </li>
 	</ul>
@@ -89,29 +88,20 @@
 		<th><?php __('Location'); ?></th>
 		<th class="actions"><?php __('Actions');?></th>
 	</tr>
-	<?php
-		$i = 0;
-		foreach ($user['Profile'] as $profile):
-			$class = null;
-			if ($i++ % 2 == 0) {
-				$class = ' class="altrow"';
-			}
-		?>
 		<tr<?php echo $class;?>>
-			<td><?php echo $profile['id'];?></td>
-			<td><?php echo $profile['created'];?></td>
-			<td><?php echo $profile['modified'];?></td>
-			<td><?php echo $profile['user_id'];?></td>
-			<td><?php echo $profile['is_deleted'];?></td>
-			<td><?php echo $profile['is_hidden'];?></td>
-			<td><?php echo $profile['nickname'];?></td>
-			<td><?php echo $profile['birthday'];?></td>
-			<td><?php echo $profile['location'];?></td>
+			<td><?php echo $user['Profile']['id'];?></td>
+			<td><?php echo $user['Profile']['created'];?></td>
+			<td><?php echo $user['Profile']['modified'];?></td>
+			<td><?php echo $user['Profile']['user_id'];?></td>
+			<td><?php echo $user['Profile']['is_deleted'];?></td>
+			<td><?php echo $user['Profile']['is_hidden'];?></td>
+			<td><?php echo $user['Profile']['nickname'];?></td>
+			<td><?php echo $user['Profile']['birthday'];?></td>
+			<td><?php echo $user['Profile']['location'];?></td>
 			<td class="actions">
-				<?php echo $html->link(__('Delete', true), array('controller'=> 'profiles', 'action'=>'delete', $profile['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $profile['id'])); ?>
+				<?php echo $html->link(__('Delete', true), array('controller'=> 'profiles', 'action'=>'delete', $user['Profile']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $user['Profile']['id'])); ?>
 			</td>
 		</tr>
-	<?php endforeach; ?>
 	</table>
 <?php endif; ?>
 

@@ -106,8 +106,9 @@ a.iconLinkButton,
 }
 form textarea {
 	line-height: 150%;
-	height: 7.5em;
+	height: 19.5em;
 	width: 97%;
+	font-size: 100%
 }
 form div.input.text input:focus,
 form div.input.password input:focus,

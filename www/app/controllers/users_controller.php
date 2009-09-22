@@ -111,19 +111,6 @@ class UsersController extends AppController {
 		}
 	}
 	
-	function delete($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for User', true));
-			$this->redirect(array('action' => 'index'));
-		}
-		if ($this->User->del($id)) {
-			$this->Session->setFlash(
-				String::insert(__('User Account :activeUser removed.', true),
-					array('activeUser' => $this->Auth->user('username'))));
-			$this->redirect($this->Auth->logout());
-		}
-	}
-	
 	function terms_of_service() {
 		if (!empty($this->params['form']['decline'])) {
 			$this->User->setTos($this->Auth->user(), 0);

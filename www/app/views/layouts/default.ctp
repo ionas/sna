@@ -11,8 +11,8 @@
 	<?=$html->css('app.layout')?> 
 	<?=$html->css('app.form')?> 
 	<?=$html->css('app.jquery')?> 
-	<?=$html->css($controller_css_for_layout)?> 
-	<?=$html->css($view_css_for_layout)?> 
+	<?=@$html->css($controller_css_for_layout)?> 
+	<?=@$html->css($view_css_for_layout)?> 
 	<?=$javascript->link('jquery-1.3.2')?> 
 	<?=$javascript->link('jquery.timers')?> 
 	<?=$javascript->link('jquery.smoothScroll')?> 

@@ -3,7 +3,7 @@ class AppController extends Controller {
 	
 	var $components = array('Auth', 'Session', 'Cookie');
 	var $helpers = array('Html','Javascript');
-	var $tosProtectedControllers = array('Users', 'Messages', 'Shouts');
+	var $enforceTosOn = array('Users', 'Messages', 'Shouts');
 	
 	function beforeFilter() {
 		$this->__setupAuth();
@@ -13,8 +13,6 @@ class AppController extends Controller {
 	
 	function beforeRender(){
 		// Automagically load CSS files for controllers and actions/views
-		$this->set('controller_css_for_layout', 'views' . DS  . '_empty');
-		$this->set('view_css_for_layout', 'views' . DS  . '_empty');
 		if (file_exists(CSS . 'views' . DS . strtolower($this->name) . '.css')) {
 			$this->set('controller_css_for_layout', 'views' . DS . strtolower($this->name));
 		}
@@ -49,7 +47,7 @@ class AppController extends Controller {
 	
 	function __checkHasAcceptedTos() {
 		if ($this->Auth->isAuthorized()) {
-			if (in_array($this->name, $this->tosProtectedControllers)
+			if (in_array($this->name, $this->enforceTosOn)
 			&& !($this->name == 'Users' && in_array($this->action, array(
 							// Exception List: these actions require no TOS acceptance
 							'terms_of_service',

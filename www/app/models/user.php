@@ -9,23 +9,19 @@ class User extends AppModel {
 	
 	var $displayField = 'username';
 	
-	var $hasMany = array(
+	var $hasOne = array(
 		'Profile' => array(
 			'className' => 'Profile',
 			'foreignKey' => 'user_id',
 			'dependent' => true,
 		),
+	);
+	
+	var $hasMany = array(
 		'UserOption' => array(
 			'className' => 'UserOption',
 			'foreignKey' => 'user_id',
 			'dependent' => true,
-		),
-	);
-	
-	var $belongsTo = array(
-		'ActiveProfile' => array(
-			'className' => 'Profile',
-			'foreignKey' => 'active_profile_id',
 		),
 	);
 	
@@ -167,6 +163,7 @@ class User extends AppModel {
 			$this->deactivate($this->passwordInClearText);
 			$this->passwordInClearText = null;
 			$this->updateLastLogin($this->read());
+			// TODO: create empty Profile
 		}
 	}
 	
@@ -300,10 +297,6 @@ class User extends AppModel {
 			
 		}
 		return false;
-	}
-	
-	function del($id = null, $cascade = true) {
-		return $this->purge($id);
 	}
 	
 	function sendActivation($data, $activationKey, $isNewUser, $passwordInClearText) {

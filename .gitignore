@@ -30,3 +30,7 @@ tmp/*
 
 # CakePHP directory placemolder
 empty
+
+# Local files
+local
+local/*

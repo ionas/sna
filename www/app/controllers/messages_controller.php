@@ -10,7 +10,7 @@ class MessagesController extends AppController {
 	}
 	
 	function mailbox($filter = null) {
-		$activeProfileId = $this->Auth->user('active_profile_id');
+		$activeProfileId = $this->__getAuthedProfileId();
 		switch($filter) {
 			case 'inbox':
 				$this->set('messagesTitle', __('Inbox', true));
@@ -78,6 +78,7 @@ class MessagesController extends AppController {
 				'FromProfile',
 			),
 			'conditions' => $conditions,
+			'order' => 'created DESC',
 			'limit' => 3,
 		);
 		$this->set('filter', $filter);
@@ -85,7 +86,7 @@ class MessagesController extends AppController {
 	}
 	
 	function send($toProfileId = null) {
-		if (!$toProfileId or $toProfileId == $this->Auth->user('active_profile_id')
+		if (!$toProfileId or $toProfileId == $this->__getAuthedProfileId()
 		or !$this->Message->Profile->read('nickname', $toProfileId)) {
 			$this->Session->setFlash(__('Invalid profile.', true));
 			$this->redirect($this->referer());
@@ -93,7 +94,7 @@ class MessagesController extends AppController {
 		$this->set('toProfile', $this->Message->Profile->data);
 		if (!empty($this->data)) {
 			$this->Message->create($this->data);
-			if ($this->Message->send($this->Auth->user('active_profile_id'), $toProfileId)) {
+			if ($this->Message->send($this->__getAuthedProfileId(), $toProfileId)) {
 				$this->Session->setFlash(
 					__('Your message has been send to', true) . ' '
 						. $this->Message->Profile->data['Profile']['nickname'] . '.');
@@ -105,11 +106,13 @@ class MessagesController extends AppController {
 	}
 	
 	function reply($id = null) {
+		// Check message ID
 		if (!$id or !$this->Message->read(
 				array('from_profile_id', 'created', 'subject', 'body', 'created'), $id)) {
 			$this->Session->setFlash(__('Invalid message.', true));
 			$this->redirect($this->referer());
 		}
+		// Check auth
 		if ($this->Auth->user('active_profile_id') ==
 			$this->Message->data['Message']['from_profile_id']) {
 				$this->Session->setFlash(__('Invalid message.', true));
@@ -120,7 +123,7 @@ class MessagesController extends AppController {
 		$this->set('message', $this->Message->data);
 		if (!empty($this->data)) {
 			$this->Message->create($this->data);
-			if ($this->Message->send($this->Auth->user('active_profile_id'),
+			if ($this->Message->send($this->__getAuthedProfileId(),
 					$toProfileData['Profile']['id'])) {
 				$this->Session->setFlash(
 					__('Your message has been send to', true) . ' '
@@ -129,10 +132,15 @@ class MessagesController extends AppController {
 				$this->Session->setFlash(
 					__('Your message could not be send, see below.', true));
 			}
+			$this->data['Message']['body'] = "\n" . $this->data['Message']['body']; 
+			/* HACKFIX:
+			* Required because of a bug in either app or cake
+			* Reason: Removes first "/n" from the data each time.
+			*/
 		} else {
 			$this->data['Message']['subject'] = __('Re', true) . ': '
 				. $this->Message->data['Message']['subject'];
-			$this->data['Message']['body'] = "\n\n \n" . String::insert(
+			$this->data['Message']['body'] = "\n\n\n" . String::insert(
 					__('On :date, at :time, :name wrote', true),
 					array(
 						'date' => substr($this->Message->data['Message']['created'], 0, -9),
@@ -140,26 +148,32 @@ class MessagesController extends AppController {
 						'name' => $toProfileData['Profile']['nickname']))
 				.  ":\n> " . str_replace("\n", "\n> ", $this->Message->data['Message']['body']);
 		}
-		$this->set('toProfileNicktname',$toProfileData['Profile']['nickname']);
+		$this->set('toProfileNicktname', $toProfileData['Profile']['nickname']);
 	}
 	
 	function trash($id = null) {
-		
+		if ($this->Message->saveFieldIfExists($id, 'is_trashed', 1)) {
+			$this->Session->setFlash(__('Message has been trashed.', true));
+		} else {
+			$this->Session->setFlash(__('Message could not be trashed.', true));
+		}
+		$this->redirect($this->referer());
 	}
 	
 	function restore($id = null) {
-		
+		if ($this->Message->saveFieldIfExists($id, 'is_trashed', 0)) {
+			$this->Session->setFlash(__('Message has been restored.', true));
+		} else {
+			$this->Session->setFlash(__('Message could not be restored.', true));
+		}
+		$this->redirect($this->referer());
 	}
 	
-	function remove($id = null) {
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for Message', true));
-			$this->redirect(array('action'=>'index'));
-		}
-		if ($this->Message->del($id)) {
-			$this->Session->setFlash(__('Message deleted', true));
-			$this->redirect(array('action'=>'index'));
-		}
+	function __getAuthedProfileId() {
+		$activeProfileData = $this->Message->Profile->find('first', array(
+				'fields' => array('id'),
+				'conditions' => array('user_id' => $this->Auth->user('id'))));
+		return $activeProfileData['Profile']['id'];
 	}
 	
 }

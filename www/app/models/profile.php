@@ -20,15 +20,6 @@ class Profile extends AppModel {
 		),
 	);
 	
-	/*
-	var $hasOne = array(
-		'ActiveProfileUser' => array(
-			'className' => 'User',
-			'foreignKey' => 'active_profile_id',
-		),
-	);
-	*/
-	
 	var $hasMany = array(
 		'Message' => array(
 			'className' => 'Message',
@@ -41,22 +32,6 @@ class Profile extends AppModel {
 			'dependent' => true,
 		),
 	);
-	
-	function profileExists($userId) {
-		$data = $this->find('first',
-			array('fields' => 'id', 'conditions' => array('user_id' => $userId)));
-		if($data === false) {
-			return false;
-		} else {
-			return $data;
-		}
-	}
-	
-	function del($id = null, $cascade = true) {
-		$this->skipOnPurge = array(
-			'id', 'created', 'modified', 'user_id');
-		return $this->purge($id);
-	}
 	
 }
 ?>

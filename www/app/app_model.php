@@ -120,5 +120,16 @@ class AppModel extends Model {
 		return parent::validates($options);
 	}
 	
+	function saveFieldIfExists($id = null, $fieldname, $value, $validate = false) {
+		if($this->find('count', array('conditions' => array($this->primaryKey => $id))) < 1) {
+			return false;
+		}
+		$backupThisId = $this->id;
+		$this->id = $id;
+		$return = $this->saveField($fieldname, $value , $validate);
+		$this->id = $backupThisId;
+		return $return;
+	}
+	
 }
 ?>

@@ -110,7 +110,7 @@ class Message extends AppModel {
 		);
 	}
 	
-	function send($fromProfileId, $toProfileId) {
+	function send($fromProfileId, $toProfileId, $type = 'send') { // type can be send or reply
 		$data[0] = $this->data;
 		$fromProfileData = $this->Profile->find('first', array(
 				'fields' => array('user_id'),
@@ -120,9 +120,24 @@ class Message extends AppModel {
 		$data[0]['Message']['from_profile_id'] = $fromProfileId;
 		$data[0]['Message']['to_profile_id'] = $toProfileId;
 		$data[1] = $data[0];
-		$toProfileData = $this->Profile->find('first', array(
-				'fields' => array('user_id'),
-				'conditions' => array('Profile.id' => $toProfileId)));
+		// TODO: Check if the receiving user and profile are alive
+		if ($toProfileData = $this->Profile->find('first', array(
+				'fields' => array('user_id', 'is_hidden'),
+				'conditions' => array('Profile.id' => $toProfileId)))) {
+			if (!$toUserData = $this->Profile->User->find('first', array(
+					'fields' => array('is_deleted', 'is_disabled'),
+					'conditions' => array('User.id' => $toProfileData['Profile']['user_id'])))) {
+				return false;
+			}
+			if ($type == 'send' and $toProfileData['Profile']['is_hidden'] == 1) {
+				// Cannot send new messages to hidden Profiles
+				return false;
+			}
+			if ($toUserData['User']['is_deleted'] == 1 or $toUserData['User']['is_disabled'] == 1) {
+				// Cannot send to profiles of users who ware deleted or deactivated
+				return false;
+			}
+		}
 		$data[1]['Message']['user_id'] = $toProfileData['Profile']['user_id'];
 		$data[1]['Message']['profile_id'] = $toProfileId;
 		// Validate all, transaction save (for instance on InnoDB)
@@ -133,7 +148,11 @@ class Message extends AppModel {
 					'subject', 'body')))) {
 			return true;
 		}
-		$this->validates($data); // Required because of a BUG: in app or cake
+		$this->validates($data);
+		/* HACKFIX:
+		* Required because of a bug in either app or cake
+		* Reason: Validation of saveAll kicks in, BUT it does not trigger front end errors
+		*/
 		return false;
 	}
 	

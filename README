@@ -33,11 +33,12 @@ X Profile page
 X Profile visibility options
 X Shoutbox
 X Move "user" and "profile" "current" naming to "active" (better readability)
-o Messaging
+X Messaging
 - Profile picture uploads
 - Basic Profile View (with Shouts)
 - Shout hiding
 - Buddylists
+- After User CREATION, create empty associated profile
 - ACL (if required)
 - Move user_options to profile_options (options per profile, user specific options per users booleans)
 - Security Features and Double Salts
@@ -49,7 +50,7 @@ o Messaging
 - Check Codebase against: https://trac.cakephp.org/wiki/Developement/CodingStandards
 - Password Generator (JS Based or Ajax based)
 - http://book.cakephp.org/view/153/Data-Sanitization
-- LANG Urls
+- LANG Urls / LANG Router
 - http://bakery.cakephp.org/articles/view/p28n-the-top-to-bottom-persistent-internationalization-tutorial
 - http://teknoid.wordpress.com/2008/11/28/cakephp-url-based-language-switching-for-i18n-and-l10n-internationalization-and-localization/
 - Add Language autodetection (browser, geo location/ip) + save in Cookies
@@ -61,6 +62,8 @@ o Messaging
 - Sanitize: <?php App::import('Sanitize')?> / Sanitize::html()
 - Messaging auth challenge (see ICQ)
 - Buddy auth challenge
+- User change Email
+- Add User/Profile/Messages DELETION/PURGING (Personal Data only)
 
 NOTICES:
 - 5.2 <= PHP_VERSION < 5.3

@@ -49,7 +49,7 @@ foreach ($messages as $message):
 	if ($i++ % 2 == 0) {
 		$class = ' class="altrow"';
 	}
-?>
+?> 
 			<tr<?=$class?>>
 				<?php if ($filter == 'sent'):?>
 				<td><?=$html->link($message['ToProfile']['nickname'], array('controller' => 'profiles', 'action' => 'view', $message['Message']['to_profile_id']))?> 
