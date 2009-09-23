@@ -31,12 +31,12 @@ X Check out Translation + Translation Tool (PO Files)
 X Add Language switcher to $layout + save in Cookies
 X Profile page
 X Profile visibility options
-X Shoutbox
 X Move "user" and "profile" "current" naming to "active" (better readability)
 X Messaging
 X After User CREATION, create empty associated profile
 o Profile picture uploads
 - Basic Profile View (with Shouts)
+- Shoutbox
 - Shout hiding
 - Buddylists
 - ACL (if required)
