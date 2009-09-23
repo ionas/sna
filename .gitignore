@@ -8,10 +8,13 @@ www/app/config/core.deployment.php
 www/app/webroot/.htaccess
 
 # Cake caches
+www/app/tmp/*
 www/app/tmp/cache/cake_*
 www/app/tmp/cache/models/cake_*
 www/app/tmp/cache/persistent/cake_*
 www/app/tmp/cache/views/*.php
+www/app/tmp/avatar_uploads
+www/app/tmp/avatar_uploads/*
 
 # Cake logs
 www/app/tmp/logs/*.log
