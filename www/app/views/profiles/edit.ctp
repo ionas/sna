@@ -1,24 +1,31 @@
 <div class="profiles form">
-<?php echo $form->create('Profile', array('type' => 'file'));?>
+<?=$form->create('Profile', array('type' => 'file'))?>
 	<fieldset>
- 		<legend><?php __('Edit Profile');?></legend>
-	<?php
-		echo $form->input('id');
-		echo $form->input('nickname');
-		echo $form->input('birthday', array(
+ 		<legend><?php __('Profile')?></legend>
+	<?=$form->input('id'),
+		$form->input('is_hidden', array('label' => 'Hide my profile')),
+		$form->input('nickname')?>
+	<?php if(true):?>
+	<!-- TODO: Display Picture -->
+	<!-- TODO: Delete Picture Checkbox -->
+	<!-- TODO: http://mypictr.com/ reference -->
+	<?php endif;?>
+ 	<?=$form->input('picture', array('label' => 'Your Picture', 'type' => 'file', 'size' => '50',
+		'before' => '<input type="hidden" name="MAX_FILE_SIZE" value="' .  50 * 1024 . '" />')),
+		$form->input('birthday', array(
 				'dateFormat' => 'DMY',
 				'timeFormat' => 'none',
-				'minYear' => date('Y') - 70,
-				'maxYear' => date('Y') - 18 ,
+				'minYear' => date('Y') - 130,
+				'maxYear' => date('Y') - 5 ,
 				'selected' => array(
-					'year' => date('Y') - 25,
+					'year' => date('Y') - 30,
 					'month' => '06',
-					'day' => '15')));
-		echo $form->input('location');
-		echo $form->input('is_hidden');
-		echo $form->input('image', array('type' => 'file', 'size' => '50',
-			'before' => '<input type="hidden" name="MAX_FILE_SIZE" value="' .  50 * 1024 . '" />'));
-	?>
+					'day' => '28'))),
+		$form->input('location')?>
+		<!-- TODO: Timezone -->
+		<!-- TODO: Country -->
+		<!-- TODO: About you / Description -->
+		<!-- TODO: Homepage -->
 	</fieldset>
-<?php echo $form->end('Submit');?>
+<?=$form->end('Save')?>
 </div>

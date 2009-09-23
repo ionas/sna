@@ -41,8 +41,7 @@ o Profile picture uploads
 - Buddylists
 - ACL (if required)
 - Move user_options to profile_options (options per profile, user specific options per users booleans)
-- Security Features and Double Salts
-  See also: http://devedge.jonas-hartmann.com/documents/Securing_authentication_and_data_manipulation_via_HTTP.html
+- Security Features and Double Salts, See also: http://devedge.jonas-hartmann.com/documents/Securing_authentication_and_data_manipulation_via_HTTP.html
 - Routing (index => list, add => register/create/whatever, delete => remove (OR disable))
 - FAQ (cakephp book application?) - FAQ explains double use: username + nickname (security bonus), about, browser stuff and more
 - Research Akismet: http://sethcardoza.com/posts/view/8/title/integrating-akismet-with-cakephp http://akismet.com/ http://cakeforge.org/snippet/detail.php?type=snippet&id=95
@@ -64,7 +63,14 @@ o Profile picture uploads
 - Buddy auth challenge
 - After activation, redirect to /profile/x/edit
 - User change Email
-- Add User/Profile/Messages DELETION/PURGING (Personal Data only)
+- Add User/Profile/Messages DELETION/PURGING (Personal Data only) var $purgeFields => array('name' => array('type' => 'type', 'value' => 'value'), look at cakes schema to determine type maybe)
+- Profile Edit - Selected Date
+- Profile Edit - Avatar Max Size (should come from the controller, controller should set behavior value too, must equal)
+- Profile Edit - Monthname Translation
+- Create and use Gender model
+- Translate gender model data (Translateable?)
+- Fetch gender info to email templates (Herr/Frau)
+- Settings layout: http://www.last.fm/settings (New tabbed layout for /users/* with the exception of login/logout, /user_options /profiles (with the exception of /profiles/find))
 
 NOTICES:
 - 5.2 <= PHP_VERSION < 5.3

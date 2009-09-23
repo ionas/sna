@@ -1,26 +1,26 @@
 <?php 
 /* SVN FILE: $Id$ */
-/* UserOptionsController Test cases generated on: 2009-07-28 17:07:13 : 1248795613*/
-App::import('Controller', 'UserOptions');
+/* OptionsController Test cases generated on: 2009-07-28 17:07:13 : 1248795613*/
+App::import('Controller', 'Options');
 
-class TestUserOptions extends UserOptionsController {
+class TestOptions extends OptionsController {
 	var $autoRender = false;
 }
 
-class UserOptionsControllerTest extends CakeTestCase {
-	var $UserOptions = null;
+class OptionsControllerTest extends CakeTestCase {
+	var $Options = null;
 
 	function setUp() {
-		$this->UserOptions = new TestUserOptions();
-		$this->UserOptions->constructClasses();
+		$this->Options = new TestOptions();
+		$this->Options->constructClasses();
 	}
 
-	function testUserOptionsControllerInstance() {
-		$this->assertTrue(is_a($this->UserOptions, 'UserOptionsController'));
+	function testOptionsControllerInstance() {
+		$this->assertTrue(is_a($this->Options, 'OptionsController'));
 	}
 
 	function tearDown() {
-		unset($this->UserOptions);
+		unset($this->Options);
 	}
 }
 ?>

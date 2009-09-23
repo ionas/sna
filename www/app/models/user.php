@@ -18,8 +18,8 @@ class User extends AppModel {
 	);
 	
 	var $hasMany = array(
-		'UserOption' => array(
-			'className' => 'UserOption',
+		'Option' => array(
+			'className' => 'Option',
 			'foreignKey' => 'user_id',
 			'dependent' => true,
 		),
@@ -213,8 +213,8 @@ class User extends AppModel {
 							'is_hidden' => 1)));
 					$this->Profile->save();
 					// TODO
-					// $this->User->UserOption->setUser($data);
-					// $this->User->UserOption->set('landingPage',
+					// $this->User->Option->setUser($data);
+					// $this->User->Option->set('landingPage',
 					//	'/profiles/edit/' . $this->Profile->id);
 				}
 				return true;

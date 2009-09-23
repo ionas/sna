@@ -1,7 +1,7 @@
 <?php
-class UserOptionsController extends AppController {
+class OptionsController extends AppController {
 
-	var $name = 'UserOptions';
+	var $name = 'Options';
 	var $scaffold;
 }
 ?>

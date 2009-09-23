@@ -1,9 +1,9 @@
 <?php 
 /* SVN FILE: $Id$ */
-/* UserOption Fixture generated on: 2009-07-28 17:07:15 : 1248795795*/
+/* Option Fixture generated on: 2009-07-28 17:07:15 : 1248795795*/
 
-class UserOptionFixture extends CakeTestFixture {
-	var $name = 'UserOption';
+class OptionFixture extends CakeTestFixture {
+	var $name = 'Option';
 	var $table = 'user_options';
 	var $fields = array(
 		'id' => array('type'=>'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),

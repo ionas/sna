@@ -113,7 +113,7 @@
 </div>
 <div class="related">
 	<h3><?php __('Related User Options');?></h3>
-	<?php if (!empty($user['UserOption'])):?>
+	<?php if (!empty($user['Option'])):?>
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
 		<th><?php __('Id'); ?></th>
@@ -126,7 +126,7 @@
 	</tr>
 	<?php
 		$i = 0;
-		foreach ($user['UserOption'] as $userOption):
+		foreach ($user['Option'] as $userOption):
 			$class = null;
 			if ($i++ % 2 == 0) {
 				$class = ' class="altrow"';

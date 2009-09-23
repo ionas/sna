@@ -1,26 +1,26 @@
 <?php 
 /* SVN FILE: $Id$ */
-/* UserOption Test cases generated on: 2009-07-28 17:07:16 : 1248795796*/
-App::import('Model', 'UserOption');
+/* Option Test cases generated on: 2009-07-28 17:07:16 : 1248795796*/
+App::import('Model', 'Option');
 
-class UserOptionTestCase extends CakeTestCase {
-	var $UserOption = null;
+class OptionTestCase extends CakeTestCase {
+	var $Option = null;
 	var $fixtures = array('app.user_option', 'app.user');
 
 	function startTest() {
-		$this->UserOption =& ClassRegistry::init('UserOption');
+		$this->Option =& ClassRegistry::init('Option');
 	}
 
-	function testUserOptionInstance() {
-		$this->assertTrue(is_a($this->UserOption, 'UserOption'));
+	function testOptionInstance() {
+		$this->assertTrue(is_a($this->Option, 'Option'));
 	}
 
-	function testUserOptionFind() {
-		$this->UserOption->recursive = -1;
-		$results = $this->UserOption->find('first');
+	function testOptionFind() {
+		$this->Option->recursive = -1;
+		$results = $this->Option->find('first');
 		$this->assertTrue(!empty($results));
 
-		$expected = array('UserOption' => array(
+		$expected = array('Option' => array(
 			'id'  => 1,
 			'modified'  => '2009-07-28 17:43:15',
 			'user_id'  => 'Lorem ipsum dolor sit amet',

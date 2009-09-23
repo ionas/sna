@@ -2,7 +2,7 @@
 class UsersController extends AppController {
 	
 	var $name = 'Users';
-	var $components = array('Honeypotting' => array('formModels' => array('User', 'UserOption')));
+	var $components = array('Honeypotting' => array('formModels' => array('User', 'Option')));
 	var $helpers = array('Html', 'Form', 'Javascript', 'Honeypot');
 	
 	function beforeFilter() {
@@ -202,7 +202,7 @@ class UsersController extends AppController {
 	}
 	
 	function home() {
-		$landingPage = $this->User->UserOption->get($this->Auth->user(), array('landingPage'));
+		$landingPage = $this->User->Option->get($this->Auth->user(), array('landingPage'));
 		if (!empty($landingPage)) {
 			$this->redirect($landingPage);
 			
