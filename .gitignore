@@ -34,3 +34,5 @@ empty
 # Local files
 local
 local/*
+libs
+libs/*

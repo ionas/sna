@@ -160,10 +160,10 @@ class User extends AppModel {
 	
 	function afterSave($isCreated) {
 		if ($isCreated === true) {
-			$this->deactivate($this->passwordInClearText);
+			$return = $this->deactivate($this->passwordInClearText);
 			$this->passwordInClearText = null;
 			$this->updateLastLogin($this->read());
-			// TODO: create empty Profile
+			return $return;
 		}
 	}
 	
@@ -186,12 +186,12 @@ class User extends AppModel {
 		} else {
 			$this->id = $data[$this->alias]['id'];
 			$this->saveField('activation_key', $activationKey , true);
-			$this->sendActivation($data, $activationKey, $isNewUser, $passwordInClearText);
+			return $this->sendActivation($data, $activationKey, $isNewUser, $passwordInClearText);
 		}
 	}
 	
-	function activate($data, $doSendEmail = true) {
-		// TODO: treat $doSendEmail
+	function activate($data, $isCreated = true) {
+		// TODO: use $created
 		if (empty($data[$this->alias]['activation_key'])) {
 			$this->invalidate('activation_key', __('Enter your Activation Key.', true));
 			return false;
@@ -206,10 +206,17 @@ class User extends AppModel {
 		if (!empty($data[$this->alias]['id'])) {
 			$this->id = $data[$this->alias]['id'];
 			if ($this->saveField('activation_key', null)) {
-				// TODO implement
-				// $this->User->UserOption->setUser($data);
-				// $this->User->UserOption->set('landingPage',
-				//	'/users/view/' . $data['User']['id']);
+				if($isCreated) {
+					// Create an empty hidden profile
+					$this->Profile->create(array('Profile' => array(
+							'user_id' => $this->id,
+							'is_hidden' => 1)));
+					$this->Profile->save();
+					// TODO
+					// $this->User->UserOption->setUser($data);
+					// $this->User->UserOption->set('landingPage',
+					//	'/profiles/edit/' . $this->Profile->id);
+				}
 				return true;
 			}
 		} else {

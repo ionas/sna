@@ -27,12 +27,15 @@ class ProfilesController extends AppController {
 			$this->Session->setFlash(__('Invalid Profile', true));
 			$this->redirect(array('action'=>'index'));
 		}
+		// TODO, on first edit, default $this->data hidden to 0 
 		if (!empty($this->data)) {
 			$this->data['Profile']['user_id'] = $this->Auth->user('id');
 			if ($this->Profile->save($this->data, true, array(
 						'is_hidden', 'nickname', 'birthday', 'location'))) {
+							debug($this->data);
+				// debug('filename: ' . $this->Attachment->upload($this->data['Avatar']['image']));
 				$this->Session->setFlash(__('The Profile has been saved', true));
-				$this->redirect(array('action'=>'index'));
+				$this->redirect($this->referer());
 			} else {
 				$this->Session->setFlash(__('The Profile could not be saved. Please, try again.', true));
 			}

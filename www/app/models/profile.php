@@ -3,7 +3,7 @@ class Profile extends AppModel {
 	
 	var $name = 'Profile';
 	
-	var $actsAs = array('Containable');
+	var $actsAs = array('Containable', 'Avatarable');
 	
 	var $displayField = 'nickname';
 	

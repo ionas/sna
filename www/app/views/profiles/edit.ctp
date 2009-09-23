@@ -1,5 +1,5 @@
 <div class="profiles form">
-<?php echo $form->create('Profile');?>
+<?php echo $form->create('Profile', array('type' => 'file'));?>
 	<fieldset>
  		<legend><?php __('Edit Profile');?></legend>
 	<?php
@@ -16,6 +16,8 @@
 					'day' => '15')));
 		echo $form->input('location');
 		echo $form->input('is_hidden');
+		echo $form->input('image', array('type' => 'file', 'size' => '50',
+			'before' => '<input type="hidden" name="MAX_FILE_SIZE" value="' .  50 * 1024 . '" />'));
 	?>
 	</fieldset>
 <?php echo $form->end('Submit');?>

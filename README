@@ -34,11 +34,11 @@ X Profile visibility options
 X Shoutbox
 X Move "user" and "profile" "current" naming to "active" (better readability)
 X Messaging
+o After User CREATION, create empty associated profile
 - Profile picture uploads
 - Basic Profile View (with Shouts)
 - Shout hiding
 - Buddylists
-- After User CREATION, create empty associated profile
 - ACL (if required)
 - Move user_options to profile_options (options per profile, user specific options per users booleans)
 - Security Features and Double Salts
