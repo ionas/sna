@@ -6,7 +6,7 @@ class AppModel extends Model {
 	function validateEqualData($data, $comparisonField, $message = null) {
 		if (is_array($data)) {
 			foreach ($data as $value) {
-				if(isset($this->data[$this->alias][$comparisonField])) {
+				if (isset($this->data[$this->alias][$comparisonField])) {
 					if ($value !== $this->data[$this->alias][$comparisonField]) {
 						$this->invalidate($comparisonField, $message);
 						return false;
@@ -94,7 +94,7 @@ class AppModel extends Model {
 	}
 	
 	function purge($id) {
-		if(!isset($this->skipOnPurge)) {
+		if (!isset($this->skipOnPurge)) {
 			$this->skipOnPurge = array('id', 'created', 'modified');
 		}
 		if ($id != null) {
@@ -103,7 +103,7 @@ class AppModel extends Model {
 			$purgeData[$this->alias] = array_fill_keys(array_keys($purgeData), null);
 			$purgeData[$this->alias]['is_deleted'] = '1';
 			$purgeData[$this->alias][$this->primaryKey] = $this->id;
-			if($this->save($purgeData, null, false) !== false) {
+			if ($this->save($purgeData, null, false) !== false) {
 				return true;
 			}
 		}
@@ -121,7 +121,7 @@ class AppModel extends Model {
 	}
 	
 	function saveFieldIfExists($id = null, $fieldname, $value, $validate = false) {
-		if($this->find('count', array('conditions' => array($this->primaryKey => $id))) < 1) {
+		if ($this->find('count', array('conditions' => array($this->primaryKey => $id))) < 1) {
 			return false;
 		}
 		$backupThisId = $this->id;

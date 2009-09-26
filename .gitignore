@@ -21,6 +21,7 @@ www/app/tmp/logs/*.log
 
 # Webroot uploaded files
 www/app/webroot/uploads/*
+www/app/webroot/data/*
 
 # HTML webroot cache
 www/app/webroot/cache/*

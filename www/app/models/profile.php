@@ -33,5 +33,17 @@ class Profile extends AppModel {
 		),
 	);
 	
+	function getAuthedId($authInfo = null) {
+		$data = $this->find('first', array(
+			'fields' => array('id'),
+			'conditions' => array('user_id' => $authInfo['User']['id'])));
+		if (empty($data)) {
+			return false;
+		} else {
+			return $data['Profile']['id'];
+			
+		}
+	}
+	
 }
 ?>

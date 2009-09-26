@@ -5,9 +5,17 @@ class AvatarableBehavior extends ModelBehavior {
 	
 	function setup(&$Model, $settings = array()) {
 		$this->settings[$Model->alias] = array(
-			'fieldname' => 'image',
+			'fieldname' => 'picture',
+			'deletefield' => 'picture_do_delete',
 			'publicDirectory' => 'data/img',
-			'useTransactions' => true,
+			'defaultQuality' => 75,
+			'smallWidth'   => 64,
+			'smallHeight'  => 64,
+			'mediumWidth'  => 128,
+			'mediumHeight' => 128,
+			'largeWidth'   => 256,
+			'largeHeight'  => 256,
+			'saved' => false,
 		);
 		if (!is_array($settings)) {
 			$settings = array();
@@ -18,49 +26,95 @@ class AvatarableBehavior extends ModelBehavior {
 			. Inflector::tableize($Model->alias);
 	}
 	
+	function beforeValidate(&$Model) {
+		$this->settings[$Model->alias]['saved'] = true;
+		$imageData = $Model->data[$Model->alias][$this->settings[$Model->alias]['fieldname']];
+		if(isset($Model->data[$Model->alias][$this->settings[$Model->alias]['deletefield']]) and 
+		$Model->data[$Model->alias][$this->settings[$Model->alias]['deletefield']] == 1 ) {
+			@unlink($this->settings['uploadDirectory'] . DS . $Model->id . '_small');
+			@unlink($this->settings['uploadDirectory'] . DS . $Model->id . '_medium');
+			@unlink($this->settings['uploadDirectory'] . DS . $Model->id . '_large');
+		}
+		// No image, in this case, continue
+		if (empty($imageData['name'])) {
+			$this->settings[$Model->alias]['saved'] = false;
+			return true;
+		}
+		$imageInfo = $this->_separateFilenameFromExt($imageData);
+		// TODO, check FILESIZE(!), Check via GetImageSize($file);
+		if (!in_array($imageInfo['ext'], array('jpg', 'png', 'gif'))) {
+			$Model->invalidate($this->settings[$Model->alias]['fieldname'],
+				__('Your picture may be only be of format jpg, png or gif.', true));
+			$this->settings[$Model->alias]['saved'] = false;
+		}
+		// Check permissions
+		if (!is_dir($this->settings['uploadDirectory'])) {
+			if (!mkdir($this->settings['uploadDirectory'], 0777, true)) {
+				$this->log($this->name . ': Could not create uploadDirectory '
+					. $this->settings['uploadDirectory'], 'error');
+				$Model->invalidate($this->settings[$Model->alias]['fieldname'],
+					__('Internal error, please try again later.', true));
+				$this->settings[$Model->alias]['saved'] = false;
+			}
+		}
+		if (!is_writable($this->settings['uploadDirectory'])) {
+			$this->log($this->name . ': Cannot write to uploadDirectory '
+				. $this->settings['uploadDirectory'], 'error');
+			$Model->invalidate($this->settings[$Model->alias]['fieldname'],
+				__('Internal error, please try again later.', true));
+			$this->settings[$Model->alias]['saved'] = false;
+		}
+		return true;
+	}
+	
 	function beforeSave(&$Model) {
-		// Start Transaction
-		$Model->getDataSource()->begin($Model);
+		$Model->getDataSource()->begin($Model); // Start Transaction
+		$imageData = $Model->data[$Model->alias][$this->settings[$Model->alias]['fieldname']];
+		$imageInfo = $this->_separateFilenameFromExt($imageData);
+		// Try saving
+		if ($this->settings[$Model->alias]['saved'] != false) {
+			$uploadFilepath = $this->settings['uploadDirectory'] . DS 
+				. $Model->id . '_small';
+			if (!$this->_saveResized($Model, $imageData['tmp_name'], $uploadFilepath, $imageInfo['ext'],
+				$this->settings[$Model->alias]['smallWidth'],
+				$this->settings[$Model->alias]['smallHeight'])) {
+				$this->settings[$Model->alias]['saved'] = false;
+			}
+			$uploadFilepath = $this->settings['uploadDirectory'] . DS 
+				. $Model->id . '_medium';
+			if (!$this->_saveResized($Model, $imageData['tmp_name'], $uploadFilepath, $imageInfo['ext'],
+				$this->settings[$Model->alias]['mediumWidth'],
+				$this->settings[$Model->alias]['mediumHeight'])) {
+				$this->settings[$Model->alias]['saved'] = false;
+			}
+			$uploadFilepath = $this->settings['uploadDirectory'] . DS 
+				. $Model->id . '_large';
+			if (!$this->_saveResized($Model, $imageData['tmp_name'], $uploadFilepath, $imageInfo['ext'],
+				$this->settings[$Model->alias]['largeWidth'],
+				$this->settings[$Model->alias]['largeHeight'])) {
+				$this->settings[$Model->alias]['saved'] = false;
+			}
+		}
+		@unlink($imageData['tmp_name']);
 		return true;
 	}
 	
 	function afterSave(&$Model, $created) {
-		$imageData = $Model->data[$Model->alias][$this->settings[$Model->alias]['fieldname']];
-		$imageInfo = $this->_separateFilenameFromExt($imageData);
-		if(!in_array($imageInfo['ext'], array('jpg', 'gif', 'png'))) {
-			$this->_rollback($Model);
-		}
-		$uploadFilename = $Model->id . '.' . $imageInfo['name'] . '.' . $imageInfo['ext'];
-		if (!is_dir($this->settings['uploadDirectory'])) {
-			if(!mkdir($this->settings['uploadDirectory'], 0777, true)) {
-				$this->log($this->name . ': Could not create uploadDirectory '
-					. $this->settings['uploadDirectory'], 'error');
-			}
-		}
-		if(!is_writable($this->settings['uploadDirectory'])) {
-			$this->log($this->name . ': Cannot write to uploadDirectory '
-				. $this->settings['uploadDirectory'], 'error');
-			$this->_rollback($Model);
-		}
-		if(!is_writable($this->settings['uploadDirectory'] . DS . $uploadFilename)) {
-			$this->log($this->name . ': Cannot write to file '
-				. $this->settings['uploadDirectory'] . DS . $uploadFilename, 'error');
-			$this->_rollback($Model);
-		}
-		if (@move_uploaded_file($imageData['tmp_name'],
-				$this->settings['uploadDirectory'] . DS . $uploadFilename)) {
-			$this->log($this->name . ': File is valid, and was successfully uploaded to '
-				. $this->settings['uploadDirectory'] . DS . $uploadFilename, 'debug');
-			// $this->_resizeImage($image['tmp_name'], 180, 180);
-		} else {
-			$this->log($this->name . ': Possible file upload attack!', 'debug');
+		if ($this->settings[$Model->alias]['saved'] == true) {
 			$Model->getDataSource()->commit($Model);
+		} else {
+			$this->log($this->name . ': Cannot save pictures, Rolling back...', 'error');
+			/*
+			// RACE CONDITION!
+			@unlink($this->settings['uploadDirectory'] . DS . $Model->id . '_small.' 
+				. $imageInfo['ext']);
+			@unlink($this->settings['uploadDirectory'] . DS . $Model->id . '_medium.' 
+				. $imageInfo['ext']);
+			@unlink($this->settings['uploadDirectory'] . DS . $Model->id . '_large.' 
+				. $imageInfo['ext']);
+			*/
+			$Model->getDataSource()->rollback($Model);
 		}
-	}
-	
-	function _rollback(&$Model) {
-		$Model->getDataSource()->rollback($Model);
-		return false;
 	}
 	
 	function _separateFilenameFromExt(&$file) {
@@ -99,169 +153,79 @@ class AvatarableBehavior extends ModelBehavior {
 		}
 	}
 	
-	function _createThumbnail(&$file, $maxw, $maxh, $thumbscalew, $thumbscaleh, $folderName) {
-		$size = GetImageSize($file);
-		/*
-		 *	Generate the big version of the image with max of $imgscale in either directions
-		 */
-		$this->resizeImage('resize', $file, $saveDirectory, $filename, $width, $height, 85);
-		/*
-		 *	Generate the small thumbnail version of the image with scale of $thumbscalew and $thumbscaleh
-		 */
-		$this->resizeImage('resizeCrop', $file, $saveDirectory, $filename, $width, $height, 75);
-		
-		// Delete temporary image
-		unlink($file);
-		
-		// Image thumbnailed
-	}
-	
-	function resizeImage($cType = 'resize', $tmpfile, $dstfolder, $dstname = false, $newWidth=false, $newHeight=false, $quality = 75)
-	{
-		$srcimg = $tmpfile;
-		list($oldWidth, $oldHeight, $type) = getimagesize($srcimg);
-		$ext = $this->image_type_to_extension($type);
-
-		// If file is writeable, create destination (tmp) image
-		if (is_writeable($dstfolder)) {
-			$dstimg = $dstfolder.DS.$dstname;
-		} else {
-			// if dirFolder not writeable, let developer know
-			debug("You must allow proper permissions for image processing. And the folder has to be writable.");
-			debug("Run \"chmod 777 on '$dstfolder' folder\"");
-			exit();
+	function _saveResized(&$Model, $image, $uploadFilepath, $ext, $newWidth = null, $newHeight = null, 
+			$quality = null) {
+		if ($quality == null) {
+			$quality = $this->settings[$Model->alias]['defaultQuality'];
 		}
-
-		// Check if something is requested, otherwise do not resize
-		if ($newWidth or $newHeight) {
-			/* If tmp file exists, delete it */
-			if(file_exists($dstimg)) {
-				unlink($dstimg);
-			} else {
-				switch ($cType) {
-				default:
-				case 'resize':
-					// Maintains the aspect ratio of the image and makes sure
-					// that it fits within the maxW and maxH
-					$widthScale = 2;
-					$heightScale = 2;
-
-					// Check to see over-resizing, or set new scale
-					if($newWidth) {
-						if($newWidth > $oldWidth) $newWidth = $oldWidth;
-						$widthScale = 	$newWidth / $oldWidth;
-					}
-					if($newHeight) {
-						if($newHeight > $oldHeight) $newHeight = $oldHeight;
-						$heightScale = $newHeight / $oldHeight;
-					}
-					if($widthScale < $heightScale) {
-						$maxWidth = $newWidth;
-						$maxHeight = false;
-					} elseif ($widthScale > $heightScale ) {
-						$maxHeight = $newHeight;
-						$maxWidth = false;
-					} else {
-						$maxHeight = $newHeight;
-						$maxWidth = $newWidth;
-					}
-
-					if($maxWidth > $maxHeight){
-						$applyWidth = $maxWidth;
-						$applyHeight = ($oldHeight*$applyWidth)/$oldWidth;
-					} elseif ($maxHeight > $maxWidth) {
-						$applyHeight = $maxHeight;
-						$applyWidth = ($applyHeight*$oldWidth)/$oldHeight;
-					} else {
-						$applyWidth = $maxWidth;
-						$applyHeight = $maxHeight;
-					}
-					$startX = 0;
-					$startY = 0;
-					break;
-
-				case 'resizeCrop':
-					// Check to see that we are not over resizing, otherwise, set the new scale
-					// -- resize to max, then crop to center
-					if($newWidth > $oldWidth) $newWidth = $oldWidth;
-						$ratioX = $newWidth / $oldWidth;
-
-					if($newHeight > $oldHeight) $newHeight = $oldHeight;
-						$ratioY = $newHeight / $oldHeight;
-
-					if ($ratioX < $ratioY) {
-						$startX = round(($oldWidth - ($newWidth / $ratioY))/2);
-						$startY = 0;
-						$oldWidth = round($newWidth / $ratioY);
-						$oldHeight = $oldHeight;
-					} else {
-						$startX = 0;
-						$startY = round(($oldHeight - ($newHeight / $ratioX))/2);
-						$oldWidth = $oldWidth;
-						$oldHeight = round($newHeight / $ratioX);
-					}
-					$applyWidth = $newWidth;
-					$applyHeight = $newHeight;
-					break;
-
-				case 'crop':
-					// straight centered crop
-					$startY = ($oldHeight - $newHeight)/2;
-					$startX = ($oldWidth - $newWidth)/2;
-					$oldHeight = $newHeight;
-					$applyHeight = $newHeight;
-					$oldWidth = $newWidth;
-					$applyWidth = $newWidth;
-					break;
-				}
-
-				switch($ext) {
-				case 'gif' :
-					$oldImage = imagecreatefromgif($srcimg);
-					break;
-				case 'png' :
-					$oldImage = imagecreatefrompng($srcimg);
-					break;
-				case 'jpg' :
-				case 'jpeg' :
-					$oldImage = imagecreatefromjpeg($srcimg);
-					break;
-				default :
-					//image type is not a possible option
-					return false;
-					break;
-				}
-
-				// Create new image
-				$newImage = imagecreatetruecolor($applyWidth, $applyHeight);
-				// Put old image on top of new image
-				imagecopyresampled($newImage, $oldImage, 0, 0, $startX, $startY, $applyWidth, $applyHeight, $oldWidth, $oldHeight);
-
-				switch($ext) {
-				case 'gif' :
-					imagegif($newImage, $dstimg, $quality);
-					break;
-				case 'png' :
-					imagepng($newImage, $dstimg, round($quality/10));
-					break;
-				case 'jpg' :
-				case 'jpeg' :
-					imagejpeg($newImage, $dstimg, $quality);
-					break;
-				default :
-					return false;
-					break;
-				}
-
-				imagedestroy($newImage);
-				imagedestroy($oldImage);
-
-				return true;
+		// Delete existing file
+		if (file_exists($uploadFilepath)) {
+			if (!unlink($uploadFilepath)) {
+				$this->log($this->name . ': Could not delete existing picture "' 
+					. uploadFilepath . '"', 'debug');
+				return false;
 			}
-
-		} else {
-			return false;
 		}
+		// Calculate new size
+		$orgInfo = getimagesize($image);
+		$oldWidth = $orgInfo[0];
+		$oldHeight = $orgInfo[1];
+		// Ratios
+		if ($newWidth > $oldWidth) {
+			$newWidth = $oldWidth;
+		}
+		$ratioX = $newWidth / $oldWidth;	
+		if ($newHeight > $oldHeight) {
+			$newHeight = $oldHeight;
+		}
+		$ratioY = $newHeight / $oldHeight;
+		// Propotion priority
+		if ($ratioX < $ratioY) {
+			$startX = round(($oldWidth - ($newWidth / $ratioY)) / 2);
+			$startY = 0;
+			$oldWidth = round($newWidth / $ratioY);
+			$oldHeight = $oldHeight;
+		} else {
+			$startX = 0;
+			$startY = round(($oldHeight - ($newHeight / $ratioX)) / 2);
+			$oldWidth = $oldWidth;
+			$oldHeight = round($newHeight / $ratioX);
+		}
+		// Create working copy of source file
+		switch ($ext) {
+			case 'gif':
+				$source = imagecreatefromgif($image);
+				break;
+			case 'png':
+				$source = imagecreatefrompng($image);
+				break;
+			case 'jpg':
+				$source = imagecreatefromjpeg($image);
+				break;
+			default:
+				return false;
+		}
+		// Create working copy of target file
+		$target = imagecreatetruecolor($newWidth, $newHeight);
+		// Resize and copy image from source to target image
+		imagecopyresampled($target, $source, 0, 0, $startX, $startY, $newWidth, $newHeight,
+			$oldWidth, $oldHeight);
+		imagedestroy($source); // Destroy working copy source
+		// Save as image type
+		$return = false;
+		switch ($ext) {
+			case 'gif':
+				$return = imagegif ($target, $uploadFilepath, $quality);
+				break;
+			case 'png':
+				$return = imagepng($target, $uploadFilepath, round($quality / 10));
+				break;
+			case 'jpg':
+				$return = imagejpeg($target, $uploadFilepath, $quality);
+		}
+		// Destroy working copy target
+		imagedestroy($target);
+		return $return;
 	}
 	
 }

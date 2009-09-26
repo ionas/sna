@@ -1,14 +1,15 @@
 <?php
 class AppController extends Controller {
 	
-	var $components = array('Auth', 'Session', 'Cookie');
+	var $components = array('Auth', 'Session', 'Cookie', 'RequestHandler', 'Breadcrume');
 	var $helpers = array('Html','Javascript');
+
 	var $enforceTosOn = array('Users', 'Messages', 'Shouts');
 	
 	function beforeFilter() {
-		$this->__setupAuth();
-		$this->__checkHasAcceptedTos();
-		$this->__setLanguage();
+		$this->_setupAuth();
+		$this->_checkHasAcceptedTos();
+		$this->_setLanguage();
 	}
 	
 	function beforeRender(){
@@ -21,7 +22,7 @@ class AppController extends Controller {
 		}
 	}
 	
-	function __setLanguage() {
+	function _setLanguage() {
 		if ($this->Cookie->read('lang') && !$this->Session->check('Config.language')) {
 		    $this->Session->write('Config.language', $this->Cookie->read('lang'));
 		} else if (isset($this->params['lang']) && ($this->params['lang']
@@ -31,7 +32,7 @@ class AppController extends Controller {
 		}
 	} 
 	
-	function __setupAuth() {
+	function _setupAuth() {
 		Security::setHash('sha256');
 		// ENCH: Functionize, pass Array with 'ControllerA' => array('ActionA')?
 		switch ($this->name) {
@@ -45,7 +46,7 @@ class AppController extends Controller {
 		$this->set('activeUser', $this->Auth->user());
 	}
 	
-	function __checkHasAcceptedTos() {
+	function _checkHasAcceptedTos() {
 		if ($this->Auth->isAuthorized()) {
 			if (in_array($this->name, $this->enforceTosOn)
 			&& !($this->name == 'Users' && in_array($this->action, array(
@@ -60,12 +61,13 @@ class AppController extends Controller {
 				)))
 			&& $this->Auth->user('has_accepted_tos') != 1) {
 				$this->Session->setFlash(
-					__('You have to accept the Terms of Service before continuing.', true));
+					_('You have to accept the Terms of Service before continuing.', true));
 				$this->Session->write('TermsOfService.redirect', $this->here);
 				$this->redirect(array('controller' => 'users', 'action' => 'terms_of_service'));
 			}
 		}
 	}
 	
+
 }
 ?>

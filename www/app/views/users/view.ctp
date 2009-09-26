@@ -107,7 +107,7 @@
 
 	<div class="actions">
 		<ul>
-			<li><?php echo $html->link(__('Edit Profile', true), array('controller'=> 'profiles', 'action'=>'add'));?> </li>
+			<li><?php echo $html->link(__('Edit Profile', true), array('controller'=> 'profiles', 'action'=>'edit', $user['Profile']['id']));?> </li>
 		</ul>
 	</div>
 </div>

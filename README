@@ -34,7 +34,7 @@ X Profile visibility options
 X Move "user" and "profile" "current" naming to "active" (better readability)
 X Messaging
 X After User CREATION, create empty associated profile
-o Profile picture uploads
+X Profile picture uploads
 - Basic Profile View (with Shouts)
 - Shoutbox
 - Shout hiding

@@ -206,7 +206,7 @@ class User extends AppModel {
 		if (!empty($data[$this->alias]['id'])) {
 			$this->id = $data[$this->alias]['id'];
 			if ($this->saveField('activation_key', null)) {
-				if($isCreated) {
+				if ($isCreated) {
 					// Create an empty hidden profile
 					$this->Profile->create(array('Profile' => array(
 							'user_id' => $this->id,

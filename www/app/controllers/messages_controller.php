@@ -10,7 +10,7 @@ class MessagesController extends AppController {
 	}
 	
 	function mailbox($filter = null) {
-		$activeProfileId = $this->__getAuthedProfileId();
+		$activeProfileId = $this->Message->Profile->getAuthedId($this->Auth->user());
 		switch($filter) {
 			case 'inbox':
 				$this->set('messagesTitle', __('Inbox', true));
@@ -86,15 +86,16 @@ class MessagesController extends AppController {
 	}
 	
 	function send($toProfileId = null) {
-		if (!$toProfileId or $toProfileId == $this->__getAuthedProfileId()
+		if (!$toProfileId or $toProfileId == $this->Message->Profile->getAuthedId(
+				$this->Auth->user())
 		or !$this->Message->Profile->read('nickname', $toProfileId)) {
 			$this->Session->setFlash(__('Invalid profile.', true));
-			$this->redirect($this->referer());
+			$this->Breadcrume->redirectBack();
 		}
 		$this->set('toProfile', $this->Message->Profile->data);
 		if (!empty($this->data)) {
 			$this->Message->create($this->data);
-			if ($this->Message->send($this->__getAuthedProfileId(), $toProfileId)) {
+			if ($this->Message->send($toProfileId, $toProfileId)) {
 				$this->Session->setFlash(
 					__('Your message has been send to', true) . ' '
 						. $this->Message->Profile->data['Profile']['nickname'] . '.');
@@ -110,7 +111,7 @@ class MessagesController extends AppController {
 		if (!$id or !$this->Message->read(
 				array('from_profile_id', 'created', 'subject', 'body', 'created'), $id)) {
 			$this->Session->setFlash(__('Invalid message.', true));
-			$this->redirect($this->referer());
+			$this->Breadcrume->redirectBack();
 		}
 		// Check auth
 		if ($this->Auth->user('active_profile_id') ==
@@ -123,11 +124,12 @@ class MessagesController extends AppController {
 		$this->set('message', $this->Message->data);
 		if (!empty($this->data)) {
 			$this->Message->create($this->data);
-			if ($this->Message->send($this->__getAuthedProfileId(),
+			if ($this->Message->send($this->Message->Profile->getAuthedId($this->Auth->user()),
 					$toProfileData['Profile']['id'])) {
 				$this->Session->setFlash(
 					__('Your message has been send to', true) . ' '
 						. $toProfileData['Profile']['nickname']);
+				$this->Breadcrume->redirectBack();
 			} else {
 				$this->Session->setFlash(
 					__('Your message could not be send, see below.', true));
@@ -157,7 +159,7 @@ class MessagesController extends AppController {
 		} else {
 			$this->Session->setFlash(__('Message could not be trashed.', true));
 		}
-		$this->redirect($this->referer());
+		$this->Breadcrume->redirectBack();
 	}
 	
 	function restore($id = null) {
@@ -166,14 +168,7 @@ class MessagesController extends AppController {
 		} else {
 			$this->Session->setFlash(__('Message could not be restored.', true));
 		}
-		$this->redirect($this->referer());
-	}
-	
-	function __getAuthedProfileId() {
-		$activeProfileData = $this->Message->Profile->find('first', array(
-				'fields' => array('id'),
-				'conditions' => array('user_id' => $this->Auth->user('id'))));
-		return $activeProfileData['Profile']['id'];
+		$this->Breadcrume->redirectBack();
 	}
 	
 }

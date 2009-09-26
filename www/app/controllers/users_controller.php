@@ -23,7 +23,7 @@ class UsersController extends AppController {
 			$this->Auth->authenticate = $this->User;
 		}
 		// Disable autoRedirect for login page
-		if($this->action == 'login') {
+		if ($this->action == 'login') {
 			$this->Auth->autoRedirect = false;
 		}
 	}
@@ -47,7 +47,7 @@ class UsersController extends AppController {
 			);
 			$id = $user['User']['id'];
 		}
-		if($id == $this->Auth->user('id')) {
+		if ($id == $this->Auth->user('id')) {
 			$this->set('user', $this->User->read(null, $id));
 		} else {
 			$this->Session->setFlash(
@@ -125,7 +125,7 @@ class UsersController extends AppController {
 					array('conditions' => array('id' => $this->Auth->user('id')))));
 			$termsOfServiceRedirect = $this->Session->read('TermsOfService.redirect');
 			$this->Session->del('TermsOfService.redirect');
-			if($termsOfServiceRedirect != null) {
+			if ($termsOfServiceRedirect != null) {
 				$this->redirect($termsOfServiceRedirect);
 			} else {
 				$this->redirect(array('action' => 'home'));
@@ -137,22 +137,22 @@ class UsersController extends AppController {
 	
 	function forgot_password() {
 		$this->Auth->logout();
-		if(!empty($this->data)) {
-			if($this->User->sendPasswordInstructions($this->data) == true) {
+		if (!empty($this->data)) {
+			if ($this->User->sendPasswordInstructions($this->data) == true) {
 				$this->Session->setFlash(__('You should have recieved information on how to restore your password per email.', true));
 				$this->redirect(array('action' => 'home'));
 			} else {
 				$this->Session->setFlash(__('Password retrival information could not be send, try again.', true));
 			}
 		} else {
-			if($this->referer() != $this->here) {
+			if ($this->referer() != $this->here) {
 				$this->Session->setFlash(__("Enter your Account's login name or Email address.", true));
 			}
 		}
 	}
 	
 	function new_password($passwordResetKey = null) {
-		if(!empty($this->data)) {
+		if (!empty($this->data)) {
 			if ($this->User->saveNewPassword($this->data)) {
 				$this->Auth->logout();
 				$this->Session->setFlash(__('Your new password has been set.', true));
@@ -169,7 +169,7 @@ class UsersController extends AppController {
 	}
 	
 	function change_password() {
-		if(!empty($this->data)) {
+		if (!empty($this->data)) {
 			if ($this->User->changePassword($this->Auth->user(), $this->data)) {
 				$this->Auth->logout();
 				$this->Session->setFlash(__('Your new password has been set.', true));
@@ -189,12 +189,12 @@ class UsersController extends AppController {
 	
 	function hide($switch = 'yes') {
 		$this->User->id = $this->Auth->user('id');
-		if($this->User->id != null && $switch == 'yes') {
-			if($this->User->saveField('is_hidden', 1)) {
+		if ($this->User->id != null && $switch == 'yes') {
+			if ($this->User->saveField('is_hidden', 1)) {
 				$this->Session->setFlash(__('You are now invisible.', true));
 			}
 		} else if ($this->User->id != null && $switch == 'no') {
-			if($this->User->saveField('is_hidden', 0)) {
+			if ($this->User->saveField('is_hidden', 0)) {
 				$this->Session->setFlash(__('You are now visible.', true));
 			}
 		}
@@ -212,10 +212,10 @@ class UsersController extends AppController {
 	}
 	
 	function login() {
-		if($this->Auth->isAuthorized() === true) {
+		if ($this->Auth->isAuthorized() === true) {
 			$this->User->updateLastLogin($this->Auth->user());
-			if(!empty($this->data)) {
-				if($this->Session->read('Auth.redirect') == null) {
+			if (!empty($this->data)) {
+				if ($this->Session->read('Auth.redirect') == null) {
 					$this->redirect(array('action' => 'home'));
 				} else {
 					$this->redirect($this->Session->read('Auth.redirect'));
@@ -225,7 +225,7 @@ class UsersController extends AppController {
 	}
 	
 	function logout() {
-		if($this->Auth->isAuthorized() == true) {
+		if ($this->Auth->isAuthorized() == true) {
 			$this->Session->setFlash(
 				__('Goodbye', true) . ' ' . $this->Auth->user('username') . '...');
 			$this->User->updateLastLogin($this->Auth->user());
@@ -236,7 +236,7 @@ class UsersController extends AppController {
 	
 	function __authAutoRedirectFixes() {
 		$sessionAuthRedirect = $this->Session->read('Auth.redirect');
-		if(stripos($sessionAuthRedirect, '/users/activate') === 0
+		if (stripos($sessionAuthRedirect, '/users/activate') === 0
 		OR stripos($sessionAuthRedirect, '/users/new_password') === 0) {
 			$this->Session->write('Auth.redirect', '/users/home');
 		}
