@@ -4,12 +4,17 @@ class ProfilesController extends AppController {
 	var $name = 'Profiles';
 	var $helpers = array('Html', 'Form', 'Javascript');
 	
+	function self() {
+		// TODO for redirecting to self profile without supplying ID
+	}
+	
 	function beforeFilter() {
 		parent::beforeFilter();
 		$this->Auth->allow(array('view'));
 	}
 	
-	function index() {
+	function search() {
+		// TODO
 		$this->Profile->recursive = 0;
 		$this->set('profiles', $this->paginate());
 	}
@@ -22,12 +27,10 @@ class ProfilesController extends AppController {
 		$this->set('profile', $this->Profile->read(null, $id));
 	}
 	
-	function edit($id = null) {
-		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(__('Invalid Profile', true));
-			$this->redirect(array('action'=>'index'));
-		}
+	function edit() {
+		$this->layout = 'settings';
 		// TODO, on first edit, default $this->data hidden to 0 
+		$id = $this->Profile->getAuthedId($this->Auth->user());
 		if (!empty($this->data)) {
 			$this->data['Profile']['user_id'] = $this->Auth->user('id');
 			if ($this->Profile->save($this->data, true, array(

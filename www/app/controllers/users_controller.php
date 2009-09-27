@@ -28,36 +28,8 @@ class UsersController extends AppController {
 		}
 	}
 	
-	function index() {
-		$this->redirect('home');
-	}
-	
-	function view($id = null) {
-		$this->User->recursive = 1;
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid User.', true));
-			$this->redirect(array('action' => 'index'));
-		}
-		// No UUID => try finding user by username
-		if (strlen($id) != 36) {
-			$user = $this->User->find('first', array(
-					'User.id',
-					'conditions' => array('User.username' => $id),
-				)
-			);
-			$id = $user['User']['id'];
-		}
-		if ($id == $this->Auth->user('id')) {
-			$this->set('user', $this->User->read(null, $id));
-		} else {
-			$this->Session->setFlash(
-				__('You may only access your own User Account.', true));
-			// TODO Routing bugs again
-			// $this->redirect(array('home'));
-		}
-	}
-	
 	function register() {
+		$this->layout = 'visitor';
 		$this->Auth->logout();
 		if (!empty($this->data)) {
 			$this->User->create();
@@ -76,6 +48,7 @@ class UsersController extends AppController {
 	}
 	
 	function activate($activationKey = null) {
+		$this->layout = 'visitor';
 		$this->Auth->logout();
 		if (!empty($this->data)) {
 			if ($this->User->activate($this->data)) {
@@ -92,11 +65,8 @@ class UsersController extends AppController {
 		}
 	}
 	
-	function edit($id = null) {
-		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(__('Invalid User Accuont ID.', true));
-			$this->redirect(array('action' => 'index'));
-		}
+	function edit() {
+		$this->layout = 'settings';
 		if (!empty($this->data)) {
 			if ($this->User->save($this->data)) {
 				$this->Session->setFlash(__('Your User Account has been updated.', true));
@@ -107,11 +77,12 @@ class UsersController extends AppController {
 			}
 		}
 		if (empty($this->data)) {
-			$this->data = $this->User->read(null, $id);
+			$this->data = $this->User->read(null, $this->Auth->user('id'));
 		}
 	}
 	
 	function terms_of_service() {
+		$this->layout = 'settings';
 		if (!empty($this->params['form']['decline'])) {
 			$this->User->setTos($this->Auth->user(), 0);
 			$this->Session->setFlash(__('You have declined the Terms of Service.', true));
@@ -136,6 +107,7 @@ class UsersController extends AppController {
 	}
 	
 	function forgot_password() {
+		$this->layout = 'visitor';
 		$this->Auth->logout();
 		if (!empty($this->data)) {
 			if ($this->User->sendPasswordInstructions($this->data) == true) {
@@ -152,6 +124,7 @@ class UsersController extends AppController {
 	}
 	
 	function new_password($passwordResetKey = null) {
+		$this->layout = 'settings';
 		if (!empty($this->data)) {
 			if ($this->User->saveNewPassword($this->data)) {
 				$this->Auth->logout();
@@ -169,6 +142,7 @@ class UsersController extends AppController {
 	}
 	
 	function change_password() {
+		$this->layout = 'settings';
 		if (!empty($this->data)) {
 			if ($this->User->changePassword($this->Auth->user(), $this->data)) {
 				$this->Auth->logout();
@@ -184,7 +158,11 @@ class UsersController extends AppController {
 	}
 	
 	function change_email() {
-		// TODO
+		$this->layout = 'settings';
+		if (!empty($this->data)) {
+			// TODO
+			$this->Session->setFlash('ERROR: NOT IMPLEMENTED YET.');
+		}
 	}
 	
 	function hide($switch = 'yes') {
@@ -198,16 +176,18 @@ class UsersController extends AppController {
 				$this->Session->setFlash(__('You are now visible.', true));
 			}
 		}
-		$this->redirect($this->referer());
+		$this->Breadcrume->redirectBack();
 	}
 	
 	function home() {
-		$landingPage = $this->User->Option->get($this->Auth->user(), array('landingPage'));
-		if (!empty($landingPage)) {
-			$this->redirect($landingPage);
-			
+		if ($this->Auth->isAuthorized() === true) {
+			$profileData = $this->User->Profile->find('first', array(
+				'fields' => 'Profile.id',
+				'conditions' => array('Profile.user_id' => $this->Auth->user('id'))));
+			$this->redirect(array('controller' => 'profiles', 'action' => 'view',
+				$profileData['Profile']['id']));
 		} else {
-			$this->redirect(array('controller' => 'pages', 'action' => 'display', 'home'));
+			$this->redirect('/');
 		}
 	}
 	
@@ -221,6 +201,8 @@ class UsersController extends AppController {
 					$this->redirect($this->Session->read('Auth.redirect'));
 				}
 			}
+		} else {
+			$this->layout = 'visitor';
 		}
 	}
 	
@@ -242,6 +224,49 @@ class UsersController extends AppController {
 		}
 		unset($sessionAuthRedirect);
 	}
+	
+	/*
+	function index() {
+		$this->redirect('home');
+	}
+	*/
+	
+	/*
+	function view($id = null) {
+		$this->User->recursive = 1;
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid User.', true));
+			$this->redirect(array('action' => 'index'));
+		}
+		// No UUID => try finding user by username
+		if (strlen($id) != 36) {
+			$user = $this->User->find('first', array(
+					'User.id',
+					'conditions' => array('User.username' => $id),
+				)
+			);
+			$id = $user['User']['id'];
+		}
+		if ($id == $this->Auth->user('id')) {
+			$this->set('user', $this->User->read(null, $id));
+		} else {
+			$this->Session->setFlash(
+				__('You may only access your own User Account.', true));
+			// TODO Routing bugs again
+			// $this->redirect(array('home'));
+		}
+	}
+	* 
+	function home() {
+		$landingPage = $this->User->Option->get($this->Auth->user(), array('landingPage'));
+		if (!empty($landingPage)) {
+			$this->redirect($landingPage);
+			
+		} else {
+			$this->redirect(array('controller' => 'pages', 'action' => 'display', 'home'));
+		}
+	}
+	*/
 	
 }
 ?>

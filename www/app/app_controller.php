@@ -10,6 +10,7 @@ class AppController extends Controller {
 		$this->_setupAuth();
 		$this->_checkHasAcceptedTos();
 		$this->_setLanguage();
+		$this->_setupLayout();
 	}
 	
 	function beforeRender(){
@@ -37,13 +38,20 @@ class AppController extends Controller {
 		// ENCH: Functionize, pass Array with 'ControllerA' => array('ActionA')?
 		switch ($this->name) {
 			case 'Pages':
-				$this->Auth->allow(array('display'));
+				if(stristr($this->passedArgs[0], 'public') !== false) {
+					$this->Auth->allow(array('display'));
+				}
 		}
 		$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
 		$this->Auth->logoutRedirect = '/';
 		$this->Auth->loginRedirect = array('controller' => 'users', 'action' => 'home');
 		$this->Auth->autoRedirect = true;
-		$this->set('activeUser', $this->Auth->user());
+		App::import('Profile');
+		$this->Profile = new Profile();
+		$authedProfileData = $this->Profile->find('first', array(
+			'fields' => array('Profile.id'),
+			'conditions' => array('Profile.user_id' => $this->Auth->user('id'))));
+		$this->set('authedUser', array_merge($authedProfileData, $this->Auth->user()));
 	}
 	
 	function _checkHasAcceptedTos() {
@@ -68,6 +76,16 @@ class AppController extends Controller {
 		}
 	}
 	
-
+	function _setupLayout() {
+		if ($this->Auth->isAuthorized()) {
+			$this->layout = 'default';
+		} else {
+			$this->layout = 'visitor';
+		}
+		if ($this->name == 'Pages') {
+			$this->layout = 'fullscreen';
+		}
+	}
+	
 }
 ?>

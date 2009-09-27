@@ -17,14 +17,6 @@ class User extends AppModel {
 		),
 	);
 	
-	var $hasMany = array(
-		'Option' => array(
-			'className' => 'Option',
-			'foreignKey' => 'user_id',
-			'dependent' => true,
-		),
-	);
-	
 	function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct();
 		$this->validate = array(
@@ -212,10 +204,6 @@ class User extends AppModel {
 							'user_id' => $this->id,
 							'is_hidden' => 1)));
 					$this->Profile->save();
-					// TODO
-					// $this->User->Option->setUser($data);
-					// $this->User->Option->set('landingPage',
-					//	'/profiles/edit/' . $this->Profile->id);
 				}
 				return true;
 			}

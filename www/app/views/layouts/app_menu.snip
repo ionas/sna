@@ -1,0 +1,8 @@
+<div id="menu">
+	<ul>
+		<li><?=$html->link(__('Home', true), array('controller' => 'users', 'action' => 'home'))?></li>
+		<li><?=$html->link(__('Messages', true), array('controller' => 'messages', 'action' => 'mailbox'))?></li>
+		<li><?=$html->link(__('Settings', true), array('controller' => 'profiles', 'action' => 'edit'))?></li>
+		<li><?=$html->link(__('Logout', true), array('controller' => 'users', 'action' => 'logout'))?></li>
+	</ul>
+</div>
