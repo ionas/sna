@@ -13,14 +13,12 @@ class AppController extends Controller {
 		$this->_setupLayout();
 	}
 	
-	function beforeRender(){
+	function beforeRender() {
 		// Automagically load CSS files for controllers and actions/views
-		if (file_exists(CSS . 'views' . DS . strtolower($this->name) . '.css')) {
-			$this->set('controller_css_for_layout', 'views' . DS . strtolower($this->name));
-		}
-		if (file_exists(CSS . 'views' . DS . strtolower($this->name) . DS . $this->action . '.css')) {
-			$this->set('view_css_for_layout', 'views' . DS . strtolower($this->name) . DS . $this->action);
-		}
+		$this->set('controller_css_for_layout', 'views' . DS . strtolower($this->name) . '.css');
+		$this->set('view_css_for_layout', 'views' . DS . strtolower($this->name) . DS
+			. $this->action . '.css');
+		$this->set('css_for_layout', 'layouts' . DS . strtolower($this->layout . '.css'));
 	}
 	
 	function _setLanguage() {
@@ -36,22 +34,22 @@ class AppController extends Controller {
 	function _setupAuth() {
 		Security::setHash('sha256');
 		// ENCH: Functionize, pass Array with 'ControllerA' => array('ActionA')?
-		switch ($this->name) {
-			case 'Pages':
-				if(stristr($this->passedArgs[0], 'public') !== false) {
-					$this->Auth->allow(array('display'));
-				}
-		}
+		$this->Auth->allow(array('display'));
 		$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
 		$this->Auth->logoutRedirect = '/';
 		$this->Auth->loginRedirect = array('controller' => 'users', 'action' => 'home');
 		$this->Auth->autoRedirect = true;
-		App::import('Profile');
-		$this->Profile = new Profile();
-		$authedProfileData = $this->Profile->find('first', array(
-			'fields' => array('Profile.id'),
-			'conditions' => array('Profile.user_id' => $this->Auth->user('id'))));
-		$this->set('authedUser', array_merge($authedProfileData, $this->Auth->user()));
+		$authedUser = array();
+		$authedProfileData = array();
+		if ($this->Auth->isAuthorized()) {
+			$authedUser = $this->Auth->user();
+			$this->loadModel('Profile');
+			$this->Profile = new Profile();
+			$authedProfileData = $this->Profile->find('first', array(
+				'fields' => array('Profile.id'),
+				'conditions' => array('Profile.user_id' => $this->Auth->user('id'))));
+		}
+		$this->set('authedUser', array_merge($authedProfileData, $authedUser));
 	}
 	
 	function _checkHasAcceptedTos() {
@@ -82,7 +80,7 @@ class AppController extends Controller {
 		} else {
 			$this->layout = 'visitor';
 		}
-		if ($this->name == 'Pages') {
+		if ($this->here == '/' or $this->here == '/pages/home') {
 			$this->layout = 'fullscreen';
 		}
 	}

@@ -30,3 +30,46 @@ table tr td {
 	border-bottom: 1px solid #ccc;
 	empty-cells: show;
 }
+
+/* flash message */
+#authMessage,
+#flashMessage {
+	width: auto;
+	margin: 0;
+	border: 1px solid #900;
+	border-radius: 4px; /* CSS 3 */
+	-o-border-radius: 4px; /* Opera */
+	-icab-border-radius: 4px; /* iCab */
+	-khtml-border-radius: 4px; /* Konqueror */
+	-moz-border-radius: 4px; /* Firefox */
+	-webkit-border-radius: 4px; /* Safari */
+	background-image: url('/img/error_bg_2.png');
+	background-repeat: no-repeat;
+	background-position: .02em -.2em;
+	padding-left: 2.2em;
+	padding-top: .4em;
+	padding-bottom: .4em;
+	padding-right: 1em;
+	margin-bottom: 2em;
+	margin-left: 1.4em;
+	margin-top: 2em;
+	font-size: 110%;
+	background-color: #fffff7;
+}
+
+/* debug */
+.cake-sql-log caption {
+	font-size: 90%;
+	padding-top: 10em;
+	padding-bottom: 1em;
+	color: #fff;
+}
+.clear {
+	line-height: 0;
+	height: 0;
+	font-size: 0;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	clear: both;
+}

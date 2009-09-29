@@ -1,7 +1,7 @@
 form {
 	margin: 0;
 	padding: 0;
-	width: 60em;
+	width: auto;
 }
 form fieldset {
 	padding: 1em 0 2em 1em;
@@ -21,7 +21,7 @@ form div.input.text input,
 form div.input.password input,
 form div.input.error.text input,
 form div.input.error.password input {
-	width: 19em;
+	width: auto;
 }
 form div.input.error.text input,
 form div.input.error.password input {
@@ -35,7 +35,7 @@ form div.input.checkbox label {
 	margin: 0;
 }
 form div.input.checkbox label {
-	width: 24.4em;
+	width: auto;
 	border: 1px solid white;
 	line-height: 133%;
 }
@@ -45,7 +45,7 @@ form div.input.error.checkbox label {
 form div.input.error .error-message {
 	float: left;
 	clear: none;
-	width: 26em;
+	width: auto;
 	margin: 0;
 	margin-left: .5em;
 	color: #fff;
@@ -107,7 +107,7 @@ a.iconLinkButton,
 form textarea {
 	line-height: 150%;
 	height: 19.5em;
-	width: 97%;
+	width: auto;
 	font-size: 100%
 }
 form div.input.text input:focus,

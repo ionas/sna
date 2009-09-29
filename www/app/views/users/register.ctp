@@ -28,9 +28,3 @@
 	</fieldset>
 <?=$form->end(__('Sign up', true))?>
 </div>
-<div class="actions">
-	<ul>
-		<li><?=$html->link(__('Login with an existing User Account', true), array('action' => 'login'))?></li>
-		<li><?=$html->link(__('Forgot password?', true), array('action' => 'forgot_password'))?></li>
-	</ul>
-</div>

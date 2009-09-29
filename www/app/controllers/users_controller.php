@@ -103,7 +103,7 @@ class UsersController extends AppController {
 			}
 		}
 		$this->set('hasAcceptedTos', $this->Auth->user('has_accepted_tos'));
-		$this->set('termsOfService', $this->requestAction('/pages/public/terms_of_service'));
+		$this->set('termsOfService', $this->requestAction('/pages/terms_of_service'));
 	}
 	
 	function forgot_password() {

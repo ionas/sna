@@ -1,13 +1,16 @@
 
 		<div id="footer">
-			<a href="#top">&uarr;</a>
-			<?=$html->link(
-				$html->image('cake.power.gif', array(
-						'alt'=> __("Cake Power", true),
-						'border' => '0')),
-					'http://www.cakephp.org',
-					array('target'=>'_blank'), null, false
-				)?>
+			<div id="footer_menu">
+			<?=$html->link(__('Home', true), array('controller' => 'users', 'action' => 'home'))?>
+			<?=$html->link(__('Login', true), array('controller' => 'users', 'action' => 'login'))?>
+			<?=$html->link(__('Support', true), array('controller' => 'pages', 'action' => 'display', 'support'))?>
+			<?=$html->link(__('About', true), array('controller' => 'pages', 'action' => 'display', 'about'))?>
+			<?=$html->link(__('Donate', true), array('controller' => 'pages', 'action' => 'display', 'donate'))?>
+			<?=$html->link(__('Feedback', true), array('controller' => 'pages', 'action' => 'display', 'feedback'))?>
+			<?=$html->link(__('Terms and Conditions', true), array('controller' => 'pages', 'action' => 'display', 'terms_of_service'))?>
+			<?=$html->link(__('Impress', true), array('controller' => 'pages', 'action' => 'display', 'impress'), array('class' => 'last'))?>
+			</div>
+			<a href="#top" id="top_link">&uarr;</a>
 		</div>
 	</div>
 	<?=$cakeDebug?>

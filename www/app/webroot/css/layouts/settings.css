@@ -1,0 +1,34 @@
+#header {
+	padding-left: 14em;
+}
+#footer #footer_menu {
+	padding-left: 17em;
+}
+#settings_menu ul,
+#settings_menu li {
+	display: inline;
+	padding: 0;
+	margin: 0;
+}
+#settings_title {
+	font-size: 200%;
+	font-weight: bold;
+	padding-left: 8em;
+	padding-bottom: .6em;
+}
+#settings_menu li a {
+	border: 1px solid white;
+	border-radius: 4px; /* CSS 3 */
+	-o-border-radius: 4px; /* Opera */
+	-icab-border-radius: 4px; /* iCab */
+	-khtml-border-radius: 4px; /* Konqueror */
+	-moz-border-radius: 4px; /* Firefox */
+	-webkit-border-radius: 4px; /* Safari */
+	padding: .5em 1.3em;
+	margin-right: .2em;
+	text-decoration: none;
+	font-size: 120%;
+}
+#settings_menu {
+	margin-bottom: -.2em;
+}

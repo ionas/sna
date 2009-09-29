@@ -35,8 +35,8 @@ X Move "user" and "profile" "current" naming to "active" (better readability)
 X Messaging
 X After User CREATION, create empty associated profile
 X Profile picture uploads
-- Basic Profile View (with Shouts)
-- Shoutbox
+X Basic Profile View (with Shouts)
+o Shoutbox
 - Shout hiding
 - Buddylists
 - ACL (if required)

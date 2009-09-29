@@ -25,7 +25,7 @@
 		<br>
 		<br>
 		<?=__('This message has been generated. Do not reply to this message.', true)?><br>
-		<?=__('If you require support, visit', true)?> <?=$html->link(__('http://' . env('SERVER_NAME') . '/pages/public/support', true),
-				array('controller' => 'pages', 'action' => 'display', 'http://' . env('SERVER_NAME') . '/public/support'))?>
+		<?=__('If you require support, visit', true)?> <?=$html->link(__('http://' . env('SERVER_NAME') . '/pages/support', true),
+				array('controller' => 'pages', 'action' => 'display', 'http://' . env('SERVER_NAME') . '/support'))?>
 	</body>
 </html>

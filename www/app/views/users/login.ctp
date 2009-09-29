@@ -17,6 +17,5 @@
 <div class="actions">
 	<ul>
 		<li><?=$html->link(__('Forgot password?', true), array('action' => 'forgot_password'))?></li>
-		<li><?=$html->link(__('New here? Sign up!', true), array('action' => 'register'))?></li>
 	</ul>
 </div>

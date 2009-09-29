@@ -1,3 +1,6 @@
+body {
+	font-size: 10px;
+}
 /* header */
 #header h1 {
 	background-image: url('../img/app.icon.gif');
@@ -5,10 +8,11 @@
 	background-position: left -8px;
 	padding-left: 40px;
 }
-
 /* lang selector */
 #header {
 	position: relative;
+	font-size: 130%;
+	padding-left: 1em;
 }
 #langSelector {
 	position: absolute;
@@ -29,36 +33,88 @@
 	margin-right: .5em;
 	border-right: 1px solid white;
 }
-
-/* flash message */
-#authMessage,
-#flashMessage {
-	width: 48.4em;
-	margin: 0;
-	border: 1px solid #900;
+#container {
+	width: 94em;
+	margin: 0 auto;
+}
+#menu,
+#content {
+	font-size: 130%;
+	background: white;
+	font-size: 130%;
+	clear: none;
+	border: 1px solid white;
 	border-radius: 4px; /* CSS 3 */
 	-o-border-radius: 4px; /* Opera */
 	-icab-border-radius: 4px; /* iCab */
 	-khtml-border-radius: 4px; /* Konqueror */
 	-moz-border-radius: 4px; /* Firefox */
 	-webkit-border-radius: 4px; /* Safari */
-	background-image: url('/img/error_bg_2.png');
-	background-repeat: no-repeat;
-	background-position: .1em 0;
-	padding-left: 2.2em;
-	padding-top: .4em;
-	padding-bottom: .4em;
-	padding-right: 1em;
-	margin-bottom: 2em;
-	margin-left: 1.4em;
-	margin-top: 2em;
-	font-size: 110%;
-	background-color: #fffff7;
+	border-bottom-color: black;
 }
-
-/* debug */
-.cake-sql-log caption {
-	font-size: 90%;
-	padding-bottom: 1em;
-	color: #fff;
+#menu,
+#menu ul,
+#menu li {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+#menu {
+	float: left;
+	margin-right: 1em;
+	padding: 1em;
+	width: 10em;
+}
+#menu a {
+	text-decoration: none;
+}
+#menu a:hover {
+	background: none;
+	color: black;
+	text-decoration: underline;
+}
+#menu li {
+	padding-bottom: .5em;
+}
+#content {
+	padding: 0 3em 2em 3em;
+}
+html, body, #container {
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+	height: 100%;
+}
+#content {
+	min-height: 100%;
+}
+#footer {
+	padding-top: 1em;
+	padding-bottom: 3em;
+	font-size: 100%;
+}
+#footer #footer_menu {
+	float: left;
+	padding-top: .5em;
+}
+#footer #footer_menu a {
+	display: block;
+	float: left;
+	font-weight: normal;
+	line-height: 90%;
+	margin-right: 8px;
+	padding-right: 8px;
+	border-right: 1px solid #ddd;
+	color: #ddd;
+}
+#footer #footer_menu a:hover {
+	text-decoration: underline;
+}
+#footer #footer_menu a.last {
+	border-right: none;	
+}
+#footer #top_link {
+	font-size: 150%;
+	
 }
