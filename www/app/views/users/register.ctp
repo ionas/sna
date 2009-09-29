@@ -20,7 +20,7 @@
 	$honeypot->spawn(),
 	$form->input('has_accepted_tos', array('label' => __('Hereby, I accept the', true) . ' '
 		. $html->link(__('Terms of Service', true),
-			array('controller' => 'pages', 'action' => 'display', 'public/terms_of_service'),
+			array('controller' => 'pages', 'action' => 'display', 'terms_of_service'),
 			array('target' => '_blank'))
 		. '!')),
 		$honeypot->spawn()
