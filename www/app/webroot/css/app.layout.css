@@ -89,6 +89,9 @@ html, body, #container {
 #content {
 	min-height: 100%;
 }
+#content {
+	overflow: hidden;
+}
 #footer {
 	padding-top: 1em;
 	padding-bottom: 3em;

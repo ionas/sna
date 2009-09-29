@@ -12,11 +12,7 @@ Welcome to SNA. Login or Register below. It's free.
 	<br class="clear" />
 </div>
 <?=$this->requestAction('/pages/about_short', array('return'));?>
-<?php
-/*
 <h2>Readme</h2>
 <?=nl2br(file_get_contents('../../../README'))?>
 <h2>License</h2>
 <?=nl2br(htmlentities(file_get_contents('../../../gpl-3.0.txt')))?>
-*/
-?>
