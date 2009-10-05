@@ -56,6 +56,11 @@ table tr td {
 	font-size: 110%;
 	background-color: #fffff7;
 }
+#authMessage,
+#flashMessage {
+	position: absolute;
+	top: 1.3em;
+}
 
 /* debug */
 .cake-sql-log caption {
