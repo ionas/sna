@@ -39,8 +39,8 @@ X Basic Profile View (with Shouts)
 o Shoutbox
 - Shout hiding
 - Buddylists
+- Change Breadcrume Component to UserHistory Component + add "afterLayout" filter which stores user GET url responses
 - ACL (if required)
-- Move user_options to profile_options (options per profile, user specific options per users booleans)
 - Security Features and Double Salts, See also: http://devedge.jonas-hartmann.com/documents/Securing_authentication_and_data_manipulation_via_HTTP.html
 - Routing (index => list, add => register/create/whatever, delete => remove (OR disable))
 - FAQ (cakephp book application?) - FAQ explains double use: username + nickname (security bonus), about, browser stuff and more
