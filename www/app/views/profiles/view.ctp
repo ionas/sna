@@ -25,15 +25,17 @@
 </div>
 <div class="actions">
 	<ul>
-		<?php if($authedUser['Profile']['id'] != $profile['Profile']['id']): ?>
+		<?php if(!empty($authedUser) and $authedUser['Profile']['id'] != $profile['Profile']['id']): ?>
 		<li><?=$html->link(__('Message', true), array('controller' => 'messages', 'action' => 'send', $profile['Profile']['id'])); ?> </li>
-		<li><?=$html->link(__('Make Friends?', true), array('action ' => 'make_friends', $profile['Profile']['id'])); ?> </li>
+		<li><?=$html->link(__('Make Friends?', true), array('action' => 'make_friends', $profile['Profile']['id'])); ?> </li>
 		<?php endif?>
 	</ul>
 </div>
 <div class="related">
 	<?php if (!empty($shouts)):?>
-		<?php require('shouts.ctp');?>
+		<?php require('shouts.ctp')?>
 	<?php endif?>
-	<?php require('shout_to.ctp');?>
+	<?php if(!empty($authedUser)):?>
+		<?php require('shout_to.ctp')?>
+	<?php endif?>
 </div>

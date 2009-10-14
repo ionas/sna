@@ -52,25 +52,42 @@ class ProfilesController extends AppController {
 		$this->set(compact('users'));
 	}
 	
+	function auth_shouts() {
+		// TODO
+	}
+	
+	function auth_messages() {
+		// TODO
+	}
+	
+	function buddy() {
+		// TODO
+	}
+	
+	function ignore() {
+		// TODO
+	}
+	
 	// Below: integrated shouts actions, because of integrated views (profile view with shouts)
 	function shout_to($toProfileId = null) {
-		if ($toProfileId != null and !empty($this->data)) {
+		if($this->Auth->isAuthorized() and $toProfileId != null and !empty($this->data)) {
 			$this->Profile->Shout->create();
 			$this->Profile->Shout->set(array(
 				'user_id' => $this->Auth->user('id'),
 				'profile_id' => $toProfileId,
-				'from_profile_id' => $this->Profile->Shout->Profile->getAuthedId($this->Auth->user())));
+				'from_profile_id' => $this->Profile->getAuthedId($this->Auth->user())));
 			if ($this->Profile->Shout->save($this->data, true,
 					array('user_id', 'profile_id', 'from_profile_id', 'body'))) {
 				$this->Session->setFlash(__('The Shout has been saved', true));
 				unset($this->data['Shout']);
 			} else {
-				$this->Session->setFlash(__('The Shout could not be saved. Please, try again.', true));
+				$this->Session->setFlash(__('The Shout could not be saved. Please, try again.',
+					true));
 			}
 		}
 		if (isset($this->data['Shout']['has_shouted']) and $this->action == 'shout_to') {
-			$this->redirect(array('controller' => 'profiles', 'action' => 'view', $toProfileId
-				. '#shouts'));
+			$this->redirect(array('controller' => 'profiles', 'action' => 'view', $toProfileId,
+				array('#' => 'shouts')));
 		}
 	}
 	
