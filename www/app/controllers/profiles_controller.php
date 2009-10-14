@@ -70,6 +70,7 @@ class ProfilesController extends AppController {
 	
 	// Below: integrated shouts actions, because of integrated views (profile view with shouts)
 	function shout_to($toProfileId = null) {
+		$shouted = false;
 		if($this->Auth->isAuthorized() and $toProfileId != null and !empty($this->data)) {
 			$this->Profile->Shout->create();
 			$this->Profile->Shout->set(array(
@@ -79,15 +80,17 @@ class ProfilesController extends AppController {
 			if ($this->Profile->Shout->save($this->data, true,
 					array('user_id', 'profile_id', 'from_profile_id', 'body'))) {
 				$this->Session->setFlash(__('The Shout has been saved', true));
-				unset($this->data['Shout']);
+				$shouted = true;
 			} else {
 				$this->Session->setFlash(__('The Shout could not be saved. Please, try again.',
 					true));
 			}
 		}
-		if (isset($this->data['Shout']['has_shouted']) and $this->action == 'shout_to') {
-			$this->redirect(array('controller' => 'profiles', 'action' => 'view', $toProfileId,
-				array('#' => 'shouts')));
+		if ($shouted) {
+			unset($this->data['Shout']);
+			if ($this->action == 'shout_to') {
+				$this->redirect(array('action' => 'view', $toProfileId, '#' => 'shouts'));
+			}
 		}
 	}
 	
