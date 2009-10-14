@@ -36,8 +36,9 @@ X Messaging
 X After User CREATION, create empty associated profile
 X Profile picture uploads
 X Basic Profile View (with Shouts)
-o Shoutbox
-- Shout hiding
+X Shoutbox
+- Shout Hiding
+- Shout Deletion
 - Buddylists
 - Change Breadcrume Component to UserHistory Component + add "afterLayout" filter which stores user GET url responses
 - ACL (if required)

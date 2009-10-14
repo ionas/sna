@@ -15,7 +15,6 @@ class ProfilesController extends AppController {
 	
 	function search() {
 		// TODO
-		$this->Profile->recursive = 0;
 		$this->set('profiles', $this->paginate());
 	}
 	
@@ -24,7 +23,11 @@ class ProfilesController extends AppController {
 			$this->Session->setFlash(__('Invalid Profile.', true));
 			$this->redirect(array('action'=>'index'));
 		}
+		if (!empty($this->data)) {
+			$this->shout_to($id);
+		}
 		$this->set('profile', $this->Profile->read(null, $id));
+		$this->set('shouts', $this->shouts($id));
 	}
 	
 	function edit() {
@@ -47,6 +50,85 @@ class ProfilesController extends AppController {
 			$this->data = $this->Profile->read(null, $id);
 		}
 		$this->set(compact('users'));
+	}
+	
+	// Below: integrated shouts actions, because of integrated views (profile view with shouts)
+	function shout_to($toProfileId = null) {
+		if ($toProfileId != null and !empty($this->data)) {
+			$this->Profile->Shout->create();
+			$this->Profile->Shout->set(array(
+				'user_id' => $this->Auth->user('id'),
+				'profile_id' => $toProfileId,
+				'from_profile_id' => $this->Profile->Shout->Profile->getAuthedId($this->Auth->user())));
+			if ($this->Profile->Shout->save($this->data, true,
+					array('user_id', 'profile_id', 'from_profile_id', 'body'))) {
+				$this->Session->setFlash(__('The Shout has been saved', true));
+				unset($this->data['Shout']);
+			} else {
+				$this->Session->setFlash(__('The Shout could not be saved. Please, try again.', true));
+			}
+		}
+		if (isset($this->data['Shout']['has_shouted']) and $this->action == 'shout_to') {
+			$this->redirect(array('controller' => 'profiles', 'action' => 'view', $toProfileId
+				. '#shouts'));
+		}
+	}
+	
+	function shouts($profileId) {
+		$numberOfShoutsPerPage = 3;
+		if (!$profileId) {
+			$this->Session->setFlash(__('Invalid Profile.', true));
+			$this->redirect(array('action'=>'index'));
+		}
+		$this->paginate = array(
+			'fields' => array(
+				'Profile.id',
+				'Shout.id',
+				'Shout.created',
+				'Shout.body',
+				'Shout.is_hidden',
+				'Shout.is_deleted',
+				'Shout.is_deleted_by_shouter',
+				'Shout.from_profile_id',
+				'FromProfile.id',
+				'FromProfile.nickname',
+			),
+			'joins' => array(
+				array(
+					'type' => 'LEFT', 
+					'table' => $this->Profile->Shout->useTable,
+					'alias' => $this->Profile->Shout->alias,
+					'foreignKey' => $this->Profile->Shout->primaryKey,
+					'conditions' => $this->Profile->escapeField($this->Profile->primaryKey) . ' = '
+						. $this->Profile->Shout->escapeField('profile_id'),
+				),
+				array(
+					'type' => 'LEFT', 
+					'table' => $this->Profile->Shout->FromProfile->useTable,
+					'alias' => $this->Profile->Shout->FromProfile->alias,
+					'foreignKey' => $this->Profile->Shout->FromProfile->primaryKey,
+					'conditions' => $this->Profile->Shout->escapeField('profile_id') . ' = '
+						. $this->Profile->Shout->FromProfile->escapeField(
+							$this->Profile->Shout->FromProfile->primaryKey),
+				),
+			),
+			'conditions' => array(
+				'Profile.id' => $profileId,
+			),
+			'order' => 'Shout.created DESC',
+			'limit' => $numberOfShoutsPerPage,
+		);
+		$shouts = $this->paginate();
+		$this->set('shouts', $shouts);
+		return $shouts;
+	}
+	
+	function toggle_shout() {
+		// TODO
+	}
+	
+	function delete_shout() {
+		// TODO
 	}
 	
 }
