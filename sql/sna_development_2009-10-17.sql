@@ -4,7 +4,7 @@
 #
 # Host: localhost (MySQL 5.0.67)
 # Database: sna_development
-# Generation Time: 2009-10-17 19:43:34 +0200
+# Generation Time: 2009-10-17 19:53:28 +0200
 # ************************************************************
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -23,7 +23,7 @@
 DROP TABLE IF EXISTS `connections`;
 
 CREATE TABLE `connections` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL auto_increment,
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   `profile_a_id` char(36) NOT NULL,
@@ -44,13 +44,13 @@ CREATE TABLE `connections` (
   `profile_b_is_authed_for_shouts_requested` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `UNIQUE_PROFILE_PAIR` (`profile_a_id`,`profile_b_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 LOCK TABLES `connections` WRITE;
 /*!40000 ALTER TABLE `connections` DISABLE KEYS */;
 INSERT INTO `connections` (`id`,`created`,`modified`,`profile_a_id`,`profile_b_id`,`profile_a_is_ignore`,`profile_b_is_ignore`,`profile_a_is_friend`,`profile_b_is_friend`,`profile_a_is_friend_requested`,`profile_b_is_friend_requested`,`profile_a_is_authed_for_messages`,`profile_b_is_authed_for_messages`,`profile_a_is_authed_for_messages_requested`,`profile_b_is_authed_for_messages_requested`,`profile_a_is_authed_for_shouts`,`profile_b_is_authed_for_shouts`,`profile_a_is_authed_for_shouts_requested`,`profile_b_is_authed_for_shouts_requested`)
 VALUES
-	(0,'2009-10-17 19:22:55','2009-10-17 19:22:55','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',1,1,1,1,0,0,1,1,0,0,1,1,0,0);
+	(1,'2009-10-17 19:22:55','2009-10-17 19:22:55','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',1,1,1,1,0,0,1,1,0,0,1,1,0,0);
 
 /*!40000 ALTER TABLE `connections` ENABLE KEYS */;
 UNLOCK TABLES;
