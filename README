@@ -37,9 +37,7 @@ X After User CREATION, create empty associated profile
 X Profile picture uploads
 X Basic Profile View (with Shouts)
 X Shoutbox
-- Shout Hiding
-- Shout Deletion
-- Buddylists
+O Buddylists
 - Change Breadcrume Component to UserHistory Component + add "afterLayout" filter which stores user GET url responses
 - ACL (if required)
 - Security Features and Double Salts, See also: http://devedge.jonas-hartmann.com/documents/Securing_authentication_and_data_manipulation_via_HTTP.html
@@ -72,6 +70,8 @@ X Shoutbox
 - Translate gender model data (Translateable?)
 - Fetch gender info to email templates (Herr/Frau)
 - Settings layout: http://www.last.fm/settings (New tabbed layout for /users/* with the exception of login/logout, /user_options /profiles (with the exception of /profiles/find))
+- Shout Hiding / Shout Deletion
+- Check database schema for opportunities "UNSIGNED" and set INDICIES for speed.
 
 NOTICES:
 - 5.2 <= PHP_VERSION < 5.3

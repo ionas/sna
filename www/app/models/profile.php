@@ -9,7 +9,7 @@ class Profile extends AppModel {
 	
 	var $validate = array(
 		'user_id' => array('notempty'),
-		'is_hidden' => array('numeric'),
+		'is_hidden' => array('boolean'),
 		'nickname' => array('notempty'),
 	);
 	
@@ -18,9 +18,21 @@ class Profile extends AppModel {
 			'className' => 'User',
 			'foreignKey' => 'user_id',
 		),
+		'Gender' => array(
+			'className' => 'Gender',
+			'foreignKey' => 'gender_id',
+		),
 	);
 	
 	var $hasMany = array(
+		'ConnectionA' => array(
+			'className' => 'Connection',
+			'foreignKey' => 'profile_id_a',
+		),
+		'ConnectionB' => array(
+			'className' => 'Connection',
+			'foreignKey' => 'profile_id_b',
+		),
 		'Message' => array(
 			'className' => 'Message',
 			'foreignKey' => 'profile_id',

@@ -107,8 +107,8 @@ class ProfilesController extends AppController {
 				'Shout.created',
 				'Shout.body',
 				'Shout.is_hidden',
+				'Shout.is_hidden_by_shouter',
 				'Shout.is_deleted',
-				'Shout.is_deleted_by_shouter',
 				'Shout.from_profile_id',
 				'FromProfile.id',
 				'FromProfile.nickname',
@@ -134,6 +134,20 @@ class ProfilesController extends AppController {
 			),
 			'conditions' => array(
 				'Profile.id' => $profileId,
+				'OR' => array(
+					// Shout not hidden by shouter... OR
+					'Shout.is_hidden_by_shouter' => '0',
+					// Shout is on selves profile thus hidden can be seen by you... OR
+					array(
+						'Shout.profile_id' => $this->Profile->getAuthedId($this->Auth->user()),
+						'Shout.is_hidden_by_shouter' => '1',
+					),
+					// Shout is by yourself and thus can be seen by you.
+					array(
+						'Shout.from_profile_id' => $this->Profile->getAuthedId($this->Auth->user()),
+						'Shout.is_hidden_by_shouter' => '1',
+					),
+				),
 			),
 			'order' => 'Shout.created DESC',
 			'limit' => $numberOfShoutsPerPage,
