@@ -47,9 +47,11 @@ class Connection extends AppModel {
 	// 3. If someone is ignored, filter them from returned friend data
 	// 4. If someone is ignored, filter them from authed (messages or shouts) data
 	//
-	// 5. If all bools are zero, remove the whole data record alltogther (afterSave)
+	// 5. Beforevalidate: If all zero -> do not save at all (validation error)
 	//
-	// 6. Do not forget to treat "Requests" in a clean way (e.g. set them to zero)
+	// 6. If all bools are zero, remove the whole data record alltogther (afterSave)
+	//
+	// 7. Do not forget to treat "Requests" in a clean way (e.g. set them to zero)
 	
 }
 ?>
