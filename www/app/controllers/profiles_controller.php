@@ -95,7 +95,7 @@ class ProfilesController extends AppController {
 	}
 	
 	function shouts($profileId) {
-		$numberOfShoutsPerPage = 3;
+		$numberOfShoutsPerPage = 10;
 		if (!$profileId) {
 			$this->Session->setFlash(__('Invalid Profile.', true));
 			$this->redirect(array('action'=>'index'));
@@ -107,7 +107,7 @@ class ProfilesController extends AppController {
 				'Shout.created',
 				'Shout.body',
 				'Shout.is_hidden',
-				'Shout.is_hidden_by_shouter',
+				'Shout.is_deleted_by_shouter',
 				'Shout.is_deleted',
 				'Shout.from_profile_id',
 				'FromProfile.id',
@@ -127,7 +127,7 @@ class ProfilesController extends AppController {
 					'table' => $this->Profile->Shout->FromProfile->useTable,
 					'alias' => $this->Profile->Shout->FromProfile->alias,
 					'foreignKey' => $this->Profile->Shout->FromProfile->primaryKey,
-					'conditions' => $this->Profile->Shout->escapeField('profile_id') . ' = '
+					'conditions' => $this->Profile->Shout->escapeField('from_profile_id') . ' = '
 						. $this->Profile->Shout->FromProfile->escapeField(
 							$this->Profile->Shout->FromProfile->primaryKey),
 				),
@@ -136,16 +136,16 @@ class ProfilesController extends AppController {
 				'Profile.id' => $profileId,
 				'OR' => array(
 					// Shout not hidden by shouter... OR
-					'Shout.is_hidden_by_shouter' => '0',
+					'Shout.is_deleted_by_shouter' => 0,
 					// Shout is on selves profile thus hidden can be seen by you... OR
 					array(
 						'Shout.profile_id' => $this->Profile->getAuthedId($this->Auth->user()),
-						'Shout.is_hidden_by_shouter' => '1',
+						'Shout.is_deleted_by_shouter' => 1,
 					),
 					// Shout is by yourself and thus can be seen by you.
 					array(
 						'Shout.from_profile_id' => $this->Profile->getAuthedId($this->Auth->user()),
-						'Shout.is_hidden_by_shouter' => '1',
+						'Shout.is_deleted_by_shouter' => 1,
 					),
 				),
 			),

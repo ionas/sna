@@ -225,48 +225,5 @@ class UsersController extends AppController {
 		unset($sessionAuthRedirect);
 	}
 	
-	/*
-	function index() {
-		$this->redirect('home');
-	}
-	*/
-	
-	/*
-	function view($id = null) {
-		$this->User->recursive = 1;
-		if (!$id) {
-			$this->Session->setFlash(__('Invalid User.', true));
-			$this->redirect(array('action' => 'index'));
-		}
-		// No UUID => try finding user by username
-		if (strlen($id) != 36) {
-			$user = $this->User->find('first', array(
-					'User.id',
-					'conditions' => array('User.username' => $id),
-				)
-			);
-			$id = $user['User']['id'];
-		}
-		if ($id == $this->Auth->user('id')) {
-			$this->set('user', $this->User->read(null, $id));
-		} else {
-			$this->Session->setFlash(
-				__('You may only access your own User Account.', true));
-			// TODO Routing bugs again
-			// $this->redirect(array('home'));
-		}
-	}
-	* 
-	function home() {
-		$landingPage = $this->User->Option->get($this->Auth->user(), array('landingPage'));
-		if (!empty($landingPage)) {
-			$this->redirect($landingPage);
-			
-		} else {
-			$this->redirect(array('controller' => 'pages', 'action' => 'display', 'home'));
-		}
-	}
-	*/
-	
 }
 ?>

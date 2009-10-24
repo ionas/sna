@@ -37,41 +37,56 @@ X After User CREATION, create empty associated profile
 X Profile picture uploads
 X Basic Profile View (with Shouts)
 X Shoutbox
-O Buddylists
-- Change Breadcrume Component to UserHistory Component + add "afterLayout" filter which stores user GET url responses
-- ACL (if required)
-- Security Features and Double Salts, See also: http://devedge.jonas-hartmann.com/documents/Securing_authentication_and_data_manipulation_via_HTTP.html
-- Routing (index => list, add => register/create/whatever, delete => remove (OR disable))
-- FAQ (cakephp book application?) - FAQ explains double use: username + nickname (security bonus), about, browser stuff and more
-- Research Akismet: http://sethcardoza.com/posts/view/8/title/integrating-akismet-with-cakephp http://akismet.com/ http://cakeforge.org/snippet/detail.php?type=snippet&id=95
-- Shared Hosting Problem: http://blog.thaichaiguy.com/847/mediatemple-with-cakephp-session-lost-during-refresh/ http://www.cakephp-forum.com/installation-und-konfiguration/installation-konfiguration-t217.html#p880
-- Check Codebase against: https://trac.cakephp.org/wiki/Developement/CodingStandards
-- Password Generator (JS Based or Ajax based)
-- http://book.cakephp.org/view/153/Data-Sanitization
-- LANG Urls / LANG Router
-- http://bakery.cakephp.org/articles/view/p28n-the-top-to-bottom-persistent-internationalization-tutorial
-- http://teknoid.wordpress.com/2008/11/28/cakephp-url-based-language-switching-for-i18n-and-l10n-internationalization-and-localization/
-- Add Language autodetection (browser, geo location/ip) + save in Cookies
-- User_Options => http://bakery.cakephp.org/articles/view/polymorphic-behavior - see also: http://trac.assembla.com/mi/browser/branches/base/models/behaviors/polymorphic.php
-- For Gender/Persontitle - see http://trac.assembla.com/mi/browser/branches/base/models/behaviors/enum.php
-- add UNIQUE_PROFILE_PER_USER to SQL
-- /users/register;lang=eng
-- http://book.cakephp.org/view/395/autoRedirect and https://trac.cakephp.org/ticket/3974
-- Sanitize: <?php App::import('Sanitize')?> / Sanitize::html()
-- Messaging auth challenge (see ICQ)
+- Shout Hiding / Shout Deletion
+
+@ BUDDY & AUTH:
+- Buddylists
 - Buddy auth challenge
+- Messaging auth challenge (see ICQ)
+
+@ USER/PROFILE:
 - After activation, redirect to /profile/x/edit
 - User change Email
-- Add User/Profile/Messages DELETION/PURGING (Personal Data only) var $purgeFields => array('name' => array('type' => 'type', 'value' => 'value'), look at cakes schema to determine type maybe)
+- Profile Edit - Monthname Translation
 - Profile Edit - Selected Date
 - Profile Edit - Avatar Max Size (should come from the controller, controller should set behavior value too, must equal)
-- Profile Edit - Monthname Translation
+- Add User/Profile/Messages DELETION/PURGING (Personal Data only) var $purgeFields => array('name' => array('type' => 'type', 'value' => 'value'), look at cakes schema to determine type maybe)
+
+@ GENDER MODEL:
 - Create and use Gender model
 - Translate gender model data (Translateable?)
 - Fetch gender info to email templates (Herr/Frau)
-- Settings layout: http://www.last.fm/settings (New tabbed layout for /users/* with the exception of login/logout, /user_options /profiles (with the exception of /profiles/find))
-- Shout Hiding / Shout Deletion
+- For Gender/Persontitle - see http://trac.assembla.com/mi/browser/branches/base/models/behaviors/enum.php
+
+@ REDIRECTIONS:
+- Change Breadcrume Component to UserHistory Component + add "afterLayout" filter which stores user GET url responses
+- http://book.cakephp.org/view/395/autoRedirect and https://trac.cakephp.org/ticket/3974
+
+@ TRANSLATION:
+- Add Language autodetection (browser, geo location/ip) + save in Cookies
+- /users/register;lang=eng
+- LANG Urls / LANG Router
+- http://bakery.cakephp.org/articles/view/p28n-the-top-to-bottom-persistent-internationalization-tutorial
+- http://teknoid.wordpress.com/2008/11/28/cakephp-url-based-language-switching-for-i18n-and-l10n-internationalization-and-localization/
+
+@ SECURITY:
+- CSFR (Security, /foo/delete/id123 should not work (POST instead of GET?))
+- ACL (if required)
+- Security Features and Double Salts, See also: http://devedge.jonas-hartmann.com/documents/Securing_authentication_and_data_manipulation_via_HTTP.html
+- Research Akismet: http://sethcardoza.com/posts/view/8/title/integrating-akismet-with-cakephp http://akismet.com/ http://cakeforge.org/snippet/detail.php?type=snippet&id=95
+- Sanitize: <?php App::import('Sanitize')?> / Sanitize::html()
+- Password Generator (JS Based or Ajax based)
+
+@ MISC:
+- FAQ (cakephp book application?) - FAQ explains double use: username + nickname (security bonus), about, browser stuff and more (probably use cookbook?)
+- Check Codebase against: https://trac.cakephp.org/wiki/Developement/CodingStandards
+- http://book.cakephp.org/view/153/Data-Sanitization
+- Routing (index => list, add => register/create/whatever, delete => remove (OR disable))
 - Check database schema for opportunities "UNSIGNED" and set INDICIES for speed.
+- Shared Hosting Problem: http://blog.thaichaiguy.com/847/mediatemple-with-cakephp-session-lost-during-refresh/ http://www.cakephp-forum.com/installation-und-konfiguration/installation-konfiguration-t217.html#p880
+- Settings layout: http://www.last.fm/settings (New tabbed layout for /users/* with the exception of login/logout, /user_options /profiles (with the exception of /profiles/find))
+- Remove UTF-8 pure symboles from the codebase as much as possible (as Safari?! has rendering issues, see mailbox or pagination arrows)
+
 
 NOTICES:
 - 5.2 <= PHP_VERSION < 5.3
