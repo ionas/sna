@@ -51,6 +51,7 @@ X Shoutbox
 - Profile Edit - Selected Date
 - Profile Edit - Avatar Max Size (should come from the controller, controller should set behavior value too, must equal)
 - Add User/Profile/Messages DELETION/PURGING (Personal Data only) var $purgeFields => array('name' => array('type' => 'type', 'value' => 'value'), look at cakes schema to determine type maybe)
+- same USER, DOUBLE session = kickP?
 
 @ GENDER MODEL:
 - Create and use Gender model
@@ -70,6 +71,7 @@ X Shoutbox
 - http://teknoid.wordpress.com/2008/11/28/cakephp-url-based-language-switching-for-i18n-and-l10n-internationalization-and-localization/
 
 @ SECURITY:
+- Check Security Concept @ Auth (All forbidden, allow excplicit)
 - CSFR (Security, /foo/delete/id123 should not work (POST instead of GET?))
 - ACL (if required)
 - Security Features and Double Salts, See also: http://devedge.jonas-hartmann.com/documents/Securing_authentication_and_data_manipulation_via_HTTP.html
@@ -86,6 +88,15 @@ X Shoutbox
 - Shared Hosting Problem: http://blog.thaichaiguy.com/847/mediatemple-with-cakephp-session-lost-during-refresh/ http://www.cakephp-forum.com/installation-und-konfiguration/installation-konfiguration-t217.html#p880
 - Settings layout: http://www.last.fm/settings (New tabbed layout for /users/* with the exception of login/logout, /user_options /profiles (with the exception of /profiles/find))
 - Remove UTF-8 pure symboles from the codebase as much as possible (as Safari?! has rendering issues, see mailbox or pagination arrows)
+
+@ SCREENDESIGN:
+http://tango.freedesktop.org/Tango_Icon_Library
+
+@ CSS:
+http://www.alistapart.com/articles/progressiveenhancementwithcss/
+
+TESTS
+DOCUMENTATION
 
 
 NOTICES:

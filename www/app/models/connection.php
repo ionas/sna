@@ -3,55 +3,111 @@ class Connection extends AppModel {
 	
 	var $name = 'Connection';
 	
+	var $actsAs = array('Containable');
+	
+	var $primaryKey = 'id';
+	
 	var $validate = array(
-		'created' => array('date'),
-		'modified' => array('date'),
-		'profile_a_id' => array('notempty'),
-		'profile_b_id' => array('notempty'),
-		'profile_a_is_ignore' => array('boolean'),
-		'profile_b_is_ignore' => array('boolean'),
-		'profile_a_is_friend' => array('boolean'),
-		'profile_b_is_friend' => array('boolean'),
-		'profile_a_is_friend_requested' => array('boolean'),
-		'profile_b_is_friend_requested' => array('boolean'),
-		'profile_a_is_authed_for_messages' => array('boolean'),
-		'profile_b_is_authed_for_messages' => array('boolean'),
-		'profile_a_is_authed_for_messages_requested' => array('boolean'),
-		'profile_b_is_authed_for_messages_requested' => array('boolean'),
-		'profile_a_is_authed_for_shouts' => array('boolean'),
-		'profile_b_is_authed_for_shouts' => array('boolean'),
-		'profile_a_is_authed_for_shouts_requested' => array('boolean'),
-		'profile_b_is_authed_for_shouts_requested' => array('boolean'),
+		'profile_id' => array('notempty'),
+		'to_profile_id' => array('notempty'),
+		'type' => array('notempty'),
+		'value' => array('notempty')
 	);
 	
 	var $belongsTo = array(
-		'ProfileA' => array(
+		'Profile' => array(
 			'className' => 'Profile',
-			'foreignKey' => 'profile_a_id',
+			'foreignKey' => 'profile_id',
 		),
-		'ProfileB' => array(
+		'ToProfile' => array(
 			'className' => 'Profile',
-			'foreignKey' => 'profile_b_id',
+			'foreignKey' => 'to_profile_id',
 		),
 	);
 	
-	// TODO:
-	// 
-	// 1. On Read, check given ProfileID in ProfileA and ProfileB fields
-	//    Return either of them
-	//
-	// 2. On Save, check if profileA or profileB have been inserted already
-	//    If that is the case, load these models data, and apply the data to those.
-	//    Also: ProfileA and ProfileB cannot be of the same ID (no self reference)
-	//
-	// 3. If someone is ignored, filter them from returned friend data
-	// 4. If someone is ignored, filter them from authed (messages or shouts) data
-	//
-	// 5. Beforevalidate: If all zero -> do not save at all (validation error)
-	//
-	// 6. If all bools are zero, remove the whole data record alltogther (afterSave)
-	//
-	// 7. Do not forget to treat "Requests" in a clean way (e.g. set them to zero)
+	var $types = array(
+		'ignore',
+		'mutual_friendship',
+		'messaging_authentication',
+		'shouting_authentication',
+	);
 	
+	function establish($data = array()) {
+		$conditions = $data;
+		foreach($data as $index => $item) {
+			unset($item['value']);
+			$conditions[$index] = $item;
+		}
+		$storedData = $this->find('all', array(
+			'fields' => array('id', 'profile_id', 'to_profile_id', 'type'),
+			'conditions' => array('or' => $conditions),
+		));
+		$storedData = Set::extract($storedData, '{n}.Connection');
+		$newData = $data;
+		foreach ($newData as $index => $item) {
+			foreach ($storedData as $storedIndex => $storedItem) {
+				if($storedData[$storedIndex]['profile_id'] == $data[$index]['profile_id']
+				and $storedData[$storedIndex]['to_profile_id'] == $data[$index]['to_profile_id']
+				and $storedData[$storedIndex]['type'] == $data[$index]['type']) {
+					$storedData[$storedIndex]['value'] = $newData[$index]['value'];
+					unset($newData[$index]);
+				}
+			}
+		}
+		$data = array_merge($newData, $storedData);
+		$deleteIds = array();
+		// start transaction
+		$Db = $this->getDataSource();
+		$Db->begin($this);
+		foreach ($data as $index => $item) {
+			if (isset($item['id'])) {
+				$this->id = $item['id'];
+			} else {
+				unset($this->id);
+			}
+			if ($item['value'] == null) {
+				if (isset($this->id)) {
+					$this->delete($this->id);
+				}
+			}
+			// else we save it
+			else {
+				$this->save(array('Connection' => $item));
+			}
+		}
+		$Db->commit($this);
+		return true;
+	}
+	
+	// MAYBE!
+	// check for
+	// - new requests
+	// - dropped requests
+	// - new connections (like ignores, friends, authes)
+	// - removed connections (like ignores, friends, authes)
+	// modifiy own data records accordingly
+	// return some nice notices to the user
+	// THIS SHOULD BE FAST as it could be called by using ajax on a short frequency via a controller 
+	function changes($profileId, $date) {
+		return "foo";
+	}
+	
+	/*
+	$this->Connection->create($this->Connection->find('first', array(
+		'fields' => array('id'),
+		'conditions' => array(
+			'profile_id' => $this->Connection->Profile->getAuthedId($this->Auth->user()),
+			'to_profile_id' => $toProfileId,
+			'type' => $type,
+		)
+	)));
+	$this->Connection->set(array(
+		'profile_id' => $this->Connection->Profile->getAuthedId($this->Auth->user()),
+		'to_profile_id' => $toProfileId,
+		'type' => $type,
+		'value' => 1));
+	$this->Connection->save();
+	
+	*/
 }
 ?>

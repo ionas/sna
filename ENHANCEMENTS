@@ -37,8 +37,37 @@ Move /cake/* and /app/* to RAM based file system ?
 ###########
 
 Security:
-	Configure::write('Session.cookie', 'CAKEPHP');
+	Configure::write('Session.cookie', 'CAKEPHP'); (different name)
 
 ###########
 
 AJAX Live Validation of Forms
+See also: http://www.alistapart.com/articles/inline-validation-in-web-forms/
+
+###########
+
+Instead of Avatarable Behavior used now internally, use git submodule or git subtree or something like that and Miles Johnsons Uploader plugin  http://www.milesj.me/resources/script/uploader-plugin#Attaching-Files-To-Models-Auto-Upload
+
+###########
+
+YouTube like Mail inbox for reference
+
+###########
+
+EVENTFUL
+http://cakealot.com/2009/04/eventful-a-cakephp-event-system/
+
+###########
+
+Widgets by requestAction
+http://bakery.cakephp.org/articles/view/creating-reusable-elements-with-requestaction
+http://github.com/m3nt0r/eventful-cakephp/
+
+###########
+
+SPEED:
+http://bakery.cakephp.org/articles/view/boost-performance-by-removing-htaccess-plus-multi-site-with-virtualdocumentroot
+
+###########
+AUTH via SMS:
+http://bakery.cakephp.org/articles/view/sms-component

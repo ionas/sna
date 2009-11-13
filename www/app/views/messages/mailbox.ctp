@@ -16,7 +16,7 @@
 	<div class="data">
 		<?php $paginator->options(array('url' => $this->passedArgs))?>
 		<?=$this->element('pagination_navigation', array('location' => 'top'))?> 
-		<table cellpadding="0" cellspacing="0">
+		<table>
 			<tr>
 				<?php if ($filter == 'sent'):?>
 				<th class="toFrom"><?=$paginator->sort(__('To', true),   'to_profile_id')?> 

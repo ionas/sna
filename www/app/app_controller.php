@@ -46,7 +46,7 @@ class AppController extends Controller {
 			$this->loadModel('Profile');
 			$this->Profile = new Profile();
 			$authedProfileData = $this->Profile->find('first', array(
-				'fields' => array('Profile.id'),
+				'fields' => array('Profile.id', 'Profile.nickname'),
 				'conditions' => array('Profile.user_id' => $this->Auth->user('id'))));
 		}
 		$this->set('authedUser', array_merge($authedProfileData, $authedUser));

@@ -56,7 +56,6 @@ class MessagesController extends AppController {
 				break;
 		}
 		$conditions['Message.profile_id'] = $activeProfileId;
-		$this->Message->recursive = 0;
 		$this->paginate = array(
 			'fields' => array(
 				'Message.id',
