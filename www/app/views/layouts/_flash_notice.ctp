@@ -1,1 +1,0 @@
-<div id="flashMessage" class="message notice"><?=$content_for_layout?></div>

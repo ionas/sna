@@ -68,10 +68,10 @@ table tr td {
 	border-color: green;
 	background-image: url('/img/notice_success.png');
 }
-#authMessage.success,
-#flashMessage.success {
-	color: #FFD86F;
-	border-color: #FFD86F;
+#authMessage.notification,
+#flashMessage.notification {
+	color: #8F7500;
+	border-color: #8F7500;
 	background-image: url('/img/notice_notice.png');
 }
 

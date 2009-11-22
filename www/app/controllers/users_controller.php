@@ -115,7 +115,7 @@ ___('Your registration has been successful. However, you will still need to acti
 			}
 		} else {
 			if ($this->referer() != $this->here) {
-				$this->Session->setFlash(__("Enter your Account's login name or Email address.", true), '_flash_notice');
+				$this->Session->setFlash(__("Enter your Account's login name or Email address.", true), '_flash_notification');
 			}
 		}
 	}
