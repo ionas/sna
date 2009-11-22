@@ -10,7 +10,7 @@ class ProfilesController extends AppController {
 	function beforeFilter() {
 		parent::beforeFilter();
 		$this->Auth->allow(array('view'));
-		$this->Security->requirePost('delete_shout', 'toggle_shout');
+		$this->Security->requirePost('remove_shout', 'toggle_shout');
 	}
 	
 	function search() {
@@ -161,7 +161,7 @@ class ProfilesController extends AppController {
 		// TODO
 	}
 	
-	function delete_shout() {
+	function remove_shout() {
 		// TODO
 	}
 	

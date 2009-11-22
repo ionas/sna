@@ -1,0 +1,36 @@
+.shouts.index ul,
+.shouts.index li {
+	list-style: none;
+	padding: 0;
+	margin: 0
+}
+.shouts.index li {
+	clear: both;
+	margin: 2em 0;
+}
+.shouts.index p.picture {
+	float: left;
+	padding-right: 1em;
+}
+.shouts.index p.info {
+	padding-bottom: .5em;
+}
+.shouts.index p.picture img {
+	border: 1px solid #224477;
+	padding: 1px;
+}
+#shouts form fieldset {
+	background: red;
+}
+#shouts form,
+#shouts form fieldset,
+#shouts form legend,
+#shouts form input {
+	clear: none;
+	display: inline;
+	float: left;
+	margin: 0;
+}
+#shouts form input {
+	float: left;
+}
