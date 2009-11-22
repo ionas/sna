@@ -1,5 +1,5 @@
 <div class="connections summary">
-<h2><?php __('Your connection to');?> <?=$toProfileData['ToProfile']['nickname']?></h2>
+<h2><?php __('Your connections to');?> <?=$toProfileData['ToProfile']['nickname']?></h2>
 <?php $paginator->options(array('url' => $this->passedArgs))?>
 <?=$this->element('pagination_navigation', array('location' => 'top'))?> 
 <table>
@@ -22,7 +22,7 @@ foreach ($connections as $connection):
 			<?=$connection['Connection']['created']?>
 		</td>
 		<td>
-			<?=$connection['Connection']['type']?>
+			<?=Inflector::humanize($connection['Connection']['type'])?>
 		</td>
 		<td>
 			<?php
@@ -31,8 +31,10 @@ foreach ($connections as $connection):
 			else: echo $connection['Connection']['value'];
 			endif?>
 		</td>
-		<td class="actions">
-			TODO Remove Buttons within a Form
+		<td>
+			<?=$form->create('Connection', array('action' => 'cancel', 'url' => array($connection['Connection']['type'],  $connection['Connection']['to_profile_id'])))?>
+			<?=$form->submit(__('Cancel', true), array('name' => 'cancel'))?>
+			<?=$form->end()?>
 		</td>
 	</tr>
 <?php endforeach?>

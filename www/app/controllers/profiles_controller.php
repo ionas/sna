@@ -2,15 +2,15 @@
 class ProfilesController extends AppController {
 	
 	var $name = 'Profiles';
-	var $helpers = array('Html', 'Form', 'Javascript');
 	
 	function self() {
-		// TODO for redirecting to self profile without supplying ID
+		// TODO: for redirecting to self profile without supplying ID
 	}
 	
 	function beforeFilter() {
 		parent::beforeFilter();
 		$this->Auth->allow(array('view'));
+		$this->Security->requirePost('delete_shout', 'toggle_shout');
 	}
 	
 	function search() {

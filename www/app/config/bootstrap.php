@@ -41,4 +41,12 @@
  *
  */
 //EOF
+
+// convenience method to call ___('Foo') istead of __('Foo', true)
+function ___($string) {
+	return __($string, true);
+}
+
+define('BR', '<br />');
+
 ?>

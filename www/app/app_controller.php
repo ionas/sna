@@ -1,33 +1,29 @@
 <?php
 class AppController extends Controller {
 	
-	var $components = array('Auth', 'Session', 'Cookie', 'RequestHandler', 'Breadcrume');
-	var $helpers = array('Html','Javascript');
-
-	var $enforceTosOn = array('Users', 'Messages', 'Shouts');
+	var $components = array( 'Cookie', 'Session', 'Security', 'Auth', 'RequestHandler');
+	var $helpers = array('Html', 'Form', 'Secure', 'Javascript');
 	
 	function beforeFilter() {
 		$this->_setupAuth();
-		$this->_checkHasAcceptedTos();
 		$this->_setLanguage();
+		$this->_checkHasAcceptedTos();
 		$this->_setupLayout();
+		$this->Security->blackHoleCallback = '_securityError';
+		$this->Security->requireAuth($this->action);
 	}
 	
-	function beforeRender() {
-		// Automagically load CSS files for controllers and actions/views
-		$this->set('controller_css_for_layout', 'views' . DS . strtolower($this->name) . '.css');
-		$this->set('view_css_for_layout', 'views' . DS . strtolower($this->name) . DS
-			. $this->action . '.css');
-		$this->set('css_for_layout', 'layouts' . DS . strtolower($this->layout . '.css'));
+	function _securityError() {
+		$this->cakeError('securityError');
 	}
 	
 	function _setLanguage() {
 		if ($this->Cookie->read('lang') && !$this->Session->check('Config.language')) {
-		    $this->Session->write('Config.language', $this->Cookie->read('lang'));
+			$this->Session->write('Config.language', $this->Cookie->read('lang'));
 		} else if (isset($this->params['lang']) && ($this->params['lang']
-		         !=  $this->Session->read('Config.language'))) {     
-		    $this->Session->write('Config.language', $this->params['lang']);
-		    $this->Cookie->write('lang', $this->params['lang'], null, '20 days');
+			!=  $this->Session->read('Config.language'))) {
+			$this->Session->write('Config.language', $this->params['lang']);
+			$this->Cookie->write('lang', $this->params['lang'], null, '20 days');
 		}
 	} 
 	
@@ -53,6 +49,7 @@ class AppController extends Controller {
 	}
 	
 	function _checkHasAcceptedTos() {
+		$this->enforceTosOn = array('Users', 'Messages', 'Shouts');
 		if ($this->Auth->isAuthorized()) {
 			if (in_array($this->name, $this->enforceTosOn)
 			&& !($this->name == 'Users' && in_array($this->action, array(
@@ -83,6 +80,26 @@ class AppController extends Controller {
 		if ($this->here == '/' or $this->here == '/pages/home') {
 			$this->layout = 'fullscreen';
 		}
+	}
+	
+	function beforeRender() {
+		$this->_autoLoadCssAndJavascript();
+		$this->_alwaysPushThisDataToView();
+	}
+	
+	function _alwaysPushThisDataToView() {
+		// $this->data always accessible in view via 'data
+		if (!isset ($this->viewVars['data'])) {
+			$this->set('data', $this->data);
+		}
+	}
+	
+	function _autoLoadCssAndJavascript() {
+		// Automagically load CSS files for controllers and actions/views
+		$this->set('controller_css_for_layout', 'views' . DS . strtolower($this->name) . '.css');
+		$this->set('view_css_for_layout', 'views' . DS . strtolower($this->name) . DS
+			. $this->action . '.css');
+		$this->set('css_for_layout', 'layouts' . DS . strtolower($this->layout . '.css'));
 	}
 	
 }

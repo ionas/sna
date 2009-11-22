@@ -120,6 +120,7 @@ class AppModel extends Model {
 		return parent::validates($options);
 	}
 	
+	// saves a field, if the object exists
 	function saveFieldIfExists($id = null, $fieldname, $value, $validate = false) {
 		if ($this->find('count', array('conditions' => array($this->primaryKey => $id))) < 1) {
 			return false;
@@ -130,6 +131,19 @@ class AppModel extends Model {
 		$this->id = $backupThisId;
 		return $return;
 	}
+	
+	// gets a fields value, if the object exists
+	function getFieldIfExists($id = null, $fieldname) {
+		$data = $this->find('first', array(
+			'conditions' => array($this->primaryKey => $id),
+			'fields' => array($fieldname)));
+		if ($data == false) {
+			return false;
+		} else {
+			return $data[$this->alias][$fieldname];
+		}
+	}
+	
 	
 }
 ?>

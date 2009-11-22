@@ -2,8 +2,6 @@
 class UsersController extends AppController {
 	
 	var $name = 'Users';
-	var $components = array('Honeypotting' => array('formModels' => array('User', 'Option')));
-	var $helpers = array('Html', 'Form', 'Javascript', 'Honeypot');
 	
 	function beforeFilter() {
 		parent::beforeFilter();
@@ -15,17 +13,16 @@ class UsersController extends AppController {
 			'User.is_disabled' => false,
 		);
 		// Public actions
-		$this->Auth->allow(array('login', 'register', 'activate', 'forgot_password', 'new_password', 'home'));
+		$this->Auth->allow(array(
+			'home', 'login', 'register', 'activate', 'forgot_password', 'new_password'));
 		if ($this->action == 'register'
 		OR $this->action == 'change_password'
 		OR $this->action == 'new_password') {
 			// Use User::hashPasswords instead Auth::hashPasswords
 			$this->Auth->authenticate = $this->User;
 		}
-		// Disable autoRedirect for login page
-		if ($this->action == 'login') {
-			$this->Auth->autoRedirect = false;
-		}
+		$this->Auth->autoRedirect = false;
+		$this->Security->requirePost('hide');
 	}
 	
 	function register() {
@@ -36,7 +33,7 @@ class UsersController extends AppController {
 			if ($this->User->save($this->data, true, array(
 						'has_accepted_tos', 'username', 'password', 'email'))) {
 				$this->Session->setFlash(
-					__('Your registration has been successful. However, you will still need to activate your user account.', true));
+___('Your registration has been successful. However, you will still need to activate your user account.'));
 				$this->redirect(array('action' => 'activate'));
 			} else {
 				unset($this->data['User']['password']);
@@ -57,7 +54,7 @@ class UsersController extends AppController {
 				$this->redirect(array('action' => 'login'));
 			} else {
 				$this->Session->setFlash(
-					__('The User Account Activation failed. Please correct your Activation Key and try again.', true));
+	___('The User Account Activation failed. Please correct your Activation Key and try again.'));
 			}
 		}
 		if ($activationKey) {
@@ -118,7 +115,7 @@ class UsersController extends AppController {
 			}
 		} else {
 			if ($this->referer() != $this->here) {
-				$this->Session->setFlash(__("Enter your Account's login name or Email address.", true));
+				$this->Session->setFlash(__("Enter your Account's login name or Email address.", true), '_flash_notice');
 			}
 		}
 	}
@@ -195,7 +192,9 @@ class UsersController extends AppController {
 		if ($this->Auth->isAuthorized() === true) {
 			$this->User->updateLastLogin($this->Auth->user());
 			if (!empty($this->data)) {
-				if ($this->Session->read('Auth.redirect') == null) {
+				debug($this->Session->read('Auth.redirect'));
+				$authRedirect = $this->Session->read('Auth.redirect');
+				if ($authRedirect == '/' or $authRedirect == null) {
 					$this->redirect(array('action' => 'home'));
 				} else {
 					$this->redirect($this->Session->read('Auth.redirect'));

@@ -56,7 +56,7 @@ form div.input.error .error-message {
 	-moz-border-radius: 4px; /* Firefox */
 	-webkit-border-radius: 4px; /* Safari */
 	background: #990000;
-	background-image: url('/img/error_bg.png');
+	background-image: url('/img/notice_error_invert.png');
 	background-repeat: no-repeat;
 	background-position: .1em 0;
 	padding-left: 2.4em;

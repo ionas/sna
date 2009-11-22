@@ -1,0 +1,1 @@
+<a href="javascript: history.go(-1)"><?=__('Back')?></a>

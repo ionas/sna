@@ -69,10 +69,10 @@ foreach ($messages as $message):
 						<?=$html->link(__('Reply', true), array('action' => 'reply', $message['Message']['id']), array('class' => 'iconLinkButton messageReply'))?> 
 					<?php endif?>
 					<?php if ($message['Message']['is_trashed'] == 1):?>
-						<?=$html->link(__('Restore', true), array('action' => 'restore', $message['Message']['id']), array('class' => 'iconLinkButton messageRestore'))?> 
-						<?=$html->link(__('Remove', true), array('action' => 'remove', $message['Message']['id']), array('class' => 'iconLinkButton messageRemove'), __('Are you sure you want to remove', true).' "' . $message['Message']['subject'] . '" permanently?')?> 
+						<?=$secure->link(__('Restore', true), array('action' => 'restore', $message['Message']['id']), array('class' => 'messageRestore'))?> 
+						<?=$secure->link(__('Remove', true), array('action' => 'remove', $message['Message']['id']), array('class' => 'messageRemove'), __('Are you sure you want to remove', true).' "' . $message['Message']['subject'] . '" permanently?')?> 
 					<?php else:?>
-						<?=$html->link(__('Move to Trash', true), array('action' => 'trash', $message['Message']['id']), array('class' => 'iconLinkButton messageTrash'), __('Are you sure you want to move', true).' "' . $message['Message']['subject'] . '" to the trash.')?> 
+						<?=$secure->link(__('Move to Trash', true), array('action' => 'trash', $message['Message']['id']), array('class' => 'messageRemove'), __('Are you sure you want to move', true).' "' . $message['Message']['subject'] . '" to the trash.')?> 
 					<?php endif?>
 				</td>
 			</tr>

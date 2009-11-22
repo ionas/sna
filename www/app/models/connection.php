@@ -25,22 +25,36 @@ class Connection extends AppModel {
 		),
 	);
 	
-	var $types = array(
-		'ignore',
-		'mutual_friendship',
+	var $validTypes = array(
+		'friendship',
 		'messaging_authentication',
 		'shouting_authentication',
+		'ignore',
 	);
 	
+	var $validRequestTypes = array(
+		'friendship_request',
+		'messaging_authentication_request',
+		'shouting_authentication_request',
+	);
+	
+	var $validMutualTypes = array(
+		'friendship',
+		'messaging_authentication',
+	);
+	
+	// runtime storage cache
+	var $_cachedStorage = null;
+	
 	function establish($data = array()) {
-		$conditions = $data;
+		$storedConditions = $data;
 		foreach($data as $index => $item) {
 			unset($item['value']);
-			$conditions[$index] = $item;
+			$storedConditions[$index] = $item;
 		}
 		$storedData = $this->find('all', array(
 			'fields' => array('id', 'profile_id', 'to_profile_id', 'type'),
-			'conditions' => array('or' => $conditions),
+			'conditions' => array('or' => $storedConditions),
 		));
 		$storedData = Set::extract($storedData, '{n}.Connection');
 		$newData = $data;
@@ -55,16 +69,17 @@ class Connection extends AppModel {
 			}
 		}
 		$data = array_merge($newData, $storedData);
+		// Insert, Update or Delete Data...
 		$deleteIds = array();
-		// start transaction
-		$Db = $this->getDataSource();
-		$Db->begin($this);
+		$Ds = $this->getDataSource();
+		$Ds->begin($this);
 		foreach ($data as $index => $item) {
+			unset($this->id);
+			// a given record is updated
 			if (isset($item['id'])) {
 				$this->id = $item['id'];
-			} else {
-				unset($this->id);
 			}
+			// a given dataset is null, remove it
 			if ($item['value'] == null) {
 				if (isset($this->id)) {
 					$this->delete($this->id);
@@ -75,9 +90,43 @@ class Connection extends AppModel {
 				$this->save(array('Connection' => $item));
 			}
 		}
-		$Db->commit($this);
+		$Ds->commit($this); // ... done
+		$this->_cachedStorage = null;
 		return true;
 	}
+	
+	function get($profileId) {
+		if ($this->_cachedStorage == null) {
+			$this->_cachedStorage = array();
+			$this->_cachedStorage = array_merge($this->_cachedStorage,
+				$this->find('all', array(
+						'fields' => array('to_profile_id', 'type', 'value'),
+						'conditions' => array('profile_id' => $profileId),
+					)
+				)
+			);
+		}
+		return $this->_cachedStorage;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	// MAYBE!
 	// check for
@@ -109,5 +158,27 @@ class Connection extends AppModel {
 	$this->Connection->save();
 	
 	*/
+	
+	
+	
+	// OLD TODO:
+	// 
+	// 1. On Read, check given ProfileID in ProfileA and ProfileB fields
+	//    Return either of them
+	//
+	// 2. On Save, check if profileA or profileB have been inserted already
+	//    If that is the case, load these models data, and apply the data to those.
+	//    Also: ProfileA and ProfileB cannot be of the same ID (no self reference)
+	//
+	// 3. If someone is ignored, filter them from returned friend data
+	// 4. If someone is ignored, filter them from authed (messages or shouts) data
+	//
+	// 5. Beforevalidate: If all zero -> do not save at all (validation error)
+	//
+	// 6. If all bools are zero, remove the whole data record alltogther (afterSave)
+	//
+	// 7. Do not forget to treat "Requests" in a clean way (e.g. set them to zero)
+	
+	
 }
 ?>

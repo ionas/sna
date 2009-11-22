@@ -2,8 +2,11 @@
 class MessagesController extends AppController {
 	
 	var $name = 'Messages';
-	var $components = array('Honeypotting' => array('formModels' => array('Profile', 'Message')));
-	var $helpers = array('Html', 'Form', 'Javascript', 'Honeypot');
+	
+	function beforeFilter() {
+		parent::beforeFilter();
+		$this->Security->requirePost('delete', 'trash', 'restore');
+	}
 	
 	function index() {
 		$this->redirect(array('action' => 'mailbox', 'unread'));
@@ -89,7 +92,7 @@ class MessagesController extends AppController {
 				$this->Auth->user())
 		or !$this->Message->Profile->read('nickname', $toProfileId)) {
 			$this->Session->setFlash(__('Invalid profile.', true));
-			$this->Breadcrume->redirectBack();
+			$this->redirect($this->here);
 		}
 		$this->set('toProfile', $this->Message->Profile->data);
 		if (!empty($this->data)) {
@@ -110,7 +113,7 @@ class MessagesController extends AppController {
 		if (!$id or !$this->Message->read(
 				array('from_profile_id', 'created', 'subject', 'body', 'created'), $id)) {
 			$this->Session->setFlash(__('Invalid message.', true));
-			$this->Breadcrume->redirectBack();
+			$this->redirect($this->here);
 		}
 		// Check auth
 		if ($this->Auth->user('active_profile_id') ==
@@ -128,7 +131,7 @@ class MessagesController extends AppController {
 				$this->Session->setFlash(
 					__('Your message has been send to', true) . ' '
 						. $toProfileData['Profile']['nickname']);
-				$this->Breadcrume->redirectBack();
+				$this->redirect($this->here);
 			} else {
 				$this->Session->setFlash(
 					__('Your message could not be send, see below.', true));
@@ -153,21 +156,36 @@ class MessagesController extends AppController {
 	}
 	
 	function trash($id = null) {
-		if ($this->Message->saveFieldIfExists($id, 'is_trashed', 1)) {
-			$this->Session->setFlash(__('Message has been trashed.', true));
-		} else {
-			$this->Session->setFlash(__('Message could not be trashed.', true));
-		}
-		$this->Breadcrume->redirectBack();
+		$this->_toggle_trash($id, 1);
+		$this->redirect(array('action' => 'mailbox'));
 	}
 	
 	function restore($id = null) {
-		if ($this->Message->saveFieldIfExists($id, 'is_trashed', 0)) {
-			$this->Session->setFlash(__('Message has been restored.', true));
-		} else {
-			$this->Session->setFlash(__('Message could not be restored.', true));
+		$this->_toggle_trash($id, 0);
+		$this->redirect(array('action' => 'mailbox', 'trash'));
+	}
+	
+	function _toggle_trash($id, $flag) {
+		$existance = $this->Message->getFieldIfExists($id, 'is_trashed');
+		if ($existance !== false && $existance == 1) {
+			$impossibility = __('Message not in Trash.', true);
+			$success = __('Message has been restored.', true);
+			$failure = __('Message could not berestored.', true);
+		} else if ($existance !== false && $existance == 0) {
+			$impossibility = __('Message already in Trash.', true);
+			$success = __('Message has been trashed.', true);
+			$failure = __('Message could not be trashed.', true);
 		}
-		$this->Breadcrume->redirectBack();
+		if ($existance !== false && $existance == $flag) {
+			$this->Session->setFlash($impossibility);
+		} else if ($existance !== false) {
+			$this->Message->id = $id;
+			if($this->Message->saveField('is_trashed', $flag)) {
+				$this->Session->setFlash($success, '_flash_success');
+			} else {
+				$this->Session->setFlash($failure);
+			}
+		}
 	}
 	
 }

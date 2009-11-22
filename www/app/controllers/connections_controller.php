@@ -2,7 +2,6 @@
 class ConnectionsController extends AppController {
 	
 	var $name = 'Connections';
-	var $helpers = array('Html', 'Form');
 	
 	function summary($toProfileId = null) {
 		$this->set('toProfileData',
@@ -12,7 +11,7 @@ class ConnectionsController extends AppController {
 		if (!$toProfileId or $toProfileData === false or
 			$toProfileId == $this->Connection->Profile->getAuthedId($this->Auth->user())) {
 			$this->Session->setFlash(__('Invalid profile.', true));
-			$this->Breadcrume->redirectBack();
+			$this->redirect($this->here);
 		}
 		$this->paginate = array(
 			'fields' => array(
@@ -39,87 +38,119 @@ class ConnectionsController extends AppController {
 	}
 	
 	// list stuff
-	function friends() {
-		
-	}
+	function ignores() {}
+	function friends() {}
+	function messaging_authentications() { }
+	function shouting_authentications() { }
 	
-	// list stuff
-	function ignores() {
-		
-	}
-	
-	// http://www.domain.tld/connections/setup/friends/123
-	function setup($type = null, $id = null) {
+	// http://www.domain.tld/connections/request/ignore/123
+	function request($type = null, $toProfileId = null) {
 		// Form with OK button
 	}
 	
-	// http://www.domain.tld/connections/accept_reaction/friends/123
-	function accept_request($type = null, $toProfileId = null) {
-		$type = 'shouting_authentication';
+	// http://www.domain.tld/connections/accept/messaging_authentification/123
+	function accept($type = null, $toProfileId = null) {
+		$this->_processRequest($type, $toProfileId, true);
+	}
+	
+	// http://www.domain.tld/connections/deny/friendship/123
+	function cancel($type = null, $toProfileId = null) {
+		$this->_processRequest($type, $toProfileId, false);
+	}
+	
+	function ignore_request() {
+		
+	}
+	
+	// TODO NEXT
+	// TODO NEXT  =>  Starting Screen, Profile, Summary
+	// TODO NEXT
+	function _processRequest($type = null, $toProfileId = null, $doAccept = true) {
+		$requestOk = true;
+		// check connection type GET param
+		if (!$type or (!in_array($type, $this->Connection->validTypes)
+				and !in_array($type, $this->Connection->validRequestTypes))) {
+			$this->Session->setFlash(__('Invalid connection type.', true));
+			$requestOk = false;
+		}
 		$profileId = $this->Connection->Profile->getAuthedId($this->Auth->user());
-		// fetch and set request profile
+		// Fetch and set request profile
 		$toProfileData = $this->Connection->ToProfile->find('first', array(
 				'fields' => array('nickname'),
 				'conditions' => array('id' => $toProfileId)));
-		// fetch and set request data
-		$connectionData = $this->Connection->find('first', array(
-			'fields' => array('created'),
-			'conditions' => array('type' => $type . '_request', 'profile_id' => $profileId,
-		)));
-		// check connection type GET param
-		if (!$type or !in_array($type, $this->Connection->types)) {
-				$this->Session->setFlash(__('Invalid connection type.', true));
-				$this->Breadcrume->redirectBack();
-		}
-		// check toProfileId GET param
+		// Check toProfileId GET param
 		if (!$toProfileId or $toProfileData === false or $toProfileId == $profileId) {
-				$this->Session->setFlash(__('Invalid profile.', true));
-				$this->Breadcrume->redirectBack();
+			$this->Session->setFlash(__('Invalid profile.', true));
+			$requestOk = false;
 		}
-		if(!empty($this->params['form']['cancel'])) {
-			$this->Session->setFlash(__('Canceled', true));
+		// Fetch request data
+		$connectionData = $this->Connection->find('first', array(
+			'fields' => array('created', 'value'),
+			'conditions' => array(
+				'profile_id' => $profileId,
+				'to_profile_id' => $toProfileId,
+				'type' => $type,
+		)));
+		// Check $connectionData for connection requests
+		if (empty($connectionData)) {
+			$this->Session->setFlash(__('Invalid request.', true));
+			$requestOk = false;
 		}
-		if(!empty($this->params['form']['ok'])) {
-			$this->Connection->establish(array(
-				array(
-					'profile_id' => $profileId,
-					'to_profile_id' => $toProfileId,
-					'type' => $type,
-					'value' => 1,
-				),
-				array(
-					'profile_id' => $toProfileId,
-					'to_profile_id' => $profileId,
-					'type' => $type,
-					'value' => 1,
-				),
-				array(
-					'profile_id' => $profileId,
-					'to_profile_id' => $toProfileId,
-					'type' => $type . '_request',
-					'value' => 1,
-				),
-				array(
-					'profile_id' => $toProfileId,
-					'to_profile_id' => $profileId,
-					'type' => $type . '_request',
-					'value' => 1,
-				),
-			));
+		if ($requestOk) {
+			// user prestted button
+			if(!empty($this->params['form']['yes'])) {
+				// deny or accept
+				if ($doAccept) {
+					$value = $connectionData['Connection']['value'];
+				} else {
+					$value = null;
+				}
+				$establishData = array(
+					array(
+						'profile_id' => $profileId,
+						'to_profile_id' => $toProfileId,
+						'type' => $type,
+						'value' => $connectionData['Connection']['value'],
+					),
+					array(
+						'profile_id' => $profileId,
+						'to_profile_id' => $toProfileId,
+						'type' => $type . '_request',
+						'value' => 0,
+					),
+				);
+				if (in_array($type, $this->Connection->validMutualTypes)) {
+					$establishData = array_merge($establishData, array(
+						array(
+							'profile_id' => $toProfileId,
+							'to_profile_id' => $profileId,
+							'type' => $type,
+							'value' => $connectionData['Connection']['value'],
+						),
+						array(
+							'profile_id' => $toProfileId,
+							'to_profile_id' => $profileId,
+							'type' => $type . '_request',
+							'value' => 0,
+						),
+					));
+				}
+				$this->Connection->establish($establishData);
+				$this->Session->setFlash(__('You have accepted the', true)
+					. ' ' . Inflector::humanize($type) . ' ' . __('request.', true));
+				$this->render('_process_request_empty');
+			}
+			if(!empty($this->params['form']['later'])) {
+				$this->render('_process_request_empty');
+			} else {
+				$this->set(compact('toProfileData', 'connectionData'));
+				$this->render('_process_request_form');
+			}
+		} else {
+			$this->render('_process_request_empty');
 		}
-		$this->set(compact('toProfileData', 'connectionData'));
-		$this->render('_reaction');
 	}
 	
-	// http://www.domain.tld/connections/deny_reaction/friends/123
-	function deny_request($type = null, $id = null) {
-		$this->render('_reaction');
-	}
-	
-	// http://www.domain.tld/connections/ignore_reaction/friends/123
-	function ignore_request($type = null, $id = null) {
-		$this->render('_reaction');
-	}
 	
 }
 ?>

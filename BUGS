@@ -1,0 +1,3 @@
+- entering "/" removes Auth Session => bad
+- user creation + auto profile creation (Profile.nickname should EQUAL Profile.id, at first)
+- BREADCRUME component buggy (+ afterShutdown of whole cake app)

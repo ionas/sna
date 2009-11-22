@@ -5,7 +5,7 @@
 		<legend><?php __('Login');?></legend>
 	<?php if ($authedUser != null):?>
 	<p><?=__('You are currently logged in as')?> <strong><?=$authedUser['User']['username']?></strong>.</p>
-	<br>
+	<br />
 	<?php endif?>
 
 <?=$form->input('username', array('label' => __('Login name', true))),
@@ -16,6 +16,6 @@
 </div>
 <div class="actions">
 	<ul>
-		<li><?=$html->link(__('Forgot password?', true), array('action' => 'forgot_password'))?></li>
+		<li><?=$html->link(__('Forgot password?', true), array('controller' => 'users', 'action' => 'forgot_password'))?></li>
 	</ul>
 </div>

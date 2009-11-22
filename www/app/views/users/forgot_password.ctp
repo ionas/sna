@@ -6,14 +6,8 @@
 __('Our service at :domain is currently not able to send an Email. We are working on the problem. Try again later.', true),
 			array('domain' => env('SERVER_NAME')))),
 	$form->error('forgot_password'),
-	$honeypot->spawn(),
-	$honeypot->spawn(),
 	$form->input('username', array('label' => __('Login name', true))),
-	$honeypot->spawn(true),
-	$honeypot->spawn(),
-	$form->input('email'),
-	$honeypot->spawn(),
-	$honeypot->spawn()
+	$form->input('email')
 ?>
 	</fieldset>
 <?=$form->end(__('Send instructions', true))?>

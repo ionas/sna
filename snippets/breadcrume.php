@@ -31,6 +31,7 @@ class BreadcrumeComponent extends Object {
 	}
 	
 	function redirectBack($by = 1, $status = null, $exit = true) {
+		$this->Controller->redirect('/users/home', $status, $exit);
 		if (!empty($this->history)) {
 			if (count($this->history) > $by) {
 				$by = ($by) * -1;

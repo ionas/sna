@@ -72,6 +72,10 @@ X Shoutbox
 
 @ SECURITY:
 - Check Security Concept @ Auth (All forbidden, allow excplicit)
+- CSFR: Form instead of Link for "Modifing" things:
+http://groups.google.com/group/cake-php/browse_thread/thread/8d82f0b09d1057c5#msg_3f7316111ff013ec
+http://www.ad7six.com/read/67-Generic-capability-based-security-%28CSRF-prevention%29
+http://code.assembla.com/mi/subversion/nodes/branches/mi_plugin/controllers/components/swiss_army.php#ln302
 - CSFR (Security, /foo/delete/id123 should not work (POST instead of GET?))
 - ACL (if required)
 - Security Features and Double Salts, See also: http://devedge.jonas-hartmann.com/documents/Securing_authentication_and_data_manipulation_via_HTTP.html
