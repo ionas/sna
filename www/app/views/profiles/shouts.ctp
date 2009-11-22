@@ -20,13 +20,19 @@ foreach ($shouts as $shout):
 	}
 ?>
 	<li class="shout<?=$class?>">
+		<?php
+			if(file_exists(WWW_ROOT . '/data/img/profiles/' . $shout['Shout']['from_profile_id'] . '_small')) {
+				$imgSrc = '/data/img/profiles/' . $shout['Shout']['from_profile_id'] . '_small';
+			} else {
+				$imgSrc = '/img/default_user_m_64.png';
+			}
+		?>
 		<p class="picture">
-		<?php if(file_exists(WWW_ROOT . '/data/img/profiles/' . $shout['Shout']['from_profile_id'] . '_small')):?>
-		<?=$html->image('/data/img/profiles/' . $shout['Shout']['from_profile_id'] . '_small', array(
+		<?=$html->image($imgSrc, array(
+			'width' => 64,
 			'alt' => __('Picture of', true) . ' ' . $shout['FromProfile']['nickname'],
 			'url' => array('controller' => 'profiles', 'action' => 'view', $shout['Shout']['from_profile_id']),
 		))?>
-		<?php endif?>
 		</p>
 		<p class="info">
 			<?=$html->link($shout['FromProfile']['nickname'], array('action' => 'view', $shout['Shout']['from_profile_id']))?>
