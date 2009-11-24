@@ -3,14 +3,19 @@ class ProfilesController extends AppController {
 	
 	var $name = 'Profiles';
 	
-	function self() {
-		// TODO: for redirecting to self profile without supplying ID
-	}
-	
 	function beforeFilter() {
 		parent::beforeFilter();
 		$this->Auth->allow(array('view'));
+		// SecurityComponent setup
 		$this->Security->requirePost('remove_shout', 'toggle_shout');
+		if(!empty($this->data)) {
+			// $this->Security->requirePut();
+			// $this->Security->requirePost();
+		}
+	}
+	
+	function self() {
+		// TODO: for redirecting to self profile without supplying ID
 	}
 	
 	function search() {

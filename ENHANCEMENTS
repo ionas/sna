@@ -80,3 +80,12 @@ jQuery UI
 ###########
 
 http://cakebaker.42dh.com/2009/11/20/link-like-buttons/
+
+###########
+
+
+if(!empty($this->data)) {
+ $this->Security->requirePost('add');
+ $this->Security->requirePut('edit');
+
+}

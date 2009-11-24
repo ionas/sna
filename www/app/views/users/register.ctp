@@ -1,5 +1,5 @@
 <div class="users form">
-<?=$form->create('User', array('action' => 'register'))?>
+<?=$form->create('User', array('type' => 'put', 'action' => 'register'))?>
 	<fieldset>
 		<legend><?php __('New User Account')?></legend>
 <?=$form->input('username', array('label' => __('Login name', true))),

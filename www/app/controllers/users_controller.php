@@ -5,8 +5,10 @@ class UsersController extends AppController {
 	
 	function beforeFilter() {
 		parent::beforeFilter();
-		$this->__authAutoRedirectFixes();
+		// AuthComponent Setup
+		// $this->__authAutoRedirectFixes();
 		// Active users may login
+		$this->Auth->autoRedirect = false;
 		$this->Auth->userScope = array(
 			'User.activation_key' => '',
 			'User.is_deleted' => false,
@@ -21,8 +23,14 @@ class UsersController extends AppController {
 			// Use User::hashPasswords instead Auth::hashPasswords
 			$this->Auth->authenticate = $this->User;
 		}
-		$this->Auth->autoRedirect = false;
+		// SecurityComponent setup
 		$this->Security->requirePost('hide');
+		if(!empty($this->data)) {
+			$this->Security->requirePut('register');
+			$this->Security->requirePost(
+				'activate', 'edit', 'forgot_password', 'new_password', 'change_password',
+				'change_email');
+		}
 	}
 	
 	function register() {

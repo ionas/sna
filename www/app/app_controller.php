@@ -9,11 +9,11 @@ class AppController extends Controller {
 		$this->_setLanguage();
 		$this->_checkHasAcceptedTos();
 		$this->_setupLayout();
-		$this->Security->blackHoleCallback = '_securityError';
+		$this->Security->blackHoleCallback = '__securityError';
 		$this->Security->requireAuth($this->action);
 	}
 	
-	function _securityError() {
+	function __securityError() {
 		$this->cakeError('securityError');
 	}
 	

@@ -1,0 +1,9 @@
+These are to be added as git patches
+
+##################
+
+$this->Security->requirePost() and $this->Security->requirePut() accepting array() instead of get_args (multiple args)
+
+##################
+
+FormHelper not adding "display: none"'ed fieldsets (crap)

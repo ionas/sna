@@ -3,6 +3,16 @@ class ConnectionsController extends AppController {
 	
 	var $name = 'Connections';
 	
+	function beforeFilter() {
+		parent::beforeFilter();
+		// SecurityComponent setup
+		if(!empty($this->data)) {
+			// $this->Security->requirePost();
+			// $this->Security->requirePut();
+		}
+		
+	}
+	
 	function summary($toProfileId = null) {
 		$this->set('toProfileData',
 			$toProfileData = $this->Connection->ToProfile->find('first', array(

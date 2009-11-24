@@ -1,5 +1,5 @@
 <div class="messages form">
-<?=$form->create('Message', array('action' => 'send', 'url' => $this->passedArgs))?>
+<?=$form->create('Message', array('type' => 'put', 'action' => 'send', 'url' => $this->passedArgs))?>
 	<fieldset>
 		<legend><?php __('New message to')?> <?=$toProfile['Profile']['nickname']?></legend>
 <?=$form->input('subject', array('label' => __('Subject', true))),

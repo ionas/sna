@@ -5,7 +5,11 @@ class MessagesController extends AppController {
 	
 	function beforeFilter() {
 		parent::beforeFilter();
+		// SecurityComponent setup
 		$this->Security->requirePost('delete', 'trash', 'restore');
+		if(!empty($this->data)) {
+			$this->Security->requirePut('send', 'reply');
+		}
 	}
 	
 	function index() {
