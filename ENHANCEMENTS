@@ -95,3 +95,11 @@ if(!empty($this->data)) {
 css: do not use float or position abs/rel 
 instead use display: inline-block
 See: http://blog.mozilla.com/webdev/2009/02/20/cross-browser-inline-block/
+
+
+###########
+
+invalidate session if logged in from another place (DB Sessions?)
+
+###########
+

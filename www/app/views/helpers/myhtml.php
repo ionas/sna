@@ -30,6 +30,12 @@ class MyhtmlHelper extends AppHelper {
 		if(!empty($text)) {
 			// Clean double whitespaces, tabs as well as trailing and starting whitespaces and tabs
 			$text = $this->clean($text);
+			if(isset($options['maxLen'])) {
+				$maxLen = $options['maxLen'];
+			} else {
+				$maxLen = 73;
+			}
+			$text = wordwrap($text, $maxLen, "\n", true);
 			// Replace double newlines with <p>
 			$text = $pS . preg_replace('#(\r?\n){2,}(\s+)?#u', $pE . $pS, $text) . $pE;
 			// Replace single newlines with <br>
