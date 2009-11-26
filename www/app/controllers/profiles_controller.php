@@ -7,10 +7,10 @@ class ProfilesController extends AppController {
 		parent::beforeFilter();
 		$this->Auth->allow(array('view'));
 		// SecurityComponent setup
-		$this->Security->requirePost('shout_hide', 'shout_unhide', 'shout_delete');
+		$this->Security->requirePost('shout_hide', 'shout_unhide', 'shout_delete', 'shout_to');
 		if(!empty($this->data)) {
-			// $this->Security->requirePut();
-			$this->Security->requirePost('shout_to', 'edit');
+			$this->Security->requirePut('view', 'shout_to'); // shout_to is included by view
+			$this->Security->requirePost('edit');
 		}
 	}
 	
@@ -44,7 +44,7 @@ class ProfilesController extends AppController {
 			$this->data['Profile']['user_id'] = $this->Auth->user('id');
 			if ($this->Profile->save($this->data, true, array(
 						'is_hidden', 'nickname', 'birthday', 'location'))) {
-				$this->Session->setFlash(__('The Profile has been saved', true));
+				$this->Session->setFlash(___('The Profile has been saved'), '_flash_success');
 				$this->redirect($this->referer());
 			} else {
 				$this->Session->setFlash(__('The Profile could not be saved. Please, try again.', true));
@@ -67,11 +67,10 @@ class ProfilesController extends AppController {
 				'from_profile_id' => $this->Profile->getAuthedId($this->Auth->user())));
 			if ($this->Profile->Shout->save($this->data, true,
 					array('user_id', 'profile_id', 'from_profile_id', 'body'))) {
-				$this->Session->setFlash(__('The Shout has been saved', true));
+				$this->Session->setFlash(___('The Shout has been saved'), '_flash_success');
 				$shouted = true;
 			} else {
-				$this->Session->setFlash(__('The Shout could not be saved. Please, try again.',
-					true));
+				$this->Session->setFlash(___('The Shout could not be saved. Please, try again.'));
 			}
 		}
 		if ($shouted) {
@@ -122,6 +121,7 @@ class ProfilesController extends AppController {
 			),
 			'conditions' => array(
 				'Profile.id' => $profileId,
+				'Shout.is_deleted' => 0,
 				'OR' => array(
 					// Shout not hidden by shouter... OR
 					'Shout.is_deleted_by_shouter' => 0,
@@ -186,24 +186,23 @@ class ProfilesController extends AppController {
 	}
 	
 	function shout_delete($id = null) {
-	//	array('profile_id' => )))
 		$data = $this->Profile->Shout->find('first',
 			array(
-				'conditions' => array('id' => $id),
-				'fields' => array('profile_id', 'from_profile_id'),
+				'conditions' => array('id' => $id, 'is_deleted' => 0),
+				'fields' => array('profile_id', 'from_profile_id', 'is_deleted'),
 			)
 		);
 		$success = false;
 		if ($data !== false) {
 			$authedProfileId = $this->Profile->getAuthedId($this->Auth->user());
 			// Shout on own profile
+			$this->Profile->Shout->id = $id;
 			if ($data['Shout']['profile_id'] == $authedProfileId) {
-				if ($this->Profile->Shout->delete($id)) {
+				if ($this->Profile->Shout->saveField('is_deleted', 1)) {
 					$success = true;
 				}
 			// Shout on other's profile
 			} else if ($data['Shout']['from_profile_id'] == $authedProfileId) {
-				$this->Profile->Shout->id = $id;
 				if ($this->Profile->Shout->saveField('is_deleted_by_shouter', 1)) {
 					$success = true;
 				}

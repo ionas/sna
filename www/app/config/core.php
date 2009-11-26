@@ -226,7 +226,8 @@
 	Cache::config('default', array('engine' => 'File'));
 	
 	Configure::write('Config.language', 'eng');
-	
-	require_once('core.deployment.php');
+	if(file_exists(APP . DS . 'config' . DS . 'core.deployment.php')) {
+		require_once('core.deployment.php');
+	}
 	
 ?>

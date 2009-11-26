@@ -6,7 +6,7 @@
 }
 .shouts.index li {
 	clear: both;
-	margin: 2em 0;
+	margin: 3em 0;
 }
 .shouts.index p.picture {
 	float: left;
@@ -19,6 +19,7 @@
 .shouts.index div.body {
 	float: left;
 	margin-left: -.3em;
+	width: 47em;
 }
 .shouts.index div.body p {
 	float: left;
@@ -51,26 +52,34 @@
 	border-color: silver;
 	color: black;
 }
-#shouts form fieldset {
-	background: red;
-}
 #shouts form,
-#shouts form fieldset,
-#shouts form legend,
-#shouts form input {
+#shouts form .submit {
 	clear: none;
 	display: inline;
 	float: left;
 	margin: 0;
 }
-#shouts form input {
-	float: left;
+#shouts form,
+#shouts form .submit {
+	padding: 0;
+}
+#shouts form .submit {
+	padding-top: 5px;
+	padding-right: 5px;
+}
+#shouts div.actions {
+	padding-left: 80px;
+	padding-right: 3px;
 }
 .shouts.index .actions {
+	margin: 0;
 	clear: both;
 }
 .shouts.index .shout.is_hidden .picture,
 .shouts.index .shout.is_hidden .info,
-.shouts.index .shout.is_hidden .body {
+.shouts.index .shout.is_hidden .body,
+.shouts.index .shout.is_deleted_by_shouter .picture,
+.shouts.index .shout.is_deleted_by_shouter .info,
+.shouts.index .shout.is_deleted_by_shouter .body {
 	opacity: .5;
 }

@@ -46,9 +46,9 @@ foreach ($shouts as $shout):
 		<div class="body">
 			<?=$myhtml->nl2p(ucfirst($shout['Shout']['body']))?>
 		</div>
-		<p class="actions">
+		<div class="actions">
 		<?php if(!empty($authedUser)):?>
-			<?php if($authedUser['Profile']['id'] == $shout['Profile']['id'] and $shout['Shout']['is_hidden'] == 0):?>
+			<?php if($authedUser['Profile']['id'] == $shout['Profile']['id'] and $shout['Shout']['is_deleted_by_shouter'] == 0 and $shout['Shout']['is_hidden'] == 0):?>
 				<?=$secure->link(__('Hide', true), array('action' => 'shout_hide', $shout['Shout']['id'], 1))?>
 			<?php elseif($authedUser['Profile']['id'] == $shout['Profile']['id'] and $shout['Shout']['is_hidden'] == 1):?>
 				<?=$secure->link(__('Unhide', true), array('action' => 'shout_unhide', $shout['Shout']['id'], 0))?>
@@ -58,7 +58,7 @@ foreach ($shouts as $shout):
 				<?=$secure->link(__('Remove', true), array('action' => 'shout_delete', $shout['Shout']['id']), null, sprintf(__('Are you sure you want to remove # %s?', true), $shout['Shout']['id']))?>
 			<?php endif?>
 		<?php endif?>
-		</p>
+		</div>
 		<br class="clear" />
 	</li>
 <?php endforeach; ?>

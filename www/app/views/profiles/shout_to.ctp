@@ -1,5 +1,5 @@
 <div class="shouts form">
-<?=$form->create('Profile', array('action' => $this->action, 'url' =>
+<?=$form->create('Shout', array('type' => 'put', 'action' => $this->action, 'url' =>
 	array_merge(array('controller' => 'profiles'), $this->passedArgs, array('#' => 'shouts'))))?> 
 	<fieldset>
  		<legend><?php __('New Shout')?></legend>
