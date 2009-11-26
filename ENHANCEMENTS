@@ -89,3 +89,9 @@ if(!empty($this->data)) {
  $this->Security->requirePut('edit');
 
 }
+
+###########
+
+css: do not use float or position abs/rel 
+instead use display: inline-block
+See: http://blog.mozilla.com/webdev/2009/02/20/cross-browser-inline-block/

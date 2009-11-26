@@ -13,9 +13,9 @@ foreach ($shouts as $shout):
 	if ($i++ % 2 == 0) {
 		$class = ' altrow';
 	}
-	if ($shout['Shout']['is_deleted_by_shouter'] == 1) {
+	if ($shout['Shout']['is_deleted_by_shouter']) {
 		$class = ' is_deleted_by_shouter' . $class;
-	} else if ($shout['Shout']['is_hidden'] == 1) {
+	} else if ($shout['Shout']['is_hidden']) {
 		$class = ' is_hidden' . $class;
 	}
 ?>
@@ -37,20 +37,25 @@ foreach ($shouts as $shout):
 		<p class="info">
 			<?=$html->link($shout['FromProfile']['nickname'], array('action' => 'view', $shout['Shout']['from_profile_id']))?>
 			on <?=substr($shout['Shout']['created'], 0, -3); ?>:
+			<?php if($shout['Shout']['is_deleted_by_shouter']):?>
+				<br /><em class="notification is_deleted_by_shouter">(<?__('This shout is only visible to you, as it has been removed by its author')?>)</em>
+			<?php elseif($shout['Shout']['is_hidden']):?>
+				<br /><em class="notification is_hidden">(<?__('This shout is hidden')?>)</em>
+			<?php endif?>
 		</p>
-		<p class="body">
-			<?=$shout['Shout']['body']; ?>
-		</p>
+		<div class="body">
+			<?=$myhtml->nl2p(ucfirst($shout['Shout']['body']))?>
+		</div>
 		<p class="actions">
 		<?php if(!empty($authedUser)):?>
 			<?php if($authedUser['Profile']['id'] == $shout['Profile']['id'] and $shout['Shout']['is_hidden'] == 0):?>
-				<?=$secure->link(__('Hide', true), array('action' => 'toggle_shout', $shout['Shout']['id'], 1))?>
+				<?=$secure->link(__('Hide', true), array('action' => 'shout_hide', $shout['Shout']['id'], 1))?>
 			<?php elseif($authedUser['Profile']['id'] == $shout['Profile']['id'] and $shout['Shout']['is_hidden'] == 1):?>
-				<?=$secure->link(__('Unhide', true), array('action' => 'toggle_shout', $shout['Shout']['id'], 0))?>
+				<?=$secure->link(__('Unhide', true), array('action' => 'shout_unhide', $shout['Shout']['id'], 0))?>
 			<?php endif?>
 			<?php if(($authedUser['Profile']['id'] == $shout['Profile']['id'] and $shout['Shout']['is_deleted'] == 0)
 					or ($authedUser['Profile']['id'] == $shout['Shout']['from_profile_id'] and $shout['Shout']['is_deleted_by_shouter'] == 0)):?>
-				<?=$secure->link(__('Remove', true), array('action' => 'remove_shout', $shout['Shout']['id']), null, sprintf(__('Are you sure you want to remove # %s?', true), $shout['Shout']['id']))?>
+				<?=$secure->link(__('Remove', true), array('action' => 'shout_delete', $shout['Shout']['id']), null, sprintf(__('Are you sure you want to remove # %s?', true), $shout['Shout']['id']))?>
 			<?php endif?>
 		<?php endif?>
 		</p>

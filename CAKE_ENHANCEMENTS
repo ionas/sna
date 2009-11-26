@@ -1,9 +1,7 @@
-These are to be added as git patches
-
-##################
-
 $this->Security->requirePost() and $this->Security->requirePut() accepting array() instead of get_args (multiple args)
+See: http://code.cakephp.org/tickets/view/354
 
 ##################
 
 FormHelper not adding "display: none"'ed fieldsets (crap)
+See: http://code.cakephp.org/tickets/view/355

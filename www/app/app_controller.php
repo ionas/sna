@@ -2,7 +2,7 @@
 class AppController extends Controller {
 	
 	var $components = array( 'Cookie', 'Session', 'Security', 'Auth', 'RequestHandler');
-	var $helpers = array('Html', 'Form', 'Secure', 'Javascript');
+	var $helpers = array('Html', 'Form', 'Secure', 'Javascript', 'Myhtml');
 	
 	function beforeFilter() {
 		$this->_setupAuth();

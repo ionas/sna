@@ -7,15 +7,16 @@ class ProfilesController extends AppController {
 		parent::beforeFilter();
 		$this->Auth->allow(array('view'));
 		// SecurityComponent setup
-		$this->Security->requirePost('remove_shout', 'toggle_shout');
+		$this->Security->requirePost('shout_hide', 'shout_unhide', 'shout_delete');
 		if(!empty($this->data)) {
 			// $this->Security->requirePut();
-			// $this->Security->requirePost();
+			$this->Security->requirePost('shout_to', 'edit');
 		}
 	}
 	
 	function self() {
-		// TODO: for redirecting to self profile without supplying ID
+		$this->redirect(array('action' => 'view',
+			$this->Profile->getAuthedId($this->Auth->user())));
 	}
 	
 	function search() {
@@ -43,8 +44,6 @@ class ProfilesController extends AppController {
 			$this->data['Profile']['user_id'] = $this->Auth->user('id');
 			if ($this->Profile->save($this->data, true, array(
 						'is_hidden', 'nickname', 'birthday', 'location'))) {
-							debug($this->data);
-				// debug('filename: ' . $this->Attachment->upload($this->data['Avatar']['image']));
 				$this->Session->setFlash(__('The Profile has been saved', true));
 				$this->redirect($this->referer());
 			} else {
@@ -55,22 +54,6 @@ class ProfilesController extends AppController {
 			$this->data = $this->Profile->read(null, $id);
 		}
 		$this->set(compact('users'));
-	}
-	
-	function auth_shouts() {
-		// TODO
-	}
-	
-	function auth_messages() {
-		// TODO
-	}
-	
-	function buddy() {
-		// TODO
-	}
-	
-	function ignore() {
-		// TODO
 	}
 	
 	// Below: integrated shouts actions, because of integrated views (profile view with shouts)
@@ -147,11 +130,13 @@ class ProfilesController extends AppController {
 						'Shout.profile_id' => $this->Profile->getAuthedId($this->Auth->user()),
 						'Shout.is_deleted_by_shouter' => 1,
 					),
+					/*
 					// Shout is by yourself and thus can be seen by you.
 					array(
 						'Shout.from_profile_id' => $this->Profile->getAuthedId($this->Auth->user()),
 						'Shout.is_deleted_by_shouter' => 1,
 					),
+					*/
 				),
 			),
 			'order' => 'Shout.created DESC',
@@ -162,12 +147,74 @@ class ProfilesController extends AppController {
 		return $shouts;
 	}
 	
-	function toggle_shout() {
-		// TODO
+	function shout_hide($id = null) {
+		$this->_shout_toggle_hidden($id, 1);
+		$this->redirect(array('action' => 'self'));
 	}
 	
-	function remove_shout() {
-		// TODO
+	function shout_unhide($id = null) {
+		$this->_shout_toggle_hidden($id, 0);
+		$this->redirect(array('action' => 'self'));
+	}
+	
+	function _shout_toggle_hidden($id, $flag) {
+		if (($currentState = $this->Profile->Shout->getFieldIfExists($id, 'is_hidden')) === false) {
+			$this->Session->setFlash(___('Invalid shout.'));
+		} else {
+			// Setup possible language strings
+			if ($currentState == 1) {
+				$impossibility = __('Shout not hidden.', true);
+				$success = __('Shout has been unhidden.', true);
+				$failure = __('Shout count not be unhidden.', true);
+			} else if ($currentState == 0) {
+				$impossibility = __('Shout already hidden.', true);
+				$success = __('Shout has been hidden.', true);
+				$failure = __('Shout could not be hidden.', true);
+			}
+			// Try to toggle
+			if ($currentState == $flag) {
+				$this->Session->setFlash($impossibility);
+			} else {
+				$this->Profile->Shout->id = $id;
+				if ($this->Profile->Shout->saveField('is_hidden', $flag)) {
+					$this->Session->setFlash($success, '_flash_success');
+				} else {
+					$this->Session->setFlash($failure);
+				}
+			}
+		}
+	}
+	
+	function shout_delete($id = null) {
+	//	array('profile_id' => )))
+		$data = $this->Profile->Shout->find('first',
+			array(
+				'conditions' => array('id' => $id),
+				'fields' => array('profile_id', 'from_profile_id'),
+			)
+		);
+		$success = false;
+		if ($data !== false) {
+			$authedProfileId = $this->Profile->getAuthedId($this->Auth->user());
+			// Shout on own profile
+			if ($data['Shout']['profile_id'] == $authedProfileId) {
+				if ($this->Profile->Shout->delete($id)) {
+					$success = true;
+				}
+			// Shout on other's profile
+			} else if ($data['Shout']['from_profile_id'] == $authedProfileId) {
+				$this->Profile->Shout->id = $id;
+				if ($this->Profile->Shout->saveField('is_deleted_by_shouter', 1)) {
+					$success = true;
+				}
+			}
+		}
+		if ($success) {
+			$this->Session->setFlash(___('Shout deleted.'), '_flash_success');
+		} else {
+			$this->Session->setFlash(___('Shout could not be deleted.'));
+		}
+		$this->redirect(array('action' => 'self'));
 	}
 	
 }

@@ -16,6 +16,26 @@
 .shouts.index p.info {
 	padding-bottom: .5em;
 }
+.shouts.index div.body {
+	float: left;
+	margin-left: -.3em;
+}
+.shouts.index div.body p {
+	float: left;
+	border: 2px solid #ccc; /* # */
+	border-left-width: 7px;
+	border-right-color: #ddd;
+	margin-bottom: 5px;
+	padding: 7px 12px;
+	clear: both;
+	background: #f0f1f1;
+	border-radius: 15px; /* CSS 3 */
+	-o-border-radius: 15px; /* Opera */
+	-icab-border-radius: 15px; /* iCab */
+	-khtml-border-radius: 15px; /* Konqueror */
+	-moz-border-radius: 15px; /* Firefox */
+	-webkit-border-radius: 15px; /* Safari */
+}
 .shouts.index p.picture img {
 	border: 1px solid #224477;
 	padding: 1px;
@@ -45,4 +65,12 @@
 }
 #shouts form input {
 	float: left;
+}
+.shouts.index .actions {
+	clear: both;
+}
+.shouts.index .shout.is_hidden .picture,
+.shouts.index .shout.is_hidden .info,
+.shouts.index .shout.is_hidden .body {
+	opacity: .5;
 }
