@@ -1,10 +1,10 @@
 ﻿# Sequel Pro dump
-# Version 1558
+# Version 1574
 # http://code.google.com/p/sequel-pro
 #
 # Host: localhost (MySQL 5.0.67)
 # Database: sna_development
-# Generation Time: 2009-11-26 18:55:48 +0100
+# Generation Time: 2009-11-26 21:41:21 +0100
 # ************************************************************
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -381,7 +381,7 @@ LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`,`created`,`modified`,`gender_id`,`is_deleted`,`is_disabled`,`has_accepted_tos`,`username`,`password`,`last_login`,`email`,`activation_key`,`password_reset_key`)
 VALUES
-	('4a648ce4-08a4-46e2-91f8-024a8784ca84','2009-08-03 16:15:22','2009-11-26 18:51:25',0,0,0,1,'ionas','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b','2009-11-26 18:51:25','ionas@sna.dev','',''),
+	('4a648ce4-08a4-46e2-91f8-024a8784ca84','2009-08-03 16:15:22','2009-11-26 20:10:45',0,0,0,1,'ionas','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b','2009-11-26 20:10:45','ionas@sna.dev','',''),
 	('4a841aaa-6be4-4851-a666-00e38784ca84','2009-08-13 15:52:42','2009-11-26 18:51:28',0,0,0,1,'abc','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b','2009-11-26 18:51:28','sna@mailinator.com','',''),
 	('4b089566-b204-4f80-a8e2-69838784ca84','2009-11-22 02:35:34','2009-11-22 02:35:43',0,0,0,1,'foobar123','f0285696ad33db5ce5e5966f63be5eb290a0b027acbdc020dfdf1bc7ba21bb75','2009-11-22 02:35:34','foobar123@mailinator.com','','');
 

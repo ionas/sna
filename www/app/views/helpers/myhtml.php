@@ -4,8 +4,9 @@ class MyhtmlHelper extends AppHelper {
 	var $helpers = array('Html');
 	
 	function clean($text, $maxLength = '40') {
-		// TODO maxLength
-		$text = utf8_encode($text); // Encode text in UTF-8
+		if (mb_detect_encoding($text) != 'UTF-8') {
+			$text = utf8_encode($text); // Encode text in UTF-8
+		}
 		$text = trim($text); // Remove spaces, tabs and newlines at the beginning and end of text
 		// Remove ending tabs and spaces
 		$text = preg_replace(
