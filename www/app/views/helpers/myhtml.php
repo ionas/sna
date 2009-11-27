@@ -24,19 +24,24 @@ class MyhtmlHelper extends AppHelper {
 		return $text;
 	}
 	
-	function nl2p($text, $options = array()) {
+	function maxLen($text, $len = 70) {
+		return wordwrap($text, $len, "\n", true);
+	}
+	
+	function nl2p($text, $options = array(), $enforceMaxLen = true) {
 		$pS = $this->Html->tag('p', null, $options);
 		$pE = '</p>';
 		$br = '<br />';
-		if(!empty($text)) {
+		if (!empty($text)) {
 			// Clean double whitespaces, tabs as well as trailing and starting whitespaces and tabs
 			$text = $this->clean($text);
-			if(isset($options['maxLen'])) {
-				$maxLen = $options['maxLen'];
-			} else {
-				$maxLen = 73;
+			// Max length auto line break, if enabled
+			if ($enforceMaxLen) {
+				if (isset($options['maxLen'])) {
+					$maxLen = (int)$options['maxLen'];
+				}
+				$text = $this->maxLen($text);
 			}
-			$text = wordwrap($text, $maxLen, "\n", true);
 			// Replace double newlines with <p>
 			$text = $pS . preg_replace('#(\r?\n){2,}(\s+)?#u', $pE . $pS, $text) . $pE;
 			// Replace single newlines with <br>
