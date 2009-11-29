@@ -44,7 +44,7 @@ class ProfilesController extends AppController {
 			$this->data['Profile']['user_id'] = $this->Auth->user('id');
 			if ($this->Profile->save($this->data, true, array(
 						'is_hidden', 'nickname', 'birthday', 'location'))) {
-				$this->Session->setFlash(___('The Profile has been saved'), '_flash_success');
+				$this->Session->setFlash(___('The Profile has been saved'), 'flashes/success');
 				$this->redirect($this->referer());
 			} else {
 				$this->Session->setFlash(__('The Profile could not be saved. Please, try again.', true));
@@ -67,7 +67,7 @@ class ProfilesController extends AppController {
 				'from_profile_id' => $this->Profile->getAuthedId($this->Auth->user())));
 			if ($this->Profile->Shout->save($this->data, true,
 					array('user_id', 'profile_id', 'from_profile_id', 'body'))) {
-				$this->Session->setFlash(___('The Shout has been saved'), '_flash_success');
+				$this->Session->setFlash(___('The Shout has been saved'), 'flashes/success');
 				$shouted = true;
 			} else {
 				$this->Session->setFlash(___('The Shout could not be saved. Please, try again.'));
@@ -177,7 +177,7 @@ class ProfilesController extends AppController {
 			} else {
 				$this->Profile->Shout->id = $id;
 				if ($this->Profile->Shout->saveField('is_hidden', $flag)) {
-					$this->Session->setFlash($success, '_flash_success');
+					$this->Session->setFlash($success, 'flashes/success');
 				} else {
 					$this->Session->setFlash($failure);
 				}
@@ -209,7 +209,7 @@ class ProfilesController extends AppController {
 			}
 		}
 		if ($success) {
-			$this->Session->setFlash(___('Shout deleted.'), '_flash_success');
+			$this->Session->setFlash(___('Shout deleted.'), 'flashes/success');
 		} else {
 			$this->Session->setFlash(___('Shout could not be deleted.'));
 		}

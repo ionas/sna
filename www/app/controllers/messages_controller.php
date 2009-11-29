@@ -185,7 +185,7 @@ class MessagesController extends AppController {
 		} else if ($existance !== false) {
 			$this->Message->id = $id;
 			if($this->Message->saveField('is_trashed', $flag)) {
-				$this->Session->setFlash($success, '_flash_success');
+				$this->Session->setFlash($success, 'flashes/success');
 			} else {
 				$this->Session->setFlash($failure);
 			}

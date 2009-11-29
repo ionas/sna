@@ -37,12 +37,12 @@ X After User CREATION, create empty associated profile
 X Profile picture uploads
 X Basic Profile View (with Shouts)
 X Shoutbox
-- Shout Hiding / Shout Deletion
+X Shout Hiding / Shout Deletion
 
 @ BUDDY & AUTH:
-- Buddylists
-- Buddy auth challenge
-- Messaging auth challenge (see ICQ)
+o Buddylists
+o Buddy auth challenge
+o Messaging auth challenge (see ICQ)
 
 @ USER/PROFILE:
 - After activation, redirect to /profile/x/edit

@@ -29,11 +29,14 @@ class AppController extends Controller {
 	
 	function _setupAuth() {
 		Security::setHash('sha256');
-		// ENCH: Functionize, pass Array with 'ControllerA' => array('ActionA')?
-		$this->Auth->allow(array('display'));
+		if ($this->name = 'pages') {
+			$this->Auth->allow(array('display'));
+		}
 		$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
 		$this->Auth->logoutRedirect = '/';
 		$this->Auth->loginRedirect = array('controller' => 'users', 'action' => 'home');
+		$this->Auth->authError = ___('You need to login, to access this location.');
+		$this->Auth->loginError = ___("Username or password wrong.");
 		$this->Auth->autoRedirect = true;
 		$authedUser = array();
 		$authedProfileData = array();
