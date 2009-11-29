@@ -14,9 +14,21 @@ class ProfilesController extends AppController {
 		}
 	}
 	
+	function _checkHasAcceptedTos() {
+		$allows = array();
+		if ($this->Auth->isAuthorized()
+		 and $this->action == 'view'
+		 and !empty($this->passedArgs[0])) {
+			if ($this->passedArgs[0] == $this->Profile->getAuthedId($this->Auth->user())) {
+				$allows = array('Profiles' => array('view'));
+			}
+		}
+		parent::_checkHasAcceptedTos($allows);
+	}
+	
 	function self() {
-		$this->redirect(array('action' => 'view',
-			$this->Profile->getAuthedId($this->Auth->user())));
+		$this->redirect(
+			array('action' => 'view', $this->Profile->getAuthedId($this->Auth->user())));
 	}
 	
 	function search() {
@@ -53,7 +65,6 @@ class ProfilesController extends AppController {
 		if (empty($this->data)) {
 			$this->data = $this->Profile->read(null, $id);
 		}
-		$this->set(compact('users'));
 	}
 	
 	// Below: integrated shouts actions, because of integrated views (profile view with shouts)

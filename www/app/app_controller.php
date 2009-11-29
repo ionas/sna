@@ -7,10 +7,10 @@ class AppController extends Controller {
 	function beforeFilter() {
 		$this->_setupAuth();
 		$this->_setLanguage();
-		$this->_checkHasAcceptedTos();
 		$this->_setupLayout();
 		$this->Security->blackHoleCallback = '__securityError';
 		$this->Security->requireAuth($this->action);
+		$this->_checkHasAcceptedTos();
 	}
 	
 	function __securityError() {
@@ -29,7 +29,7 @@ class AppController extends Controller {
 	
 	function _setupAuth() {
 		Security::setHash('sha256');
-		if ($this->name == 'pages') {
+		if ($this->name == 'Pages') {
 			$this->Auth->allow(array('display'));
 		}
 		$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
@@ -51,23 +51,50 @@ class AppController extends Controller {
 		$this->set('authedUser', array_merge($authedProfileData, $authedUser));
 	}
 	
-	function _checkHasAcceptedTos() {
-		$this->enforceTosOn = array('Users', 'Messages', 'Shouts');
+	function _checkHasAcceptedTos($additionalAllows = array()) {
+		if (empty($this->_allowNoTos)) {
+			$this->_allowNoTos = array(
+				'Pages',
+				'Users' => array(
+					'logout',
+					'login',
+					'terms_of_service',
+					'forgot_password',
+					'new_password',
+					'edit',
+					'change_password',
+					'change_email',
+					'home',
+				),
+				'Profiles' => array(
+					'self',
+					'edit',
+				),
+				'Messages' => array(
+					'mailbox',
+					'trash',
+					'restore',
+					'remove',
+				),
+			);
+		}
+		$this->_allowNoTos = Set::merge($this->_allowNoTos, $additionalAllows);
 		if ($this->Auth->isAuthorized()) {
-			if (in_array($this->name, $this->enforceTosOn)
-			&& !($this->name == 'Users' && in_array($this->action, array(
-							// Exception List: these actions require no TOS acceptance
-							'terms_of_service',
-							'forgot_password',
-							'new_password',
-							'change_password',
-							'hide',
-							'logout',
-							'login',
-				)))
-			&& $this->Auth->user('has_accepted_tos') != 1) {
+			$allowNoTos = Set::normalize($this->_allowNoTos);
+			$doCheckForTos = true;
+			if (in_array($this->name, array_keys($allowNoTos))) {
+				// Controller wide NoTOS allow
+				if (empty($allowNoTos[$this->name])) {
+					$doCheckForTos = false;
+				// Action (of a controller) wide NoTOS allowed
+				} else if (in_array($this->action, $allowNoTos[$this->name])) {
+					$doCheckForTos = false;
+				}
+			}
+			// Actual TOS accept check
+			if ($this->Auth->user('has_accepted_tos') == 0 and $doCheckForTos == true) {
 				$this->Session->setFlash(
-					_('You have to accept the Terms of Service before continuing.', true));
+					___('You have to accept the Terms of Service before you can continue.'));
 				$this->Session->write('TermsOfService.redirect', $this->here);
 				$this->redirect(array('controller' => 'users', 'action' => 'terms_of_service'));
 			}

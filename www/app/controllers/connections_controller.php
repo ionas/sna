@@ -3,6 +3,18 @@ class ConnectionsController extends AppController {
 	
 	var $name = 'Connections';
 	
+	/*
+	* Handels:
+	* 
+	* friends (mutual)
+	* followers
+	* messaging_authentification
+	* shouting_authentification
+	* requests for all of that
+	* ignores
+	* 
+	**/
+	
 	function beforeFilter() {
 		parent::beforeFilter();
 		// SecurityComponent setup

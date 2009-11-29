@@ -93,7 +93,7 @@ ___('Your registration has been successful. However, you will still need to acti
 			$this->Session->setFlash(__('You have declined the Terms of Service.', true));
 			$this->Session->write('Auth', $this->User->find('first',
 					array('conditions' => array('id' => $this->Auth->user('id')))));
-			$this->redirect('/');
+			$this->redirect(array('action' => 'home'));
 		} else if (!empty($this->params['form']['accept'])) {
 			$this->User->setTos($this->Auth->user(), 1);
 			$this->Session->setFlash(__('You have accepted the Terms of Service.', true));
@@ -170,27 +170,9 @@ ___('Your registration has been successful. However, you will still need to acti
 		}
 	}
 	
-	function hide($switch = 'yes') {
-		$this->User->id = $this->Auth->user('id');
-		if ($this->User->id != null && $switch == 'yes') {
-			if ($this->User->saveField('is_hidden', 1)) {
-				$this->Session->setFlash(__('You are now invisible.', true));
-			}
-		} else if ($this->User->id != null && $switch == 'no') {
-			if ($this->User->saveField('is_hidden', 0)) {
-				$this->Session->setFlash(__('You are now visible.', true));
-			}
-		}
-		$this->Breadcrume->redirectBack();
-	}
-	
 	function home() {
 		if ($this->Auth->isAuthorized() === true) {
-			$profileData = $this->User->Profile->find('first', array(
-				'fields' => 'Profile.id',
-				'conditions' => array('Profile.user_id' => $this->Auth->user('id'))));
-			$this->redirect(array('controller' => 'profiles', 'action' => 'view',
-				$profileData['Profile']['id']));
+			$this->redirect(array('controller' => 'profiles', 'action' => 'self'));
 		} else {
 			$this->redirect('/');
 		}
