@@ -29,7 +29,7 @@ class AppController extends Controller {
 	
 	function _setupAuth() {
 		Security::setHash('sha256');
-		if ($this->name = 'pages') {
+		if ($this->name == 'pages') {
 			$this->Auth->allow(array('display'));
 		}
 		$this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
