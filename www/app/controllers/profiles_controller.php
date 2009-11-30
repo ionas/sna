@@ -134,20 +134,13 @@ class ProfilesController extends AppController {
 				'Profile.id' => $profileId,
 				'Shout.is_deleted' => 0,
 				'OR' => array(
-					// Shout not hidden by shouter... OR
+					// Shout not deleted by shouter... OR
 					'Shout.is_deleted_by_shouter' => 0,
-					// Shout is on selves profile thus hidden can be seen by you... OR
+					// ... shout is on your own profile thus even hidden can be seen by you...
 					array(
 						'Shout.profile_id' => $this->Profile->getAuthedId($this->Auth->user()),
 						'Shout.is_deleted_by_shouter' => 1,
 					),
-					/*
-					// Shout is by yourself and thus can be seen by you.
-					array(
-						'Shout.from_profile_id' => $this->Profile->getAuthedId($this->Auth->user()),
-						'Shout.is_deleted_by_shouter' => 1,
-					),
-					*/
 				),
 			),
 			'order' => 'Shout.created DESC',

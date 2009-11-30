@@ -131,3 +131,22 @@ CSS Caching: http://ru.php.net/manual/en/function.ob-start.php#71299
 Page Caching (for GET): http://www.coderprofile.com/networks/source-codes/170/simple-page-caching
 
 ?>
+
+
+
+####################
+
+http://meyerweb.com/eric/tools/css/reset/
+http://developer.yahoo.com/yui/articles/hosting/?reset&MIN#configure
+http://developer.yahoo.com/yui/examples/reset/reset-simple.html
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/reset/reset-min.css"> 
+
+####################
+
+http://net.tutsplus.com/articles/web-roundups/the-20-most-practical-and-creative-uses-of-jquery/
+
+
+###################
+
+
+http://thethemeblog.com/tutorials/ultimate-collection-of-40-jquery-tutorials-and-resources
