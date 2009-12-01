@@ -23,13 +23,14 @@
 }
 .shouts.index div.body p {
 	float: left;
-	border: 2px solid #ccc; /* # */
-	border-left-width: 7px;
-	border-right-color: #ddd;
+	border: 2px solid #ccc;
+	border-right-width: 1px;
 	margin-bottom: 5px;
 	padding: 7px 12px;
 	clear: both;
 	background: #f0f1f1;
+	background-image: url('/img/shout_background.png');
+	background-repeat: repeat-y;
 	border-radius: 15px; /* CSS 3 */
 	-o-border-radius: 15px; /* Opera */
 	-icab-border-radius: 15px; /* iCab */
