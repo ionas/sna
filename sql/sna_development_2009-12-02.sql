@@ -1,10 +1,10 @@
 ﻿# Sequel Pro dump
-# Version 1574
+# Version 1586
 # http://code.google.com/p/sequel-pro
 #
 # Host: localhost (MySQL 5.0.67)
 # Database: sna_development
-# Generation Time: 2009-11-26 21:41:21 +0100
+# Generation Time: 2009-12-02 01:55:08 +0100
 # ************************************************************
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -28,15 +28,26 @@ CREATE TABLE `connections` (
   `profile_id` char(36) NOT NULL,
   `to_profile_id` char(36) NOT NULL,
   `type` varchar(255) NOT NULL,
-  `value` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8;
+  `mutual` tinyint(1) NOT NULL default '0',
+  `hidden` tinyint(1) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `UNIQUE_CONNECTION` (`profile_id`,`to_profile_id`,`type`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 LOCK TABLES `connections` WRITE;
 /*!40000 ALTER TABLE `connections` DISABLE KEYS */;
-INSERT INTO `connections` (`id`,`created`,`profile_id`,`to_profile_id`,`type`,`value`)
+INSERT INTO `connections` (`id`,`created`,`profile_id`,`to_profile_id`,`type`,`mutual`,`hidden`)
 VALUES
-	(66,'2009-11-19 09:28:20','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','friendship_request','1');
+	(1,'2009-11-19 09:28:20','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','friendship',1,0),
+	(2,'2009-11-19 09:28:20','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','friendship_request',0,0),
+	(3,'2009-11-19 09:28:20','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','friendship_request_ignore',0,0),
+	(4,'2009-11-19 09:28:20','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','messaging_authentification',0,0),
+	(5,'2009-11-19 09:28:20','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','messaging_authentification_request',0,0),
+	(6,'2009-11-19 09:28:20','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','messaging_authentification_request_ignore',0,0),
+	(7,'2009-11-19 09:28:20','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','shouting_authentification',0,0),
+	(8,'2009-11-19 09:28:20','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','shouting_authentification_request',0,0),
+	(9,'2009-11-19 09:28:20','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','shouting_authentification_request_ignore',0,0),
+	(10,'2009-11-19 09:28:20','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','ignore',0,0);
 
 /*!40000 ALTER TABLE `connections` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -53,7 +64,7 @@ CREATE TABLE `genders` (
   `label` char(20) NOT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `UNIQUE_GENDER_LABEL` (`label`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 LOCK TABLES `genders` WRITE;
 /*!40000 ALTER TABLE `genders` DISABLE KEYS */;
@@ -62,7 +73,7 @@ VALUES
 	(1,0,'unspecified'),
 	(2,0,'female'),
 	(3,0,'male'),
-	(4,0,'neuter');
+	(4,0,'other');
 
 /*!40000 ALTER TABLE `genders` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -93,12 +104,12 @@ LOCK TABLES `messages` WRITE;
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
 INSERT INTO `messages` (`id`,`created`,`modified`,`user_id`,`profile_id`,`from_profile_id`,`to_profile_id`,`subject`,`body`,`is_read`,`is_replied`,`is_trashed`)
 VALUES
-	('4a4c45fa-6200-47bb-aac7-02378784ca84','2009-07-26 14:03:06','2009-11-22 14:23:57','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','Thats a Message From X to Y','Trojanerschutz für Behördencomputer\nLandesverwaltungsnetz unter Druck durch gezielte Angriffe\n\nIn Baden-Württemberg kämpfen Behörden mit Trojanerangriffen, die gezielt auf bestimmte Mitarbeiter zugeschnitten sind. Angeblich sollen die Urheber in China sitzen.\nBaden-Württemberg benötigt als erstes Bundesland einen besonderen Schutz der Behördencomputer vor Spionage-Angriffen durch Trojaner. Das berichtet das der Spiegel unter Berufung auf einem internen Bericht des Landesverfassungsschutzes aus der Abteilung für Spionageabwehr. Das Landesverwaltungsnetz sei nach Geheimdienstangaben Angriffen aus China ausgesetzt.\n\nDie Trojaner kämen meist per E-Mail und seien gezielt auf bestimmte Adressaten und Arbeitsbereiche zugeschnitten. Besonders Mitarbeiter aus dem Behördenmittelbau würden angegriffen. Chinesische Spionageprogramme seien bereits im Kanzleramt und im Auswärtigen Amt, im Bundeswirtschafts- und im Bundesforschungsministerium gefunden worden.\n\nDeutschland ist nicht nur Opfer im Cyberkrieg der Geheimdienste: Der deutsche Auslandsdienst BND hatte Ende März 2009 in 90 Fällen Computer in Afghanistan und im Kongo mit Trojanern angegriffen. Das hatte der BND-Vizechef dem Parlamentarischen Kontrollgremium erklärt. (asa) ',1,0,0),
+	('4a4c45fa-6200-47bb-aac7-02378784ca84','2009-07-26 14:03:06','2009-11-29 17:10:18','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','Thats a Message From X to Y','Trojanerschutz für Behördencomputer\nLandesverwaltungsnetz unter Druck durch gezielte Angriffe\n\nIn Baden-Württemberg kämpfen Behörden mit Trojanerangriffen, die gezielt auf bestimmte Mitarbeiter zugeschnitten sind. Angeblich sollen die Urheber in China sitzen.\nBaden-Württemberg benötigt als erstes Bundesland einen besonderen Schutz der Behördencomputer vor Spionage-Angriffen durch Trojaner. Das berichtet das der Spiegel unter Berufung auf einem internen Bericht des Landesverfassungsschutzes aus der Abteilung für Spionageabwehr. Das Landesverwaltungsnetz sei nach Geheimdienstangaben Angriffen aus China ausgesetzt.\n\nDie Trojaner kämen meist per E-Mail und seien gezielt auf bestimmte Adressaten und Arbeitsbereiche zugeschnitten. Besonders Mitarbeiter aus dem Behördenmittelbau würden angegriffen. Chinesische Spionageprogramme seien bereits im Kanzleramt und im Auswärtigen Amt, im Bundeswirtschafts- und im Bundesforschungsministerium gefunden worden.\n\nDeutschland ist nicht nur Opfer im Cyberkrieg der Geheimdienste: Der deutsche Auslandsdienst BND hatte Ende März 2009 in 90 Fällen Computer in Afghanistan und im Kongo mit Trojanern angegriffen. Das hatte der BND-Vizechef dem Parlamentarischen Kontrollgremium erklärt. (asa) ',1,0,1),
 	('4a6c45fa-6200-47bb-aac7-02378784c224','2009-07-26 14:03:06','2009-09-21 18:24:03','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','Thats a Message From X to Y','TOR will be WoW in space.\n\nYou kids go enjoy your Star Wows. SWG is MUCH improved from when LA forced NGE on SOE. TOR has now these LA devs responsable for NGE.\n\nJust listen to the devs explain how in their New Game Experience players will have ICONIC characters that make them feel HEROIC from the start.\n\nThere will be NO valid crafting, or crafting professions, no entertainers, or non combat options, no player housing in the open world, no spaceship game. TOR is NOT the sandbox your looking for. \n\nYea Star WoWs will have more subs, but that\'s because they are vocally going for the WoW crowd.\n\nAS FOR THE LAZY COMMENT...\n\nBioware DID NOT even make their own GAME ENGINE. THEY SIMPLY ARE USING HEROS JOURNEYs engine.\n\nSOE made SWG from the ground up. With MANY more sandbox elements then TOR will ever have.',1,1,0),
 	('4a6c45fa-6200-47bb-aac7-02378784c284','2009-07-26 14:03:06','2009-08-21 20:34:55','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','Thats a Message From X to Y','Alongside yesterday\'s announcement that it will be bringing MMS to the iPhone on September 25th, AT&T released a video clip featuring \"Seth the Blogger Guy\" explaining the explosion in data growth over the past several years and how AT&T has been working to expand its infrastructure to handle the demands on its network.\n\nIn particular, Seth briefly addresses the steps AT&T has undertaken to prepare for the launch of MMS on the iPhone, noting that the company wanted to ensure that the feature works properly from the start.\n\nWe\'ve been working for months to prepare the radio access controllers in our network to support this launch. That means calibrating base stations all over the country, and frankly that\'s a very time-consuming process. MMS for the iPhone will be coming on September 25th. We wanted to make sure that when MMS for the iPhone launches, the experience was great. We wanted to get it right.\nSeth then addresses the broader investments AT&T has made in its network, totaling $38 billion over the past two years, to increase capacity and deploy coverage based on the 850 MHz spectrum, which offers improved capacity and in-building coverage. Finally, Seth points to AT&T\'s ongoing work to deploy technology to improve data transfer speeds and the expansion of 3G to additional markets.',1,1,0),
-	('4a6c45fa-6200-47bb-aac7-02378784c684','2009-07-26 14:03:06','2009-11-22 14:23:58','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','Thats a Message From X to Y','The nerf to armor pen in 3.2.2 is intentional. Compared to the recent buff where we increased the value of armor rating to 125%, this nerf would take it back down to 110%. While we are still evaluating the effects of this change in the 3.2.2 build, we did want to let you know of the possibility in case you were about to spend a lot on armor pen gems.\n\nIn fact, this was really the point. Several melee specs (and Marksman hunters) had begun to focus on armor pen at the expense of all other stats. Gear without armor pen was being passed over and gem sockets were increasingly being filled with just this one stat. While every spec has stats that are more valuable than others, this one felt like it was starting to trump everything. Not coincidentally, characters stacking lots of armor pen were starting to do more damage than their peers and more damage than we were comfortable with.\n\nThis change is largely for PvE reasons, though we won\'t cry at all if melee damage in PvP drops a little as a result.\n\nWe\'re letting you know now so that this doesn\'t feel like a stealth nerf, assuming it goes live. While you might disagree or be frustrated by the change (though I also suspect it won\'t come as a surprise to many players), we ask that you try and keep your response to something appropriate for these forums.',1,1,0),
+	('4a6c45fa-6200-47bb-aac7-02378784c684','2009-07-26 14:03:06','2009-11-29 17:10:30','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','Thats a Message From X to Y','The nerf to armor pen in 3.2.2 is intentional. Compared to the recent buff where we increased the value of armor rating to 125%, this nerf would take it back down to 110%. While we are still evaluating the effects of this change in the 3.2.2 build, we did want to let you know of the possibility in case you were about to spend a lot on armor pen gems.\n\nIn fact, this was really the point. Several melee specs (and Marksman hunters) had begun to focus on armor pen at the expense of all other stats. Gear without armor pen was being passed over and gem sockets were increasingly being filled with just this one stat. While every spec has stats that are more valuable than others, this one felt like it was starting to trump everything. Not coincidentally, characters stacking lots of armor pen were starting to do more damage than their peers and more damage than we were comfortable with.\n\nThis change is largely for PvE reasons, though we won\'t cry at all if melee damage in PvP drops a little as a result.\n\nWe\'re letting you know now so that this doesn\'t feel like a stealth nerf, assuming it goes live. While you might disagree or be frustrated by the change (though I also suspect it won\'t come as a surprise to many players), we ask that you try and keep your response to something appropriate for these forums.',1,1,1),
 	('4a6c45fa-6200-47bb-aac7-02378784ca84','2009-07-26 14:03:06','2009-11-23 13:18:46','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','Thats a Message From X to Y','esque eget, sodales vel nunc. Cras sodales egestas eleifend. Quisque nec eros lacus. Etiam vehicula risus eget tellus interdum dignissim. Duis vulputate molestie ante ut facilisis. Praesent fermentum facilisis vehicula.\n\nPellentesque non nulla felis. Duis est neque, eleifend nec ultricies non, viverra non urna. Donec augue massa, rutrum sit amet rutrum tempor, vehicula ac elit. Mauris ultrices lobortis ante, id convallis sem elementum malesuada. Donec congue dolor a magna volutpat elementum tristique elit ultrices. Proin sollicitudin sapien non nunc hendrerit fringilla. Maecenas accumsan ante et felis fringilla sodales. Donec nec diam dolor. Cras est elit, pretium id vulputate at, dapibus eu nibh. Pellentesque at mi et sapien consequat blandit. Mauris sodales, nisl vel aliquam viverra, augue ipsum vulputate est, non sodales orci nulla eget neque. Donec arcu neque, rutrum at iaculis nec, interdum ut eros. Curabitur nisi dolor, faucibus eget congue vitae, congue vitae mi.\n\nVivamus arcu enim, dignissim quis sollicitudin eget, accumsan quis quam. Nam diam eros, semper sit amet tempor eget, sodales viverra massa. Curabitur vel posuere urna. Proin non sapien quis ipsum dapibus adipiscing quis a est. Praesent eu blandit ligula. Praesent interdum est a nunc porttitor euismod. Pellentesque ut magna id erat posuere pulvinar. In ante mauris, sollicitudin eget sodales vitae, lacinia nec ligula. Etiam eget ligula nulla. Suspendisse eget blandit est. Sed vehicula lacinia massa, sit amet interdum lorem volutpat at. Nunc ac laoreet erat. Duis eget lacus quis orci pharetra eleifend. Donec turpis dolor, egestas eget placerat sed, dapibus ut turpis. In et ante ut urna dictum euismod. Suspendisse tincidunt mi vitae magna accumsan non suscipit dui eleifend. Phasellus dui tellus, posuere nec ullamcorper ac, fermentum vitae magna. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;\n\nVestibulum mi justo, euismod at tincidunt ut, bibendum molestie leo. Vivamus lacus ante, molestie eget porttitor vitae, sagittis ut tellus. Integer eu neque et urna interdum dictum vel a nisl. Aliquam vitae purus eget magna pharetra interdum. Sed ac nibh sem. Quisque dictum bibendum ullamcorper. Nunc ullamcorper blandit nulla id rutrum. Duis id libero et erat sollicitudin aliquet id in sapien. Vivamus fringilla, metus semper blandit scelerisque, risus massa faucibus metus, at laoreet augue metus et nunc. In hac habitasse platea dictumst. Cras dolor velit, ultricies sed commodo nec, dignissim gravida arcu. Morbi sit amet elit ante. Suspendisse arcu ligula, malesuada sit amet euismod a, adipiscing at turpis. Mauris bibendum, nisi eget condimentum rutrum, sem lorem placerat arcu, sed tincidunt nisl nunc lacinia felis. Duis rhoncus gravida accumsan. Vestibulum dignissim quam in velit rhoncus ut interdum nisl consequat. Praesent dignissim vulputate dapibus. Mauris orci sapien, consequat a viverra et, hendrerit non dui.\n\nDuis scelerisque feugiat risus quis eleifend. Aliquam id dolor leo. Duis tellus risus, ornare et laoreet eget, volutpat eu risus. Duis pharetra lorem eget nibh dignissim sit amet molestie est egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras arcu dolor, tincidunt eget tristique vel, ultricies ac magna. Nulla vitae lacus sed dolor dignissim sollicitudin a sit amet metus. Ut ac nisl non urna aliquam lobortis id sed diam',0,0,1),
-	('4a8c45fa-6200-47bb-aac7-02378784c684','2009-07-26 14:03:06','2009-11-21 23:54:05','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','Thats a Message From X to Y',' Brigitte Zypries (Foto: picture-alliance/ dpa)\n\nJustizministerin Zypries galt in den vergangenen vier Jahren als die große Gegenspielerin von Innenminister Schäuble. Doch die SPD-Ministerin als bloßes Korrektiv zum Law-und-Order-Mann der CDU zu verstehen, hieße die Rechtspolitik, als zentrales Element des Regierungshandelns, zu verkennen. [mehr]',1,1,0),
+	('4a8c45fa-6200-47bb-aac7-02378784c684','2009-07-26 14:03:06','2009-11-29 20:22:58','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','Thats a Message From X to Y',' Brigitte Zypries (Foto: picture-alliance/ dpa)\n\nJustizministerin Zypries galt in den vergangenen vier Jahren als die große Gegenspielerin von Innenminister Schäuble. Doch die SPD-Ministerin als bloßes Korrektiv zum Law-und-Order-Mann der CDU zu verstehen, hieße die Rechtspolitik, als zentrales Element des Regierungshandelns, zu verkennen. [mehr]',1,1,1),
 	('4a8f041b-54ac-49fd-8c8e-01008784ca84','2009-08-21 22:31:23','2009-11-24 07:46:58','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','bar','et laoreet eget, volutpat eu risus. Duis pharetra lorem eget nibh dignissim sit amet molestie est egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras arcu dolor, tincidunt eget tristique vel, ultricies ac magna. Nulla vitae lacus sed dolor dignissim sollicitudin a sit amet metus. Ut ac nisl non urna aliquam lobortis id sed diam. Donec accumsan ipsum vitae nunc dignissim nec imperdiet leo mollis. Praesent ac ante magna. Aliquam iaculis iaculis malesuada. Praesent vestibulum tincidunt nunc at dapibus. Vestibulum pharetra lobortis odio pretium gravida. Fusce ac sapien nulla. Morbi non lorem ut lectus pretium sollicitudibatz',0,0,1),
 	('4a93f7d8-c8f0-48e3-a7f7-01778784c284','2009-08-25 16:40:24','2009-11-23 13:19:38','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','batz','EU zieht ernüchternde Afghanistan-Bilanz\n\nZu wenig Kooperation, kaum Motivation und zu viel Korruption - die EU räumt beim Außenministertreffen in Stockholm ein, bisher \"nur begrenzte Fortschritte\" beim Wiederaufbau in Afghanistan erzielt zu haben. Die Kritik an dem von der Bundeswehr angeforderten Luftangriff wird derweil schärfer. [mehr]',0,0,1),
 	('4a93f7d8-c8f0-48e3-a7f7-01778784ca84','2009-08-25 16:40:24','2009-11-23 13:19:40','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','batz','\"Apple Insider has an interesting perspective on the MS Exchange support built into Mac OS X 10.6 and how it essentially frees Apple from all things Microsoft: \'Windows Enthusiasts like to spin Apple\'s support for Exchange on the iPhone and in Snow Leopard as endorsement of Microsoft in the server space. From another angle, Apple is reducing its dependence upon Microsoft\'s client software, weakening Microsoft\'s ability to hold back and dumb down its Mac offerings at Apple\'s expense. More importantly, Apple is providing its users with additional options that benefit both Mac users and the open source community.\'\"bar',0,0,1),
@@ -176,7 +187,7 @@ VALUES
 	('4b0885ce-c358-43d7-b8d4-69348784ca84','2009-11-22 01:29:02','2009-11-22 01:29:02','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','Re: Foo','Luv ya!\r\n\r\nOn 2009-09-14, at 02:47, TheAbcGuy wrote:\r\n> Quux',0,0,0),
 	('4b08860c-e394-4d72-b0a6-69858784ca84','2009-11-22 01:30:04','2009-11-23 13:19:10','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','Re: Foo','Luv ya!\r\n\r\nOn 2009-09-14, at 02:47, TheAbcGuy wrote:\r\n> Quux',0,0,1),
 	('4b08860c-f2c0-426f-8294-69858784ca84','2009-11-22 01:30:04','2009-11-22 01:30:04','4a841aaa-6be4-4851-a666-00e38784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','Re: Foo','Luv ya!\r\n\r\nOn 2009-09-14, at 02:47, TheAbcGuy wrote:\r\n> Quux',0,0,0),
-	('4b0b893e-309c-45e1-baef-01498784ca84','2009-11-24 08:20:30','2009-11-24 08:20:30','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','Re: Thats a Message From X to Y','why was your message empty anyway?',0,0,0),
+	('4b0b893e-309c-45e1-baef-01498784ca84','2009-11-24 08:20:30','2009-11-29 21:16:26','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','Re: Thats a Message From X to Y','why was your message empty anyway?',0,0,0),
 	('4b0b893e-5f08-4bfe-ba8c-01498784ca84','2009-11-24 08:20:30','2009-11-24 08:20:30','4a841aaa-6be4-4851-a666-00e38784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','Re: Thats a Message From X to Y','why was your message empty anyway?',0,0,0);
 
 /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
@@ -193,7 +204,7 @@ CREATE TABLE `profiles` (
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   `user_id` char(36) NOT NULL,
-  `gender_id` int(1) NOT NULL default '0',
+  `gender_id` int(1) NOT NULL default '1',
   `is_deleted` tinyint(1) NOT NULL default '0',
   `is_hidden` tinyint(1) NOT NULL default '0',
   `nickname` varchar(20) NOT NULL,
@@ -204,14 +215,14 @@ CREATE TABLE `profiles` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `UNIQUE_USER_PER_PROFILE` (`user_id`),
   UNIQUE KEY `UNIQUE_NICKNAME` (`nickname`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `profiles` WRITE;
 /*!40000 ALTER TABLE `profiles` DISABLE KEYS */;
 INSERT INTO `profiles` (`id`,`created`,`modified`,`user_id`,`gender_id`,`is_deleted`,`is_hidden`,`nickname`,`birthday`,`location`,`is_auth_required_for_messages`,`is_auth_required_for_shouts`)
 VALUES
-	('4a8f0408-6568-49bc-9b81-017a8784ca84','2009-08-21 22:31:04','2009-11-21 17:28:40','4a648ce4-08a4-46e2-91f8-024a8784ca84',0,0,0,'TheBoy','1979-06-28 00:00:00','InTheBar',0,0),
-	('4a93f845-c860-40d4-81ec-00e68784ca84','2009-08-25 16:42:13','2009-08-25 16:42:28','4a841aaa-6be4-4851-a666-00e38784ca84',0,0,0,'TheAbcGuy','1984-06-15 00:00:00','ABC',0,0);
+	('4a8f0408-6568-49bc-9b81-017a8784ca84','2009-08-21 22:31:04','2009-12-01 17:57:09','4a648ce4-08a4-46e2-91f8-024a8784ca84',3,0,0,'TheBoy','1979-06-28 00:00:00','InTheBar',0,0),
+	('4a93f845-c860-40d4-81ec-00e68784ca84','2009-08-25 16:42:13','2009-08-25 16:42:28','4a841aaa-6be4-4851-a666-00e38784ca84',1,0,0,'TheAbcGuy','1984-06-15 00:00:00','ABC',0,0);
 
 /*!40000 ALTER TABLE `profiles` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -232,7 +243,8 @@ CREATE TABLE `shouts` (
   `is_deleted_by_shouter` tinyint(1) NOT NULL default '0',
   `is_deleted` tinyint(1) NOT NULL default '0',
   `body` text NOT NULL,
-  PRIMARY KEY  (`id`)
+  PRIMARY KEY  (`id`),
+  KEY `SHOUT_INDEX` (`profile_id`,`from_profile_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 LOCK TABLES `shouts` WRITE;
@@ -296,7 +308,7 @@ VALUES
 	('4b088d4e-2b14-44f0-87a6-69828784ca84','2009-11-22 02:01:02','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,0,'hegh'),
 	('4b088d54-8a70-41ef-b9e5-69828784ca84','2009-11-22 02:01:08','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',1,0,0,'asdasdasd'),
 	('4b0e46b7-c0fc-44ff-978b-07008784ca84','2009-11-26 10:13:27','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,1,'fuck\r\n\r\nthis, should\r\nbe easy\r\n\r\nnow\r\n\r\n'),
-	('4b0e4589-49ac-4e7a-9b2e-00578784ca84','2009-11-26 10:08:25','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,0,'fuck\r\n\r\nthis, should\r\nbe easy\r\n\r\nnow\r\n\r\n'),
+	('4b0e4589-49ac-4e7a-9b2e-00578784ca84','2009-11-26 10:08:25','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',1,0,0,'fuck\r\n\r\nthis, should\r\nbe easy\r\n\r\nnow\r\n\r\n'),
 	('4b0e46bd-9194-468d-ba3b-0c098784ca84','2009-11-26 10:13:33','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,1,'fuck\r\n\r\nthis, should\r\nbe easy\r\n\r\nnow\r\n\r\n'),
 	('4b0e46c8-e904-43d6-b31f-01478784ca84','2009-11-26 10:13:44','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,1,'fuck\r\n\r\nthis, should\r\nbe easy\r\n\r\nnow\r\n\r\n'),
 	('4b0e46d2-4184-4945-9bea-00578784ca84','2009-11-26 10:13:54','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,0,'grr'),
@@ -327,14 +339,14 @@ VALUES
 	('4b0eb989-1b94-46c9-9a60-00578784ca84','2009-11-26 18:23:21','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,1,'asd'),
 	('4b0eba28-cd20-4cbd-82f8-0c098784ca84','2009-11-26 18:26:00','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,1,'Fuck'),
 	('4b0eb459-8f24-41e6-bd50-02658784ca84','2009-11-26 18:01:13','4a841aaa-6be4-4851-a666-00e38784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',0,0,0,'Haha!'),
-	('4b0eb476-3bf0-473c-87ef-03788784ca84','2009-11-26 18:01:42','4a841aaa-6be4-4851-a666-00e38784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',0,0,0,' Posted by samzenpus on Thursday November 26, @07:57AM\r\nfrom the there-is-no-manual-nor-has-there-ever-been-a-manual dept.\r\nAn anonymous reader writes \"At the height of the Cold War, the Central Intelligence Agency paid renowned magician John Mulholland $3,000 to write a manual on misdirection, concealment, and stagecraft. All known copies of the document were believed to be destroyed in 1973. Turns out one survived â€” and is now available on Amazon.\"'),
+	('4b0eb476-3bf0-473c-87ef-03788784ca84','2009-11-26 18:01:42','4a841aaa-6be4-4851-a666-00e38784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',1,0,0,' Posted by samzenpus on Thursday November 26, @07:57AM\r\nfrom the there-is-no-manual-nor-has-there-ever-been-a-manual dept.\r\nAn anonymous reader writes \"At the height of the Cold War, the Central Intelligence Agency paid renowned magician John Mulholland $3,000 to write a manual on misdirection, concealment, and stagecraft. All known copies of the document were believed to be destroyed in 1973. Turns out one survived â€” and is now available on Amazon.\"'),
 	('4b0eb4ad-883c-4cdc-8470-02658784ca84','2009-11-26 18:02:37','4a841aaa-6be4-4851-a666-00e38784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',1,0,0,'This works really, whoot!'),
 	('4b0eb4b5-8b84-4978-b9d1-00578784ca84','2009-11-26 18:02:45','4a841aaa-6be4-4851-a666-00e38784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',0,0,0,'This works really, whoot!\r\nThis works really, whoot!\r\n\r\nThis works really, whoot!\r\nThis works really, whoot!\r\n\r\nThis works really, whoot!\r\nThis works really, whoot!\r\n\r\n'),
 	('4b0eb8b3-1418-4685-a6e4-00578784ca84','2009-11-26 18:19:47','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,0,'grr'),
 	('4b0eb8b5-6f1c-424b-ba90-00578784ca84','2009-11-26 18:19:49','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,1,'grr'),
 	('4b0eb8b7-4fdc-4514-a4a3-00578784ca84','2009-11-26 18:19:51','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,1,'grr'),
 	('4b0eb8ca-4598-4e50-8fa8-07008784ca84','2009-11-26 18:20:10','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,0,'this is evil'),
-	('4b0eba67-f360-45e5-8ed1-02658784ca84','2009-11-26 18:27:03','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,0,'asdasd'),
+	('4b0eba67-f360-45e5-8ed1-02658784ca84','2009-11-26 18:27:03','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',1,0,0,'asdasd'),
 	('4b0eba86-1738-4b50-9d19-03788784ca84','2009-11-26 18:27:34','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,0,'Hm'),
 	('4b0eba8e-1170-44a1-9158-03788784ca84','2009-11-26 18:27:42','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,0,'No way this works..'),
 	('4b0eba99-498c-414a-8a1a-00578784ca84','2009-11-26 18:27:53','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,0,'Grr'),
@@ -348,7 +360,8 @@ VALUES
 	('4b0ec0fc-7898-4a76-a744-00578784ca84','2009-11-26 18:55:08','4a841aaa-6be4-4851-a666-00e38784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',1,0,0,'Long lines still need to break automagically! For instance: 123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890'),
 	('4b0ec107-e470-4e9c-8696-03788784ca84','2009-11-26 18:55:19','4a841aaa-6be4-4851-a666-00e38784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',0,0,0,'Long lines still need to break automagically! For instance: 123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890'),
 	('4b0ec111-07ec-44de-a62e-03788784ca84','2009-11-26 18:55:29','4a841aaa-6be4-4851-a666-00e38784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',0,1,0,'Long lines still need to break automagically! For instance: 123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890'),
-	('4b0ec116-4a2c-4e7f-9f5c-03788784ca84','2009-11-26 18:55:34','4a841aaa-6be4-4851-a666-00e38784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',0,0,0,'Long lines still need to break automagically! For instance: 123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890');
+	('4b0ec116-4a2c-4e7f-9f5c-03788784ca84','2009-11-26 18:55:34','4a841aaa-6be4-4851-a666-00e38784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',0,0,0,'Long lines still need to break automagically! For instance: 123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890'),
+	('4b12d1c9-c538-4941-a79d-02808784ca84','2009-11-29 20:55:53','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,0,'grr');
 
 /*!40000 ALTER TABLE `shouts` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -363,27 +376,27 @@ CREATE TABLE `users` (
   `id` char(36) NOT NULL,
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
-  `gender_id` int(1) NOT NULL default '0',
   `is_deleted` tinyint(1) NOT NULL default '0',
   `is_disabled` tinyint(1) NOT NULL default '0',
   `has_accepted_tos` tinyint(1) NOT NULL default '0',
   `username` varchar(50) NOT NULL,
   `password` char(64) NOT NULL,
-  `last_login` datetime default NULL,
+  `gender_id` int(1) NOT NULL default '1',
   `email` varchar(200) NOT NULL,
+  `last_login` datetime default NULL,
   `activation_key` varchar(19) NOT NULL default '',
   `password_reset_key` varchar(19) NOT NULL default '',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `UNIQUE_USERNAME` (`username`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` (`id`,`created`,`modified`,`gender_id`,`is_deleted`,`is_disabled`,`has_accepted_tos`,`username`,`password`,`last_login`,`email`,`activation_key`,`password_reset_key`)
+INSERT INTO `users` (`id`,`created`,`modified`,`is_deleted`,`is_disabled`,`has_accepted_tos`,`username`,`password`,`gender_id`,`email`,`last_login`,`activation_key`,`password_reset_key`)
 VALUES
-	('4a648ce4-08a4-46e2-91f8-024a8784ca84','2009-08-03 16:15:22','2009-11-26 20:10:45',0,0,0,1,'ionas','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b','2009-11-26 20:10:45','ionas@sna.dev','',''),
-	('4a841aaa-6be4-4851-a666-00e38784ca84','2009-08-13 15:52:42','2009-11-26 18:51:28',0,0,0,1,'abc','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b','2009-11-26 18:51:28','sna@mailinator.com','',''),
-	('4b089566-b204-4f80-a8e2-69838784ca84','2009-11-22 02:35:34','2009-11-22 02:35:43',0,0,0,1,'foobar123','f0285696ad33db5ce5e5966f63be5eb290a0b027acbdc020dfdf1bc7ba21bb75','2009-11-22 02:35:34','foobar123@mailinator.com','','');
+	('4a648ce4-08a4-46e2-91f8-024a8784ca84','2009-08-03 16:15:22','2009-12-02 01:42:21',0,0,1,'ionas','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b',3,'ionas@sna.dev','2009-12-02 01:42:21','',''),
+	('4a841aaa-6be4-4851-a666-00e38784ca84','2009-08-13 15:52:42','2009-11-26 18:51:28',0,0,1,'abc','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b',1,'sna@mailinator.com','2009-11-26 18:51:28','',''),
+	('4b089566-b204-4f80-a8e2-69838784ca84','2009-11-22 02:35:34','2009-11-22 02:35:43',0,0,1,'foobar123','f0285696ad33db5ce5e5966f63be5eb290a0b027acbdc020dfdf1bc7ba21bb75',1,'foobar123@mailinator.com','2009-11-22 02:35:34','','');
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
