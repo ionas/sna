@@ -3,6 +3,31 @@ class AppModel extends Model {
 	
 	var $recursive = -1; // Default setting for all Model::find() calls, better use containable
 	
+	/**
+	* TODO: should be moved into a behavior
+	* Usage: var $displayField = array("%s %s", "{n}.User.name", "{n}.User.secondname");
+	* Based on: http://bakery.cakephp.org/articles/view/multiple-display-field-3#3875
+	* by Arialdo Martini
+	*/
+	function find($conditions = null, $fields = array(), $order = null, $recursive = null) {
+		if ($conditions == 'list' && is_array($this->displayField)) {
+			$data = $this->find('all', $fields, $order, $recursive);
+			$list = Set::combine($data, '{n}.' . $this->name . '.' . $this->primaryKey,
+				$this->displayField);
+			foreach ($list as &$element) {
+				// TODO if $this->displayFieldDoTranslate == true
+				$element = ucfirst($element);
+			}
+			return $list;
+		} else {
+			return parent::find($conditions, $fields, $order, $recursive);
+		}
+	}
+	
+	/**
+	* TODO all validations should be moved into a behavior like "extendedValidationable"
+	* including pause and unpause validation
+	*/
 	function validateEqualData($data, $comparisonField, $message = null) {
 		if (is_array($data)) {
 			foreach ($data as $value) {
@@ -19,8 +44,9 @@ class AppModel extends Model {
 	
 	function validateDatetime($data = null, $fieldname) {
 		if (is_array($data)) {
-			if (preg_match("/^[12][0-9]{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01]) ([01][0-9]|[2][0-4]):([0-5][0-9]|[0-9]):([0-5][0-9]|[0-9])$/",
-					$data[$fieldname])) {
+			$re = "/^[12][0-9]{3}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01]) ([01][0-9]|[2][0-4]):"
+				. "([0-5][0-9]|[0-9]):([0-5][0-9]|[0-9])$/";
+			if (preg_match($re, $data[$fieldname])) {
 				return true;
 			}
 		}
@@ -40,8 +66,8 @@ class AppModel extends Model {
 	
 	function validateUuid($data = null, $fieldname) {
 		if (is_array($data)) {
-			if (preg_match("/[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}/",
-					$data[$fieldname])) {
+			$re = "/[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}/";
+			if (preg_match($re, $data[$fieldname])) {
 				return true;
 			}
 		}
@@ -58,10 +84,11 @@ class AppModel extends Model {
 		}
 	}
 	
-	function unpauseValidation($fieldname, $rulename, $switch = true) {
+	function unpauseValidation($fieldname, $rulename) {
 		$this->pauseValidation($fieldname, $rulename, false);
 	}
 	
+	// TODO: Should be moved into a MailBehavior
 	// Wrapper around EMailComponent (and possibly SMSGatewayComponent in future)
 	function _sendMessage($viewData, $template, $gateway) {
 		if (isset($gateway['email'])) {
@@ -93,6 +120,8 @@ class AppModel extends Model {
 		// ENH: SMS-Gateway
 	}
 	
+	// TODO: is this used anyway?
+	// this is bad design
 	function purge($id) {
 		if (!isset($this->skipOnPurge)) {
 			$this->skipOnPurge = array('id', 'created', 'modified');
@@ -110,6 +139,7 @@ class AppModel extends Model {
 		return false;
 	}
 	
+	// TODO: move this into extendedDebuggable
 	function validates($options = array()) {
 		// Debug validation
 		$errors = $this->invalidFields($options);
@@ -120,7 +150,8 @@ class AppModel extends Model {
 		return parent::validates($options);
 	}
 	
-	// saves a field, if the object exists
+	// TODO: Move to extendedOperationable
+	// Saves a field, if the object exists
 	function saveFieldIfExists($id = null, $fieldname, $value, $validate = false) {
 		if ($this->find('count', array('conditions' => array($this->primaryKey => $id))) < 1) {
 			return false;
@@ -132,7 +163,10 @@ class AppModel extends Model {
 		return $return;
 	}
 	
-	// gets a fields value, if the object exists
+	// TODO: Move to extendedOperationable
+	// Gets a single field value, if the object exists
+	// Todo add cache and cache clean, on save, saveFieldIfExists and saveField
+	// if the row (or in case of saveField the row+field) is touched, unvalidate cache
 	function getFieldIfExists($id = null, $fieldname) {
 		$data = $this->find('first', array(
 			'conditions' => array($this->primaryKey => $id),

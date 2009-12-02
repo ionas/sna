@@ -10,7 +10,9 @@ class ProfilesController extends AppController {
 		$this->Security->requirePost('shout_hide', 'shout_unhide', 'shout_delete', 'shout_to');
 		if(!empty($this->data)) {
 			$this->Security->requirePut('view', 'shout_to'); // shout_to is included by view
-			$this->Security->requirePost('edit');
+			// TODO: (split up actions cause of security component)
+			// $this->Security->requirePost('edit');
+			// $this->Security->requireFile('seticon');
 		}
 	}
 	
@@ -55,9 +57,9 @@ class ProfilesController extends AppController {
 		if (!empty($this->data)) {
 			$this->data['Profile']['user_id'] = $this->Auth->user('id');
 			if ($this->Profile->save($this->data, true, array(
-						'is_hidden', 'nickname', 'birthday', 'location'))) {
+						'is_hidden', 'nickname', 'birthday', 'location', 'gender_id'))) {
 				$this->Session->setFlash(___('The Profile has been saved'), 'flashes/success');
-				$this->redirect($this->referer());
+				// $this->redirect($this->referer());
 			} else {
 				$this->Session->setFlash(__('The Profile could not be saved. Please, try again.', true));
 			}
@@ -65,6 +67,7 @@ class ProfilesController extends AppController {
 		if (empty($this->data)) {
 			$this->data = $this->Profile->read(null, $id);
 		}
+		$this->set('genders', $this->Profile->Gender->find('list'));
 	}
 	
 	// Below: integrated shouts actions, because of integrated views (profile view with shouts)
@@ -110,6 +113,8 @@ class ProfilesController extends AppController {
 				'Shout.from_profile_id',
 				'FromProfile.id',
 				'FromProfile.nickname',
+				'Gender.id',
+				'Gender.label',
 			),
 			'joins' => array(
 				array(
@@ -128,6 +133,15 @@ class ProfilesController extends AppController {
 					'conditions' => $this->Profile->Shout->escapeField('from_profile_id') . ' = '
 						. $this->Profile->Shout->FromProfile->escapeField(
 							$this->Profile->Shout->FromProfile->primaryKey),
+				),
+				array(
+					'type' => 'LEFT', 
+					'table' => $this->Profile->Shout->FromProfile->Gender->useTable,
+					'alias' => $this->Profile->Shout->FromProfile->Gender->alias,
+					'foreignKey' => $this->Profile->Shout->FromProfile->Gender->primaryKey,
+					'conditions' => $this->Profile->Shout->FromProfile->escapeField('gender_id')
+						. ' = ' . $this->Profile->Shout->FromProfile->Gender->escapeField(
+							$this->Profile->Shout->FromProfile->Gender->primaryKey),
 				),
 			),
 			'conditions' => array(

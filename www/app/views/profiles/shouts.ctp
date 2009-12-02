@@ -24,7 +24,11 @@ foreach ($shouts as $shout):
 			if(file_exists(WWW_ROOT . '/data/img/profiles/' . $shout['Shout']['from_profile_id'] . '_small')) {
 				$imgSrc = '/data/img/profiles/' . $shout['Shout']['from_profile_id'] . '_small';
 			} else {
-				$imgSrc = '/img/default_user_m_64.png';
+				if (!empty($shout['Gender']['label'])) {
+					$imgSrc = '/img/default_user_' . $shout['Gender']['label'] . '_64.png';
+				} else {
+					$imgSrc = '/img/default_user_64.png';
+				}
 			}
 		?>
 		<p class="picture">

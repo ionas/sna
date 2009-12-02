@@ -28,6 +28,7 @@ if (file_exists(APP . DS . WEBROOT_DIR
 					'year' => date('Y') - 30,
 					'month' => '06',
 					'day' => '28'))),
+		$form->input('gender_id'),
 		$form->input('location')?>
 		<!-- TODO: Timezone -->
 		<!-- TODO: Country -->

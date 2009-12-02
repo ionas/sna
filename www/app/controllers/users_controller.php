@@ -39,7 +39,7 @@ class UsersController extends AppController {
 		if (!empty($this->data)) {
 			$this->User->create();
 			if ($this->User->save($this->data, true, array(
-						'has_accepted_tos', 'username', 'password', 'email'))) {
+						'has_accepted_tos', 'username', 'password', 'email', 'gender_id'))) {
 				$this->Session->setFlash(
 ___('Your registration has been successful. However, you will still need to activate your user account.'));
 				$this->redirect(array('action' => 'activate'));
@@ -50,6 +50,7 @@ ___('Your registration has been successful. However, you will still need to acti
 					__('Your registration could not be completed, see below.', true));
 			}
 		}
+		$this->set('genders', $this->User->Gender->find('list'));
 	}
 	
 	function activate($activationKey = null) {
@@ -73,9 +74,10 @@ ___('Your registration has been successful. However, you will still need to acti
 	function edit() {
 		$this->layout = 'settings';
 		if (!empty($this->data)) {
-			if ($this->User->save($this->data)) {
+			if ($this->User->save($this->data, true, array(
+						'username', 'gender_id'))) {
 				$this->Session->setFlash(__('Your User Account has been updated.', true));
-				$this->redirect(array('action' => 'index'));
+				$this->redirect(array('action' => 'home'));
 			} else {
 				$this->Session->setFlash(
 					__('The User Account could not be updated. Please, try again.', true));
@@ -84,6 +86,7 @@ ___('Your registration has been successful. However, you will still need to acti
 		if (empty($this->data)) {
 			$this->data = $this->User->read(null, $this->Auth->user('id'));
 		}
+		$this->set('genders', $this->User->Gender->find('list'));
 	}
 	
 	function terms_of_service() {
