@@ -4,7 +4,7 @@ class AppModel extends Model {
 	var $recursive = -1; // Default setting for all Model::find() calls, better use containable
 	
 	/**
-	* TODO: should be moved into a behavior
+	* TODO: should be moved into a behavior named Dynamic
 	* Usage: var $displayField = array("%s %s", "{n}.User.name", "{n}.User.secondname");
 	* Based on: http://bakery.cakephp.org/articles/view/multiple-display-field-3#3875
 	* by Arialdo Martini
@@ -14,9 +14,12 @@ class AppModel extends Model {
 			$data = $this->find('all', $fields, $order, $recursive);
 			$list = Set::combine($data, '{n}.' . $this->name . '.' . $this->primaryKey,
 				$this->displayField);
-			foreach ($list as &$element) {
-				// TODO if $this->displayFieldDoTranslate == true
-				$element = ucfirst($element);
+			if (isset($this->displayFieldDoTranslate) and $this->displayFieldDoTranslate === true) {
+				foreach ($list as &$element) {
+					$element = __d('additions', $element, true); // Translation
+				}
+				unset($element); // Fixes PHP 5.2.x issue with foreach on & references
+				// see: http://php.net/manual/en/control-structures.foreach.php#92116
 			}
 			return $list;
 		} else {

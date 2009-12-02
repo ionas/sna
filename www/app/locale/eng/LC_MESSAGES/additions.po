@@ -1,0 +1,12 @@
+msgid "unspecified"
+msgstr "Unspecified"
+
+msgid "female"
+msgstr "Female"
+
+msgid "male"
+msgstr "Male"
+
+msgid "other"
+msgstr "Other"
+

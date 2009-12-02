@@ -1,6 +1,5 @@
 - entering "/" removes Auth Session => bad
 - user creation + auto profile creation (Profile.nickname should EQUAL Profile.id, at first)
 - BREADCRUME component buggy (+ afterShutdown of whole cake app)
-- pressing one form button adds "spinning wheel", to all forms
-=> should only color them transparent/grey
-- shouts linebreak 
+- pressing one form button adds "spinning wheel", to all forms => should only color all of them grey
+- /pages/home: requestAction breaks SecurityComponent, element breads associated Gender Model

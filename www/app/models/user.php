@@ -143,7 +143,6 @@ class User extends AppModel {
 	
 	function beforeSave() {
 		if ($this->id === false) { // on new records, clear out some fields, predefine some values
-			$this->data[$this->alias]['is_hidden'] = 0;
 			$this->data[$this->alias]['is_disabled'] = 0;
 			$this->data[$this->alias]['is_deleted'] = 0;
 			unset($this->data[$this->alias]['email_confirmation']);
@@ -169,6 +168,7 @@ class User extends AppModel {
 	function hashPasswords($data, $enforce = false, $fieldname = 'password') {
 		if ($enforce && isset($this->data[$this->alias][$fieldname])) {
 			if (!empty($this->data[$this->alias][$fieldname])) {
+				// TODO: add a per object salt stored in the db?
 				$this->data[$this->alias][$fieldname] =
 					Security::hash($this->data[$this->alias][$fieldname], null, true);
 			}

@@ -1,0 +1,12 @@
+msgid "unspecified"
+msgstr "Nicht gewählt"
+
+msgid "female"
+msgstr "Weiblich"
+
+msgid "male"
+msgstr "Männlich"
+
+msgid "other"
+msgstr "Sonstiges"
+

@@ -3,7 +3,7 @@
 	<fieldset>
  		<legend><?php __('Profile')?></legend>
 	<?=$form->input('id'),
-		$form->input('is_hidden', array('label' => 'Hide my profile')),
+		$form->input('is_hidden', array('label' => 'Invisible?')),
 		$form->input('nickname')?>
 <?php
 if (file_exists(APP . DS . WEBROOT_DIR
