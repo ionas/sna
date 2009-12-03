@@ -3,8 +3,8 @@ class Profile extends AppModel {
 	
 	var $name = 'Profile';
 	
-	// TODO Avatarable
-	var $actsAs = array('Containable'/*, 'Avatarable'*/);
+	// TODO switch/change Avatarable
+	var $actsAs = array('Containable', 'Avatarable');
 	
 	var $displayField = 'nickname';
 	

@@ -6,25 +6,37 @@ class Connection extends AppModel {
 		'profile_id' => array('notempty'),
 		'to_profile_id' => array('notempty'),
 		'type' => array('notempty'),
-		'mutual' => array('numeric'),
-		'hidden' => array('numeric')
+		'is_request' => array('numeric'),
+		'is_mutual' => array('numeric'),
+		'is_hidden' => array('numeric'),
+	);
+	
+	var $types = array(
+		'all' => array(
+			'ignore',
+			'follow',
+			'friend',
+			'messaging_authentification',
+			'shouting_authentification',
+		),
+		'mutual' => array(
+			'friend',
+		),
+		'requestable' => array(
+			'friend',
+			'messaging_authentification',
+			'shouting_authentification',
+		),
 	);
 
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
 	var $belongsTo = array(
 		'Profile' => array(
 			'className' => 'Profile',
 			'foreignKey' => 'profile_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
 		),
 		'ToProfile' => array(
 			'className' => 'Profile',
 			'foreignKey' => 'to_profile_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
 		)
 	);
 

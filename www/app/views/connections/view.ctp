@@ -11,6 +11,11 @@
 			<?php echo $connection['Connection']['created']; ?>
 			&nbsp;
 		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Modified'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $connection['Connection']['modified']; ?>
+			&nbsp;
+		</dd>
 		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Profile'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo $html->link($connection['Profile']['nickname'], array('controller'=> 'profiles', 'action'=>'view', $connection['Profile']['id'])); ?>
@@ -26,14 +31,19 @@
 			<?php echo $connection['Connection']['type']; ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Mutual'); ?></dt>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Is Request'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $connection['Connection']['mutual']; ?>
+			<?php echo $connection['Connection']['is_request']; ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Hidden'); ?></dt>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Is Mutual'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
-			<?php echo $connection['Connection']['hidden']; ?>
+			<?php echo $connection['Connection']['is_mutual']; ?>
+			&nbsp;
+		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Is Hidden'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $connection['Connection']['is_hidden']; ?>
 			&nbsp;
 		</dd>
 	</dl>

@@ -7,8 +7,9 @@
 		echo $form->input('profile_id');
 		echo $form->input('to_profile_id');
 		echo $form->input('type');
-		echo $form->input('mutual');
-		echo $form->input('hidden');
+		echo $form->input('is_request');
+		echo $form->input('is_mutual');
+		echo $form->input('is_hidden');
 	?>
 	</fieldset>
 <?php echo $form->end('Submit');?>

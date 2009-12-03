@@ -1,9 +1,59 @@
 <?php
 class ConnectionsController extends AppController {
-
+	
 	var $name = 'Connections';
 	var $helpers = array('Html', 'Form');
-
+	
+	function request($type = null, $toProfileId = null) {
+		$error = false;
+		// TODO fetch $toProfileId from profiles, check if it actually exists
+		if ($type == null) {
+			$error = true;
+			$this->Session->setFlash(___('Invalid connection type.'));
+		} else if ($toProfileId == null) {
+			$error = true;
+			$this->Session->setFlash(___('Invalid profile id.'));
+		} else if ($toProfileId == ($profileId = $this->Profile->getAuthedId($this->Auth->user()))) {
+			$error = true;
+			$this->Session->setFlash(sprintf(
+				___('You request connection %s to yourself.'), __d('default', $type, true)));
+		}
+		if (!$error) {
+			$this->Connection->saveOrRenewRequest(array(
+				'profile_id' => $profileId,
+				'to_profile_id' => $toProfileId,
+				'type' => $type,
+			));
+		}
+		$this->render('empty');
+	}
+	
+	function respond($id) {
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	function index() {
 		$this->Connection->recursive = 0;
 		$this->set('connections', $this->paginate());

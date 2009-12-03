@@ -10,11 +10,13 @@ echo $paginator->counter(array(
 <tr>
 	<th><?php echo $paginator->sort('id');?></th>
 	<th><?php echo $paginator->sort('created');?></th>
+	<th><?php echo $paginator->sort('modified');?></th>
 	<th><?php echo $paginator->sort('profile_id');?></th>
 	<th><?php echo $paginator->sort('to_profile_id');?></th>
 	<th><?php echo $paginator->sort('type');?></th>
-	<th><?php echo $paginator->sort('mutual');?></th>
-	<th><?php echo $paginator->sort('hidden');?></th>
+	<th><?php echo $paginator->sort('is_request');?></th>
+	<th><?php echo $paginator->sort('is_mutual');?></th>
+	<th><?php echo $paginator->sort('is_hidden');?></th>
 	<th class="actions"><?php __('Actions');?></th>
 </tr>
 <?php
@@ -33,6 +35,9 @@ foreach ($connections as $connection):
 			<?php echo $connection['Connection']['created']; ?>
 		</td>
 		<td>
+			<?php echo $connection['Connection']['modified']; ?>
+		</td>
+		<td>
 			<?php echo $html->link($connection['Profile']['nickname'], array('controller'=> 'profiles', 'action'=>'view', $connection['Profile']['id'])); ?>
 		</td>
 		<td>
@@ -42,10 +47,13 @@ foreach ($connections as $connection):
 			<?php echo $connection['Connection']['type']; ?>
 		</td>
 		<td>
-			<?php echo $connection['Connection']['mutual']; ?>
+			<?php echo $connection['Connection']['is_request']; ?>
 		</td>
 		<td>
-			<?php echo $connection['Connection']['hidden']; ?>
+			<?php echo $connection['Connection']['is_mutual']; ?>
+		</td>
+		<td>
+			<?php echo $connection['Connection']['is_hidden']; ?>
 		</td>
 		<td class="actions">
 			<?php echo $html->link(__('View', true), array('action'=>'view', $connection['Connection']['id'])); ?>

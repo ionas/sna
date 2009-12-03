@@ -77,7 +77,6 @@ ___('Your registration has been successful. However, you will still need to acti
 			if ($this->User->save($this->data, true, array(
 						'username', 'gender_id'))) {
 				$this->Session->setFlash(__('Your User Account has been updated.', true));
-				$this->redirect(array('action' => 'home'));
 			} else {
 				$this->Session->setFlash(
 					__('The User Account could not be updated. Please, try again.', true));

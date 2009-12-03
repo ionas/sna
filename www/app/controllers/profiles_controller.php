@@ -10,8 +10,8 @@ class ProfilesController extends AppController {
 		$this->Security->requirePost('shout_hide', 'shout_unhide', 'shout_delete', 'shout_to');
 		if(!empty($this->data)) {
 			$this->Security->requirePut('view', 'shout_to'); // shout_to is included by view
-			// TODO: (split up actions cause of security component)
 			// $this->Security->requirePost('edit');
+			// TODO: (split up actions cause of security component)
 			// $this->Security->requireFile('seticon');
 		}
 	}
