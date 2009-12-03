@@ -3,3 +3,4 @@
 - BREADCRUME component buggy (+ afterShutdown of whole cake app)
 - pressing one form button adds "spinning wheel", to all forms => should only color all of them grey
 - /pages/home: requestAction breaks SecurityComponent, element breads associated Gender Model
+- logging out (timeout, pressing a tab in one button), then doing a POST/PUT request (security component) -> csrf attack (but its none)

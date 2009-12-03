@@ -156,3 +156,43 @@ http://thethemeblog.com/tutorials/ultimate-collection-of-40-jquery-tutorials-and
 ####################
 
 http://teknoid.wordpress.com/2009/11/17/improved-form-handling-in-cakephp-1-3/
+
+
+#####################
+
+User logs in at a second place/browser, first session should be invalidated.
+
+#####################
+
+Data Sanatizsation
+if ( $this->data != Sanatize::html( $this->data ) && ! $this->data['Model']['change_accepted'] ) return false
+Sanatize::html()
+
+
+##################
+
+for SEARCH see
+http://book.cakephp.org/view/632/autoComplete
+
+
+#################
+
+
+http://www.milesj.me/blog/read/43/Protecting-Your-Forms-With-The-Security-Component
+
+
+#################
+
+AJAX
+http://www.milesj.me/blog/read/62/Doing-AJAX-Calls-In-CakePHP-Part-1-_-The-Front_end
+
+#################
+
+HABTM
+
+http://www.milesj.me/blog/read/66/Fixing-The-Missing-Model-And-AppModel-Replacement-Errors
+
+
+###################
+
+http://www.thoughtglade.com/posts/custom-php-dreamhost-cakephp
