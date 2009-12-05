@@ -16,7 +16,8 @@ class UsersController extends AppController {
 		);
 		// Public actions
 		$this->Auth->allow(array(
-			'home', 'login', 'register', 'activate', 'forgot_password', 'new_password'));
+			'home', 'login', 'register', 'register_or_login',
+			'activate', 'forgot_password', 'new_password'));
 		if ($this->action == 'register'
 		OR $this->action == 'change_password'
 		OR $this->action == 'new_password') {
@@ -24,7 +25,6 @@ class UsersController extends AppController {
 			$this->Auth->authenticate = $this->User;
 		}
 		// SecurityComponent setup
-		$this->Security->requirePost('hide');
 		if(!empty($this->data)) {
 			$this->Security->requirePut('register');
 			$this->Security->requirePost(
@@ -197,6 +197,13 @@ ___('Your registration has been successful. However, you will still need to acti
 		}
 	}
 	
+	function register_or_login() {
+		$this->login();
+		if ($this->Auth->isAuthorized() == false) {
+			$this->register();
+		}
+	}
+	
 	function logout() {
 		if ($this->Auth->isAuthorized() == true) {
 			$this->Session->setFlash(
@@ -216,5 +223,11 @@ ___('Your registration has been successful. However, you will still need to acti
 		unset($sessionAuthRedirect);
 	}
 	
+	function beforeRender() {
+		if ($this->action == 'register_or_login') {
+			$this->layout = 'fullscreen';
+		}
+		parent::beforeRender();
+	}
 }
 ?>

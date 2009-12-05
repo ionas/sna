@@ -3,7 +3,7 @@
 <?=$form->create('User', array('action' => 'login'))?>
 	<fieldset>
 		<legend><?php __('Login');?></legend>
-	<?php if ($authedUser != null):?>
+	<?php if (!empty($authedUser)):?>
 	<p><?=__('You are currently logged in as')?> <strong><?=$authedUser['User']['username']?></strong>.</p>
 	<br />
 	<?php endif?>

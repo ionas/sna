@@ -1,0 +1,16 @@
+#tosWindow {
+	margin-bottom: 10px
+}
+#tosWindow h2 {
+	margin-top: 0;
+	padding-top: 0;
+	padding-left: 8px;
+}
+#start_boxes #register_box,
+#start_boxes #login_box {
+	float: left;
+	width: 32em;
+}
+#start_boxes #register_box {
+	padding-right: 2em;
+}

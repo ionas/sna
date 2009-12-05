@@ -5,7 +5,7 @@ class User extends AppModel {
 	
 	var $actsAs = array('Containable');
 	
-	var $validate = array(); // See function __construct()
+	var $validate = array();
 	
 	var $displayField = 'username';
 	
@@ -29,6 +29,7 @@ class User extends AppModel {
 		$this->validate = array(
 'username' => array(
 	'isUnique' => array(
+		'required' => true,
 		'rule' => 'isUnique',
 		'message' => __('This username is already in use.', true),
 	),
@@ -37,18 +38,15 @@ class User extends AppModel {
 		'message' => __('Use letters from A to Z or numbers from 0 to 9 only.', true),
 	),
 	'minLength' => array(
-		'rule' => array('minLength', '3'),
-		'message' => __('Minimum length of 3 characters.', true),
+		'rule' => array('minLength', '4'),
+		'message' => __('Minimum length of 4 characters.', true),
 	),
 ),
 'password' => array(
-	'alphaNumeric' => array(
-		'rule' => 'alphaNumeric',
-		'message' => __('Use letters from A to Z or numbers from 0 to 9 only.', true),
-	),
 	'minLength' => array(
-		'rule' => array('minLength', '3'),
-		'message' => __('Minimum length of 3 characters.', true),
+		'required' => true,
+		'rule' => array('minLength', '6'),
+		'message' => __('Minimum length of 6 characters.', true),
 	),
 	'validateEqualData' => array(
 		'rule' => array(
@@ -60,18 +58,22 @@ class User extends AppModel {
 		'message' => __('Your Password does not match with your Password Confirmation.', true),
 	),
 ),
-'password_current' => array( // virtual
-	'alphaNumeric' => array(
-		'rule' => 'alphaNumeric',
-		'message' => __('Use letters from A to Z or numbers from 0 to 9 only.', true),
+'password_confirmation' => array( // fake rule for required = true
+	'notEmpty' => array(
+		'required' => true,
+		'rule' => array('notEmpty'),
 	),
+),
+'password_current' => array( // virtual
 	'minLength' => array(
-		'rule' => array('minLength', '3'),
-		'message' => __('Minimum length of 3 characters.', true),
+		'required' => true,
+		'rule' => array('minLength', '6'),
+		'message' => __('Minimum length of 6 characters.', true),
 	),
 ),
 'email' => array(
 	'isUnique' => array(
+		'required' => true,
 		'rule' => 'isUnique',
 		'message' => __('This email address is already in use.', true),
 	),
@@ -88,8 +90,15 @@ class User extends AppModel {
 		'message' => __('Your Email does not match with your Email Confirmation.', true),
 	),
 ),
+'email_confirmation' => array( // fake rule for required = true
+	'notEmpty' => array(
+		'required' => true,
+		'rule' => array('notEmpty'),
+	),
+),
 'has_accepted_tos' => array(
 	'boolean' => array(
+		'required' => true,
 		'rule' => array('boolean'),
 		'message' => __('You may only accept or deny the Terms of Service.', true),
 	),

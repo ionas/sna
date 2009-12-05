@@ -196,3 +196,26 @@ http://www.milesj.me/blog/read/66/Fixing-The-Missing-Model-And-AppModel-Replacem
 ###################
 
 http://www.thoughtglade.com/posts/custom-php-dreamhost-cakephp
+
+
+####################
+
+
+<ul id="menu"><li><a href="/foo">Foo</a></li><li><a href="/bar">Bar</a></li></ul>
+
++ js welches hinter jedes textzeichen in #menu li a einen "\n" setzt
++ #menu { white-space: pre}
++ embedded ttf - rotiert - hier zum nachlesen: http://snook.ca/archives/html_and_css/becoming-a-font-embedding-master
+
+das ganze hiermit mixen:
+http://www.phatfusion.net/imagemenu/
+=> fettes menü, komplett SEO friendly, accessible 
++ js welches hinter jedes textzeichen in #menu li a einen "\n" setzt
++ #menu { white-space: pre} =>
+
+F
+o
+o
+Rotierte schrift halt 
+Hatte die idee heute als ich gesehen habe wie einer einen Cake Helper für rotierte Textgrafiken geschrieben hat
+http://snook.ca/video/font-face.mov

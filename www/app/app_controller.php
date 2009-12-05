@@ -8,8 +8,10 @@ class AppController extends Controller {
 		$this->_setupAuth();
 		$this->_setLanguage();
 		$this->_setupLayout();
-		$this->Security->blackHoleCallback = '__securityError';
-		$this->Security->requireAuth($this->action);
+		if ($this->name != 'Pages') {
+			$this->Security->blackHoleCallback = '__securityError';
+			$this->Security->requireAuth($this->action);
+		}
 		$this->_checkHasAcceptedTos();
 	}
 	
@@ -38,6 +40,9 @@ class AppController extends Controller {
 		$this->Auth->authError = ___('You need to login, to access this location.');
 		$this->Auth->loginError = ___("Username or password wrong.");
 		$this->Auth->autoRedirect = true;
+	}
+	
+	function _getAuthedUserData() {
 		$authedUser = array();
 		$authedProfileData = array();
 		if ($this->Auth->isAuthorized()) {
@@ -48,7 +53,7 @@ class AppController extends Controller {
 				'fields' => array('Profile.id', 'Profile.nickname'),
 				'conditions' => array('Profile.user_id' => $this->Auth->user('id'))));
 		}
-		$this->set('authedUser', array_merge($authedProfileData, $authedUser));
+		return array_merge($authedProfileData, $authedUser);
 	}
 	
 	function _checkHasAcceptedTos($additionalAllows = array()) {
@@ -112,11 +117,6 @@ class AppController extends Controller {
 		}
 	}
 	
-	function beforeRender() {
-		$this->_autoLoadCssAndJavascript();
-		$this->_alwaysPushThisDataToView();
-	}
-	
 	function _alwaysPushThisDataToView() {
 		// $this->data always accessible in view via 'data
 		if (!isset ($this->viewVars['data'])) {
@@ -130,6 +130,12 @@ class AppController extends Controller {
 		$this->set('view_css_for_layout', 'views' . DS . strtolower($this->name) . DS
 			. $this->action . '.css');
 		$this->set('css_for_layout', 'layouts' . DS . strtolower($this->layout . '.css'));
+	}
+	
+	function beforeRender() {
+		$this->set('authedUser', $this->_getAuthedUserData());
+		$this->_autoLoadCssAndJavascript();
+		$this->_alwaysPushThisDataToView();
 	}
 	
 }

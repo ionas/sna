@@ -11,7 +11,7 @@ class ProfilesController extends AppController {
 		if(!empty($this->data)) {
 			$this->Security->requirePut('view', 'shout_to'); // shout_to is included by view
 			// $this->Security->requirePost('edit');
-			// TODO: (split up actions cause of security component)
+			// TODO: (split up actions cause of security component and type=>file)
 			// $this->Security->requireFile('seticon');
 		}
 	}
@@ -122,16 +122,16 @@ class ProfilesController extends AppController {
 					'table' => $this->Profile->Shout->useTable,
 					'alias' => $this->Profile->Shout->alias,
 					'foreignKey' => $this->Profile->Shout->primaryKey,
-					'conditions' => $this->Profile->escapeField($this->Profile->primaryKey) . ' = '
-						. $this->Profile->Shout->escapeField('profile_id'),
+					'conditions' => $this->Profile->escapeField($this->Profile->primaryKey)
+						. ' = ' . $this->Profile->Shout->escapeField('profile_id'),
 				),
 				array(
 					'type' => 'LEFT', 
 					'table' => $this->Profile->Shout->FromProfile->useTable,
-					'alias' => $this->Profile->Shout->FromProfile->alias,
+					'alias' => 'FromProfile',
 					'foreignKey' => $this->Profile->Shout->FromProfile->primaryKey,
-					'conditions' => $this->Profile->Shout->escapeField('from_profile_id') . ' = '
-						. $this->Profile->Shout->FromProfile->escapeField(
+					'conditions' => $this->Profile->Shout->escapeField('from_profile_id')
+						. ' = ' . $this->Profile->Shout->FromProfile->escapeField(
 							$this->Profile->Shout->FromProfile->primaryKey),
 				),
 				array(
