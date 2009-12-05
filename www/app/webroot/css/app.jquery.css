@@ -6,9 +6,14 @@ form div.submit input.userHasSubmitted:focus {
 	border-color: #ddd;
 	border-width: 1px;
 	margin-bottom: 1px;
-	background-image: url('/img/loading_animation.gif');
-	background-repeat: no-repeat;
+	background-position: bottom;
+}
+form div.submit input.userHasSubmittedWheel,
+form div.submit input.userHasSubmittedWheel:hover,
+form div.submit input.userHasSubmittedWheel:focus {
 	background-position: right center;
+	background-repeat: no-repeat;
+	background-image: url('/img/loading_animation.gif');
 	padding-right: 20px;
 	outline: none;
 }
