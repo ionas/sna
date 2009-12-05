@@ -39,7 +39,7 @@ class UsersController extends AppController {
 		if (!empty($this->data)) {
 			$this->User->create();
 			if ($this->User->save($this->data, true, array(
-						'has_accepted_tos', 'username', 'password', 'email', 'gender_id'))) {
+					'has_accepted_tos', 'username', 'password', 'email'))) {
 				$this->Session->setFlash(
 ___('Your registration has been successful. However, you will still need to activate your user account.'));
 				$this->redirect(array('action' => 'activate'));
@@ -50,7 +50,6 @@ ___('Your registration has been successful. However, you will still need to acti
 					__('Your registration could not be completed, see below.', true));
 			}
 		}
-		$this->set('genders', $this->User->Gender->find('list'));
 	}
 	
 	function activate($activationKey = null) {

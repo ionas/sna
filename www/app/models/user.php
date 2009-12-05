@@ -9,13 +9,6 @@ class User extends AppModel {
 	
 	var $displayField = 'username';
 	
-	var $belongsTo = array(
-		'Gender' => array(
-			'className' => 'Gender',
-			'foreignKey' => 'gender_id',
-		),
-	);
-	
 	var $hasOne = array(
 		'Profile' => array(
 			'className' => 'Profile',

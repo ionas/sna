@@ -8,7 +8,6 @@ class Gender extends AppModel {
 	);
 	
 	var $displayField = array('%s', '{n}.Gender.label');
-	// TODO
 	var $displayFieldDoTranslate = true;
 	
 	var $hasMany = array(
@@ -17,11 +16,6 @@ class Gender extends AppModel {
 			'foreignKey' => 'gender_id',
 			'dependent' => false,
 		),
-		'User' => array(
-			'className' => 'User',
-			'foreignKey' => 'gender_id',
-			'dependent' => false,
-		)
 	);
 
 }

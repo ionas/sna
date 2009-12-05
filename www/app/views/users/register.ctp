@@ -8,7 +8,6 @@
 		__('Password Confirmation', true))),
 	$form->input('email', array('label' => __('EMail Address', true))),
 	$form->input('email_confirmation', array('label' => __('EMail Address Confirmation', true))),
-	$form->input('gender_id', array('label' => __('Gender', true))),
 	$form->input('send_copy_via_email', array('type' => 'checkbox', 'checked' => true, 'label' =>
 		__('Yes, I want to receive a copy of my User Account details via email.', true))),
 	$form->input('has_accepted_tos', array('type' => 'checkbox',
