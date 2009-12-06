@@ -38,6 +38,10 @@ X Profile picture uploads
 X Basic Profile View (with Shouts)
 X Shoutbox
 X Shout Hiding / Shout Deletion
+X Create and use Gender model
+X Translate gender model data (Translateable?)
+X Fetch gender info to email templates (Herr/Frau)
+X For Gender/Persontitle - see 
 
 @ BUDDY & AUTH:
 o Buddylists
@@ -53,11 +57,18 @@ o Messaging auth challenge (see ICQ)
 - Add User/Profile/Messages DELETION/PURGING (Personal Data only) var $purgeFields => array('name' => array('type' => 'type', 'value' => 'value'), look at cakes schema to determine type maybe)
 - same USER, DOUBLE session = kickP?
 
-@ GENDER MODEL:
-- Create and use Gender model
-- Translate gender model data (Translateable?)
-- Fetch gender info to email templates (Herr/Frau)
-- For Gender/Persontitle - see http://trac.assembla.com/mi/browser/branches/base/models/behaviors/enum.php
+@ ACTIVITIES
+- data sources to last.fm, twitter, flickr, wordpress/rss
+
+@ DISCUSSION_GROUPS
+
+@ MULTIPLE_PAGINATION (profile paginating shouts, activities, buddies whatever)
+- TODO, wrap request params, see bakery
+Also of interest:
+str_replace / => |
+str_replace : => ,
+echo 'paginate:shouts(' . str_replace('/', '|', '/page:1/sort:Shout.created/direction:asc') . ')'
+. '/paginate:activities(' . rawurlencode('/page:1/sort:Activities.created/direction:asc') . ')';
 
 @ REDIRECTIONS:
 - Change Breadcrume Component to UserHistory Component + add "afterLayout" filter which stores user GET url responses

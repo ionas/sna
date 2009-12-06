@@ -1,4 +1,6 @@
 <?php
+echo 'paginate:shouts(' . str_replace('/', '|', '/page:1/sort:Shout.created/direction:asc') . ')'
+. '/paginate:activities(' . rawurlencode('/page:1/sort:Activities.created/direction:asc') . ')';
 class AppController extends Controller {
 	
 	var $components = array( 'Cookie', 'Session', 'Security', 'Auth', 'RequestHandler');
