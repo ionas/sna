@@ -6,11 +6,6 @@ See: http://code.cakephp.org/tickets/view/354
 FormHelper not adding "display: none"'ed fieldsets (crap)
 See: http://code.cakephp.org/tickets/view/355
 
-##################
-
-CSS Autoloader
-See: http://code.cakephp.org/tickets/view/387
-
 #############
 
 afterLayout method for GET requests by the user (to be used by BreadCrumeComponent)

@@ -3,6 +3,10 @@ Enchancement List
 
 ###########
 
+Validate Token Expiry
+
+###########
+
 LazyLoader for Speed
 http://github.com/mcurry/lazy_loader/tree/master
 http://bin.cakephp.org/view/698654285
@@ -219,3 +223,11 @@ o
 Rotierte schrift halt 
 Hatte die idee heute als ich gesehen habe wie einer einen Cake Helper für rotierte Textgrafiken geschrieben hat
 http://snook.ca/video/font-face.mov
+
+###########################
+
+CSS Autoloader
+See: http://code.cakephp.org/tickets/view/387
+http://bakery.cakephp.org/articles/view/automatic-javascript-includer-helper
+
+##################

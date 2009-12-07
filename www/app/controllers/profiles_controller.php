@@ -52,7 +52,7 @@ class ProfilesController extends AppController {
 	
 	function edit() {
 		$this->layout = 'settings';
-		// TODO, on first edit, default $this->data hidden to 0 
+		// TODO, on create edit, default $this->data is_hidden to 0 
 		$id = $this->Profile->getAuthedId($this->Auth->user());
 		if (!empty($this->data)) {
 			$this->data['Profile']['user_id'] = $this->Auth->user('id');

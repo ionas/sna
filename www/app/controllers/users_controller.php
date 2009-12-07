@@ -73,8 +73,7 @@ ___('Your registration has been successful. However, you will still need to acti
 	function edit() {
 		$this->layout = 'settings';
 		if (!empty($this->data)) {
-			if ($this->User->save($this->data, true, array(
-						'username', 'gender_id'))) {
+			if ($this->User->save($this->data, true, array('username'))) {
 				$this->Session->setFlash(__('Your User Account has been updated.', true));
 			} else {
 				$this->Session->setFlash(
@@ -84,7 +83,6 @@ ___('Your registration has been successful. However, you will still need to acti
 		if (empty($this->data)) {
 			$this->data = $this->User->read(null, $this->Auth->user('id'));
 		}
-		$this->set('genders', $this->User->Gender->find('list'));
 	}
 	
 	function terms_of_service() {
