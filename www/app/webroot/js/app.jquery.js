@@ -25,7 +25,7 @@ $(window).load(function(){
 		$("input[type=submit]").addClass("userHasSubmitted");
 		$("input[type=submit]", this).addClass("userHasSubmittedWheel");
 		$("input[type=submit]", this).attr("disabled", "disabled");
-		$("input[type=submit]", this).oneTime(3000, function() {
+		$("input[type=submit]", this).oneTime(500, function() {
 			$(this).removeAttr("disabled");
 		});
 		$("input[type=submit]", this).blur();
