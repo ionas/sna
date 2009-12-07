@@ -16,4 +16,4 @@ Welcome to SNA. Login or Register below. It's free.
 	</div>
 	<br class="clear" />
 </div>
-<?=$this->element('../pages/welcome')?>
+<?=$this->element('../pages/home')?>
