@@ -122,26 +122,21 @@ class ProfilesController extends AppController {
 					'table' => $this->Profile->Shout->useTable,
 					'alias' => $this->Profile->Shout->alias,
 					'foreignKey' => $this->Profile->Shout->primaryKey,
-					'conditions' => $this->Profile->escapeField($this->Profile->primaryKey)
-						. ' = ' . $this->Profile->Shout->escapeField('profile_id'),
+					'conditions' => 'Profile.id = Shout.profile_id',
 				),
 				array(
 					'type' => 'LEFT', 
 					'table' => $this->Profile->Shout->FromProfile->useTable,
 					'alias' => 'FromProfile',
 					'foreignKey' => $this->Profile->Shout->FromProfile->primaryKey,
-					'conditions' => $this->Profile->Shout->escapeField('from_profile_id')
-						. ' = ' . $this->Profile->Shout->FromProfile->escapeField(
-							$this->Profile->Shout->FromProfile->primaryKey),
+					'conditions' => 'Shout.from_profile_id = FromProfile.id',
 				),
 				array(
-					'type' => 'LEFT', 
+					'type' => 'LEFT',
 					'table' => $this->Profile->Shout->FromProfile->Gender->useTable,
 					'alias' => $this->Profile->Shout->FromProfile->Gender->alias,
 					'foreignKey' => $this->Profile->Shout->FromProfile->Gender->primaryKey,
-					'conditions' => $this->Profile->Shout->FromProfile->escapeField('gender_id')
-						. ' = ' . $this->Profile->Shout->FromProfile->Gender->escapeField(
-							$this->Profile->Shout->FromProfile->Gender->primaryKey),
+					'conditions' => 'FromProfile.gender_id = Gender.id',
 				),
 			),
 			'conditions' => array(
