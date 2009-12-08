@@ -48,34 +48,8 @@ http://cakebaker.42dh.com/2009/11/20/link-like-buttons/
 ###########
 
 @ SPEED
-http://ru.php.net/manual/en/function.ob-start.php#80328
-<?php
-  initOutputFilter();
-
-  function initOutputFilter() {
-    ob_start('cbOutputFilter');
-    register_shutdown_function('ob_end_flush');
-  }
-
-  function cbOutputFilter($output) {
-    $search  = array(
-      'user@domain.com',
-      'user2@domain.com',
-    );
-    $replace = array(
-      '<img src="/images/nospam001.jpg" border="0" alt="" />',
-      '<img src="/images/nospam002.jpg" border="0" alt="" />',
-    );
-
-    return str_replace($search, $replace, $output);
-  }
-?>
-
 CSS Caching: http://ru.php.net/manual/en/function.ob-start.php#71299
-
 Page Caching (for GET): http://www.coderprofile.com/networks/source-codes/170/simple-page-caching
-
-?>
 
 ####################
 
@@ -105,6 +79,8 @@ Sanatize::html()
 
 for SEARCH see
 http://book.cakephp.org/view/632/autoComplete
+http://www.neilcrookes.com/2009/11/21/cakephp-searchable-plugin/
+http://www.neilcrookes.com/2009/01/30/cakephp-site-search-with-yahoo-boss/
 
 #################
 
@@ -154,3 +130,28 @@ http://bakery.cakephp.org/articles/view/automatic-javascript-includer-helper
 http://en.wikipedia.org/wiki/Post/Redirect/Get (profiles => shouts)
 
 ##############
+
+@ Content Replacement
+
+http://ru.php.net/manual/en/function.ob-start.php#80328
+<?php
+  initOutputFilter();
+
+  function initOutputFilter() {
+    ob_start('cbOutputFilter');
+    register_shutdown_function('ob_end_flush');
+  }
+
+  function cbOutputFilter($output) {
+    $search  = array(
+      'user@domain.com',
+      'user2@domain.com',
+    );
+    $replace = array(
+      '<img src="/images/nospam001.jpg" border="0" alt="" />',
+      '<img src="/images/nospam002.jpg" border="0" alt="" />',
+    );
+
+    return str_replace($search, $replace, $output);
+  }
+?>

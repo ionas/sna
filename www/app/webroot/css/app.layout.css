@@ -61,7 +61,7 @@ body {
 }
 #menu {
 	float: left;
-	width: 11em;
+	width: 12em;
 	margin-right: 1em;
 }
 #menu a {
@@ -76,9 +76,9 @@ body {
 	margin: 1em 0;
 }
 #menu a {
+	display: block;
 	margin-right: 1em;
 	padding-left: 1em;
-	padding-right: 1em;
 }
 #menu li hr {
 	height: 1px;

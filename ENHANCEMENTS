@@ -38,3 +38,7 @@ foreach($this->data[$this->alias] as $fieldname => $value) {
 		$this->data[$this->alias][$fieldname] = trim($value);
 	}
 }
+
+##############
+
+SSL and requireSecure()
