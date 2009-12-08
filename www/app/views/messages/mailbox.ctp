@@ -53,10 +53,10 @@ foreach ($messages as $message):
 			<tr<?=$class?>>
 				<?php if ($filter == 'sent'):?>
 				<td><?=$html->link($message['ToProfile']['nickname'], array('controller' => 'profiles', 'action' => 'view', $message['Message']['to_profile_id']))?> 
-					<br /><?=__('On');?> <?=substr($message['Message']['created'], 0, -3)?></td>
+					<br /><?=__('On');?> <?=$myhtml->dateMedium($message['Message']['created'])?></td>
 				<?php else:?>
 				<td><?=$html->link($message['FromProfile']['nickname'], array('controller' => 'profiles', 'action' => 'view', $message['Message']['from_profile_id']))?> 
-					<br /><?=__('On');?> <?=substr($message['Message']['created'], 0, -3)?></td>
+					<br /><?=__('On');?> <?=$myhtml->dateMedium($message['Message']['created'])?></td>
 				<?php endif?>
 				<?php if ($filter == 'trash'):?>
 				<td><?=$html->link($message['ToProfile']['nickname'], array('controller' => 'profiles', 'action' => 'view', $message['Message']['to_profile_id']))?></td>

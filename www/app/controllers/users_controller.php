@@ -195,6 +195,7 @@ ___('Your registration has been successful. However, you will still need to acti
 	}
 	
 	function register_or_login() {
+		$this->setLayout('fullscreen');
 		$this->login();
 		if ($this->Auth->isAuthorized() == false) {
 			$this->register();
@@ -220,11 +221,5 @@ ___('Your registration has been successful. However, you will still need to acti
 		unset($sessionAuthRedirect);
 	}
 	
-	function beforeRender() {
-		if ($this->action == 'register_or_login') {
-			$this->layout = 'fullscreen';
-		}
-		parent::beforeRender();
-	}
 }
 ?>

@@ -1,0 +1,40 @@
+Instead of Avatarable Behavior used now internally, use git submodule or git subtree or something like that and Miles Johnsons Uploader plugin  http://www.milesj.me/resources/script/uploader-plugin#Attaching-Files-To-Models-Auto-Upload
+
+###########
+
+YouTube like Mail inbox for reference
+
+###########
+
+css: do not use float or position abs/rel 
+instead use display: inline-block
+See: http://blog.mozilla.com/webdev/2009/02/20/cross-browser-inline-block/
+
+http://meyerweb.com/eric/tools/css/reset/
+http://developer.yahoo.com/yui/articles/hosting/?reset&MIN#configure
+http://developer.yahoo.com/yui/examples/reset/reset-simple.html
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/reset/reset-min.css"> 
+
+##############
+
+Security:
+	Configure::write('Session.cookie', 'CAKEPHP'); (different name)
+
+##############
+
+http://en.wikipedia.org/wiki/Post/Redirect/Get (e.g.: profiles => shouts)
+
+##############
+
+// Be nice to the user:
+// Starting and trailing whitespaces are ignored and removed before validation and/or save
+foreach($this->data[$this->alias] as $fieldname => $value) {
+	if(in_array($fieldname, array(
+			// Ignore trailing spaces on any fields with the exception of:
+			'location',
+			'description',
+			)
+	) === false) {
+		$this->data[$this->alias][$fieldname] = trim($value);
+	}
+}

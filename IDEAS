@@ -1,60 +1,25 @@
-SocialNetwork Application
-Enchancement List
+##################
 
-###########
-
-Validate Token Expiry
-
-###########
-
+@ SPEED
 LazyLoader for Speed
 http://github.com/mcurry/lazy_loader/tree/master
 http://bin.cakephp.org/view/698654285
 
 ###########
 
-// Be nice to the user:
-// Starting and trailing whitespaces are ignored and removed before validation and/or save
-foreach($this->data[$this->alias] as $fieldname => $value) {
-	if(in_array($fieldname, array(
-			// Ignore trailing spaces on any fields with the exception of:
-			'username',
-			'password',
-			'password_confirmation',
-			'password_current',
-			)
-	) === false) {
-		$this->data[$this->alias][$fieldname] = trim($value);
-	}
-}
-
-###########
-
 SMS Auth (instead of Email Auth)
 OpenID?
+http://bakery.cakephp.org/articles/view/sms-component
 
 ###########
 
-Speed:
+@ SPEED
 Move /cake/* and /app/* to RAM based file system ?
-
-###########
-
-Security:
-	Configure::write('Session.cookie', 'CAKEPHP'); (different name)
 
 ###########
 
 AJAX Live Validation of Forms
 See also: http://www.alistapart.com/articles/inline-validation-in-web-forms/
-
-###########
-
-Instead of Avatarable Behavior used now internally, use git submodule or git subtree or something like that and Miles Johnsons Uploader plugin  http://www.milesj.me/resources/script/uploader-plugin#Attaching-Files-To-Models-Auto-Upload
-
-###########
-
-YouTube like Mail inbox for reference
 
 ###########
 
@@ -69,17 +34,12 @@ http://github.com/m3nt0r/eventful-cakephp/
 
 ###########
 
-SPEED:
+@ SPEED
 http://bakery.cakephp.org/articles/view/boost-performance-by-removing-htaccess-plus-multi-site-with-virtualdocumentroot
 
 ###########
-AUTH via SMS:
-http://bakery.cakephp.org/articles/view/sms-component
 
-
-###########
 jQuery UI
-
 
 ###########
 
@@ -87,26 +47,7 @@ http://cakebaker.42dh.com/2009/11/20/link-like-buttons/
 
 ###########
 
-
-if(!empty($this->data)) {
- $this->Security->requirePost('add');
- $this->Security->requirePut('edit');
-
-}
-
-###########
-
-css: do not use float or position abs/rel 
-instead use display: inline-block
-See: http://blog.mozilla.com/webdev/2009/02/20/cross-browser-inline-block/
-
-
-###########
-
-invalidate session if logged in from another place (DB Sessions?)
-
-###########
-
+@ SPEED
 http://ru.php.net/manual/en/function.ob-start.php#80328
 <?php
   initOutputFilter();
@@ -136,29 +77,17 @@ Page Caching (for GET): http://www.coderprofile.com/networks/source-codes/170/si
 
 ?>
 
-
-
-####################
-
-http://meyerweb.com/eric/tools/css/reset/
-http://developer.yahoo.com/yui/articles/hosting/?reset&MIN#configure
-http://developer.yahoo.com/yui/examples/reset/reset-simple.html
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/reset/reset-min.css"> 
-
 ####################
 
 http://net.tutsplus.com/articles/web-roundups/the-20-most-practical-and-creative-uses-of-jquery/
 
-
 ###################
-
 
 http://thethemeblog.com/tutorials/ultimate-collection-of-40-jquery-tutorials-and-resources
 
-
-
 ####################
 
+@ 1.3
 http://teknoid.wordpress.com/2009/11/17/improved-form-handling-in-cakephp-1-3/
 
 
@@ -172,18 +101,14 @@ Data Sanatizsation
 if ( $this->data != Sanatize::html( $this->data ) && ! $this->data['Model']['change_accepted'] ) return false
 Sanatize::html()
 
-
 ##################
 
 for SEARCH see
 http://book.cakephp.org/view/632/autoComplete
 
-
 #################
 
-
 http://www.milesj.me/blog/read/43/Protecting-Your-Forms-With-The-Security-Component
-
 
 #################
 
@@ -192,36 +117,30 @@ http://www.milesj.me/blog/read/62/Doing-AJAX-Calls-In-CakePHP-Part-1-_-The-Front
 
 #################
 
-HABTM
-
+@ HABTM
 http://www.milesj.me/blog/read/66/Fixing-The-Missing-Model-And-AppModel-Replacement-Errors
-
 
 ###################
 
 http://www.thoughtglade.com/posts/custom-php-dreamhost-cakephp
 
-
 ####################
-
 
 <ul id="menu"><li><a href="/foo">Foo</a></li><li><a href="/bar">Bar</a></li></ul>
 
-+ js welches hinter jedes textzeichen in #menu li a einen "\n" setzt
 + #menu { white-space: pre}
-+ embedded ttf - rotiert - hier zum nachlesen: http://snook.ca/archives/html_and_css/becoming-a-font-embedding-master
++ embedded ttf - rotiert: http://snook.ca/archives/html_and_css/becoming-a-font-embedding-master
 
 das ganze hiermit mixen:
 http://www.phatfusion.net/imagemenu/
-=> fettes menü, komplett SEO friendly, accessible 
-+ js welches hinter jedes textzeichen in #menu li a einen "\n" setzt
+=> Nice Menu, completely SEO friendly, accessible 
++ js, which adds a "\n" behind each character
 + #menu { white-space: pre} =>
 
 F
 o
 o
-Rotierte schrift halt 
-Hatte die idee heute als ich gesehen habe wie einer einen Cake Helper für rotierte Textgrafiken geschrieben hat
+Rotated font 
 http://snook.ca/video/font-face.mov
 
 ###########################
@@ -231,4 +150,7 @@ See: http://code.cakephp.org/tickets/view/387
 http://bakery.cakephp.org/articles/view/automatic-javascript-includer-helper
 
 ##################
+
 http://en.wikipedia.org/wiki/Post/Redirect/Get (profiles => shouts)
+
+##############

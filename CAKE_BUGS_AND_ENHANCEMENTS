@@ -1,5 +1,8 @@
+##################
+
 $this->Security->requirePost() and $this->Security->requirePut() accepting array() instead of get_args (multiple args)
 See: http://code.cakephp.org/tickets/view/354
+Fixed in 1.3
 
 ##################
 
@@ -8,14 +11,13 @@ See: http://code.cakephp.org/tickets/view/355
 
 #############
 
-afterLayout method for GET requests by the user (to be used by BreadCrumeComponent)
-
-
-#############
-
 SecurityComponent working with requestAction
+See: http://code.cakephp.org/tickets/view/386
 
 #############
+
+Test this on a clean 1.3 version: setting $this->layout has issues
+
 // @ AppController
 function beforeFilter() {
 	$this->layout = 'visitor';
@@ -30,3 +32,9 @@ function AppController::beforeRender() {
 }
 
 # 'visitor' - wtf?
+
+#############
+
+afterLayout method for GET requests by the user (to be used by BreadCrumeComponent)
+
+##################

@@ -4,6 +4,8 @@ class AppController extends Controller {
 	var $components = array( 'Cookie', 'Session', 'Security', 'Auth', 'RequestHandler');
 	var $helpers = array('Html', 'Form', 'Secure', 'Javascript', 'Myhtml');
 	
+	var $_layoutWorkAround = null;
+	
 	function beforeFilter() {
 		$this->_setupAuth();
 		$this->_setLanguage();
@@ -84,20 +86,20 @@ class AppController extends Controller {
 			);
 		}
 		$this->_allowNoTos = Set::merge($this->_allowNoTos, $additionalAllows);
-		if ($this->Auth->isAuthorized()) {
+		if ($this->Auth->isAuthorized() and $this->Auth->user('has_accepted_tos') == 0) {
 			$allowNoTos = Set::normalize($this->_allowNoTos);
-			$doCheckForTos = true;
+			$tosCheckRequired = false;
 			if (in_array($this->name, array_keys($allowNoTos))) {
 				// Controller wide NoTOS allow
 				if (empty($allowNoTos[$this->name])) {
-					$doCheckForTos = false;
+					$tosCheckRequired = true;
 				// Action (of a controller) wide NoTOS allowed
 				} else if (in_array($this->action, $allowNoTos[$this->name])) {
-					$doCheckForTos = false;
+					$tosCheckRequired = true;
 				}
 			}
 			// Actual TOS accept check
-			if ($this->Auth->user('has_accepted_tos') == 0 and $doCheckForTos == true) {
+			if ($tosCheckRequired == true) {
 				$this->Session->setFlash(
 					___('You have to accept the Terms of Service before you can continue.'));
 				$this->Session->write('TermsOfService.redirect', $this->here);
@@ -118,8 +120,8 @@ class AppController extends Controller {
 	}
 	
 	function _alwaysPushThisDataToView() {
-		// $this->data always accessible in view via 'data
-		if (!isset ($this->viewVars['data'])) {
+		// $this->data always accessible in view via $data
+		if (!isset($this->viewVars['data'])) {
 			$this->set('data', $this->data);
 		}
 	}
@@ -132,10 +134,21 @@ class AppController extends Controller {
 		$this->set('css_for_layout', 'layouts' . DS . strtolower($this->layout . '.css'));
 	}
 	
+	function _useLayout() {
+		if($this->_layoutWorkAround != null) {
+			$this->layout = $this->_layoutWorkAround;
+		}
+	}
+	
+	function setLayout($layout) {
+		$this->_layoutWorkAround = $layout;
+	}
+	
 	function beforeRender() {
 		$this->set('authedUser', $this->_getAuthedUserData());
 		$this->_autoLoadCssAndJavascript();
 		$this->_alwaysPushThisDataToView();
+		$this->_useLayout();
 	}
 	
 }

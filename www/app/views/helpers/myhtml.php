@@ -61,6 +61,9 @@ class MyhtmlHelper extends AppHelper {
 		return $text;
 	}
 	
+	function dateMedium($date) {
+		return substr($date, 0, -3);
+	}
 }
 ?>
 

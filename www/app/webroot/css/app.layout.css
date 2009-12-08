@@ -61,9 +61,8 @@ body {
 }
 #menu {
 	float: left;
+	width: 11em;
 	margin-right: 1em;
-	padding: 1em;
-	width: 10em;
 }
 #menu a {
 	text-decoration: none;
@@ -74,7 +73,20 @@ body {
 	text-decoration: underline;
 }
 #menu li {
-	padding-bottom: .5em;
+	margin: 1em 0;
+}
+#menu a {
+	margin-right: 1em;
+	padding-left: 1em;
+	padding-right: 1em;
+}
+#menu li hr {
+	height: 1px;
+	width: 100%;
+	border: 0;
+	color: #247;
+	background:  #247;
+	margin-bottom: 1em;
 }
 #content {
 	padding: 0 3em 2em 3em;

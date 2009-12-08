@@ -1,0 +1,10 @@
+###########
+
+Validate User Registration Token Expiry
+Remove unvalidated users after 72h (3days)
+
+###########
+
+invalidate session if logged in from another place (DB Sessions?)
+
+###########
