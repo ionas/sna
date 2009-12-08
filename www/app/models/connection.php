@@ -6,12 +6,12 @@ class Connection extends AppModel {
 	var $actsAs = array('Containable');
 	
 	var $validate = array(
-		'profile_b_id' => array('notempty'),
-		'profile_a_id' => array('notempty'),
 		'type' => array('notempty'),
-		'is_request' => array('numeric'),
-		'is_mutual' => array('numeric'),
-		'is_hidden' => array('numeric'),
+		'profile_id' => array('notempty'),
+		'to_profile_id' => array('notempty'),
+		'is_request' => array('boolean'),
+		'is_hidden' => array('boolean'),
+		'is_ignored' => array('boolean'),
 	);
 	
 	var $types = array(
@@ -19,14 +19,17 @@ class Connection extends AppModel {
 			'ignore',
 			'follow',
 			'friend',
+			'partner',
 			'messaging_authentification',
 			'shouting_authentification',
 		),
 		'mutual' => array(
 			'friend',
+			'partner', // just for testing
 		),
 		'respondable' => array(
 			'friend',
+			'partner',
 			'messaging_authentification',
 			'shouting_authentification',
 		),

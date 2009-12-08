@@ -30,12 +30,12 @@ foreach ($connections as $connection):
 		</td>
 		<td style="text-align: left;">
 			Request: <?=$connection['Connection']['is_request']?><br />
-			Mutual: <?=$connection['Connection']['is_mutual']?><br />
 			Hidden: <?=$connection['Connection']['is_hidden']?><br />
+			Ignored: <?=$connection['Connection']['is_ignored']?><br />
 		</td>
 		<td class="actions">
 			<?=$secure->link(__('Accept', true), array('action' => 'respond', 'accept', $connection['Connection']['id']))?>
-			<?=$secure->link(__('Deny', true), array('action' => 'respond', 'deny', $connection['Connection']['id']))?>
+			<?=$secure->link(__('Reject', true), array('action' => 'respond', 'deny', $connection['Connection']['id']))?>
 			<?=$secure->link(__('Hide', true), array('action' => 'respond', 'hide', $connection['Connection']['id']))?>
 			<?=$secure->link(__('Ignore', true), array('action' => 'respond', 'deny', $connection['Connection']['id']))?>
 		</td>

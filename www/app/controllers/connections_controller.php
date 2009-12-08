@@ -2,7 +2,6 @@
 class ConnectionsController extends AppController {
 	
 	var $name = 'Connections';
-	var $helpers = array('Html', 'Form');
 	
 	function request($type = null, $toProfileId = null) {
 		$profileId = $this->Connection->Profile->getAuthedId($this->Auth->user());
@@ -18,11 +17,15 @@ class ConnectionsController extends AppController {
 		}
 		if ($error !== false) {
 			$this->Session->setFlash($errorMsg);
-			// $this->redirect()
 		} else {
 			$info = $this->Connection->saveOrRenewRequest($type, $profileId, $toProfileId);
-			debug($info);
+			if ($info['success'] == true) {
+				$this->Session->setFlash($info['message'], 'flashes/success');
+			} else {
+				$this->Session->setFlash($info['message']);
+			}
 		}
+		$this->redirect(array('controller' => 'connections', 'action' => 'summary'));
 	}
 	
 	function respond($answer, $id) {
@@ -30,38 +33,59 @@ class ConnectionsController extends AppController {
 	}
 	
 	function summary($toProfileId = null) {
+		$profileId = $this->Connection->Profile->getAuthedId($this->Auth->user());
 		$fields = array(
 			'Connection.id',
 			'Connection.created',
 			'Connection.modified',
 			'Connection.type',
+			'Connection.profile_id',
 			'Connection.to_profile_id',
 			'Connection.is_hidden',
 			'Connection.is_request',
-			'Connection.is_mutual',
+			'Connection.is_ignored',
+			'Profile.nickname',
 			'ToProfile.nickname',
 		);
 		$conditions = array(
-			'Connection.is_request' => 0,
-			'Connection.profile_id' => $this->Connection->Profile->getAuthedId($this->Auth->user()),
+			'or' => array(
+				'Connection.profile_id' => $profileId,
+				// If on the other side of a mutual connection
+				array(
+					'Connection.to_profile_id' => $profileId,
+					'Connection.type' => $this->Connection->types['mutual'],
+				),
+			)
 		);
+		// If filtered by target profile, add some conditions
 		if ($toProfileId != null) {
-			$conditions['Connection.to_profile_id'] = $toProfileId;
+			$conditions[] = array(
+				'or' => array(
+					'Connection.to_profile_id' => $toProfileId,
+					// If on the other side of a mutual connection
+					array(
+						'Connection.profile_id' => $toProfileId,
+						'Connection.type' => $this->Connection->types['mutual'],
+					),
+				),
+			);
+			
 		}
 		$contain = array(
+			'Profile',
 			'ToProfile',
 		);
 		$order = array(
 			'Connection.is_hidden',
 			'Connection.is_request',
-			'Connection.is_mutual',
+			'Connection.is_ignored',
 			'Connection.modified',
 		);
 		$this->paginate = compact('fields', 'conditions', 'contain', 'order');
 		$this->set('connections', $this->paginate());
 	}
 	
-	function requests($profileId = null) {
+	function incoming_requests($profileId = null) {
 		$fields = array(
 			'Connection.id',
 			'Connection.created',
@@ -70,7 +94,7 @@ class ConnectionsController extends AppController {
 			'Connection.profile_id',
 			'Connection.is_hidden',
 			'Connection.is_request',
-			'Connection.is_mutual',
+			'Connection.is_ignored',
 			'Profile.nickname',
 		);
 		$conditions = array(
@@ -86,11 +110,12 @@ class ConnectionsController extends AppController {
 		$order = array(
 			'Connection.is_hidden',
 			'Connection.is_request',
-			'Connection.is_mutual',
+			'Connection.is_ignored',
 			'Connection.modified',
 		);
 		$this->paginate = compact('fields', 'conditions', 'contain', 'order');
 		$this->set('connections', $this->paginate());
 	}
+	
 }
 ?>

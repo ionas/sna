@@ -30,11 +30,14 @@ foreach ($connections as $connection):
 		</td>
 		<td style="text-align: left;">
 			Request: <?=$connection['Connection']['is_request']?><br />
-			Mutual: <?=$connection['Connection']['is_mutual']?><br />
 			Hidden: <?=$connection['Connection']['is_hidden']?><br />
+			Ignored: <?=$connection['Connection']['is_ignored']?><br />
 		</td>
 		<td class="actions">
-			<?=$secure->link(__('Remove', true), array('action' => 'delete', $connection['Connection']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $connection['Connection']['id']))?>
+			<?php if($connection['Connection']['is_request'] == 1):?>
+				<?=$secure->link(__('Renew', true), array('action' => 'request', $connection['Connection']['type'], $connection['Connection']['to_profile_id']))?>
+			<?php endif?>
+			<?=$secure->link(__('Cancel', true), array('action' => 'delete', $connection['Connection']['id']), null, sprintf(__('Are you sure you want to cancel request # %s?', true), $connection['Connection']['id']))?>
 		</td>
 	</tr>
 <?php endforeach?>
