@@ -42,3 +42,7 @@ foreach($this->data[$this->alias] as $fieldname => $value) {
 ##############
 
 SSL and requireSecure()
+
+##############
+
+Gravatar instead of own Avatar

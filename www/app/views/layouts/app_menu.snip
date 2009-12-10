@@ -2,9 +2,10 @@
 	<ul>
 		<li><?=$html->link(__('Home', true), array('controller' => 'users', 'action' => 'home'))?></li>
 		<li><?=$html->link(__('Messages', true), array('controller' => 'messages', 'action' => 'mailbox'))?></li>
-		<li><?=$html->link(__('Requests', true), array('controller' => 'connections', 'action' => 'incoming_requests'))?></li>
-		<li><?=$html->link(__('Discussions', true), array('controller' => 'discussions', 'action' => 'summary'))?></li>
-		<li><hr /><?=$html->link(__('Connections', true), array('controller' => 'connections', 'action' => 'summary'))?></li>
+		<li><?=$html->link(__('Pending Requests', true), array('controller' => 'connections', 'action' => 'incoming_requests'))?></li>
+		<li><?=$html->link(__('Outgoing Requests', true), array('controller' => 'connections', 'action' => 'outgoing_requests'))?></li>
+<!--	<li><?=$html->link(__('Discussions', true), array('controller' => 'discussions', 'action' => 'summary'))?></li> -->
+		<li><hr /><?=$html->link(__('Established Connections', true), array('controller' => 'connections', 'action' => 'index'))?></li>
 		<li><?=$html->link(__('Settings', true), array('controller' => 'profiles', 'action' => 'edit'))?></li>
 		<li><hr /><?=$html->link(__('Logout', true), array('controller' => 'users', 'action' => 'logout'))?></li>
 	</ul>

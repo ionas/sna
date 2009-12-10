@@ -57,6 +57,15 @@ table tr td {
 	font-size: 110%;
 	background-color: #fffff7;
 }
+table, thead, tbody, tfoot, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	border: 1px solid #ddd;
+}
+table {
+	margin-bottom: 1em;
+}
 #authMessage,
 #flashMessage {
 	position: absolute;

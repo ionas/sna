@@ -1,10 +1,10 @@
 ﻿# Sequel Pro dump
-# Version 1596
+# Version 1606
 # http://code.google.com/p/sequel-pro
 #
 # Host: localhost (MySQL 5.0.67)
 # Database: sna_development
-# Generation Time: 2009-12-08 14:27:41 +0100
+# Generation Time: 2009-12-10 17:10:10 +0100
 # ************************************************************
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -34,18 +34,20 @@ CREATE TABLE `connections` (
   `is_ignored` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `UNIQUE_CONNECTION` (`profile_id`,`to_profile_id`,`type`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 LOCK TABLES `connections` WRITE;
 /*!40000 ALTER TABLE `connections` DISABLE KEYS */;
 INSERT INTO `connections` (`id`,`created`,`modified`,`type`,`profile_id`,`to_profile_id`,`is_request`,`is_hidden`,`is_ignored`)
 VALUES
-	(1,'2009-12-08 10:21:18','2009-12-08 11:37:40','friend','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,0),
-	(6,'2009-12-08 12:02:16','2009-12-08 13:54:16','messaging_authentification','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',1,0,0),
-	(8,'2009-12-08 13:42:19','2009-12-08 13:49:57','shouting_authentification','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',1,0,0),
+	(1,'2009-12-08 10:21:18','2009-12-08 11:37:40','friend','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,1,0),
+	(6,'2009-12-08 12:02:16','2009-12-10 16:17:13','messaging_authentification','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',1,0,0),
+	(8,'2009-12-08 13:42:19','2009-12-10 16:18:19','shouting_authentification','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',1,0,0),
 	(10,'2009-12-08 14:17:46','2009-12-08 14:19:09','partner','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',1,0,0),
 	(11,'2009-12-08 14:18:46','2009-12-08 14:18:46','follow','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,0),
-	(12,'2009-12-08 14:27:07','2009-12-08 14:27:07','messaging_authentification','4a73fc45-c860-40d4-81ec-00e68784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',1,0,0);
+	(12,'2009-12-08 14:27:07','2009-12-08 14:27:07','messaging_authentification','4a73fc45-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,0),
+	(13,'2009-12-08 13:42:19','2009-12-09 10:54:02','shouting_authentification','4a73fc45-c860-40d4-81ec-00e68784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',1,0,0),
+	(14,'2009-12-08 14:17:46','2009-12-08 14:19:09','partner','4a8f0408-6568-49bc-9b81-017a8784ca84','4a73fc45-c860-40d4-81ec-00e68784ca84',0,0,0);
 
 /*!40000 ALTER TABLE `connections` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -367,7 +369,9 @@ VALUES
 	('4b1e519a-d9b4-44fc-a075-01288784ca84','2009-12-08 14:16:10','4a841aaa-6be4-4851-a666-00e38784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',0,0,0,'whuzap'),
 	('4b1e53ed-c8f8-45a1-b184-01288784ca84','2009-12-08 14:26:05','4b089566-b204-4f80-a8e2-69838784ca84','4a73fc45-c860-40d4-81ec-00e68784ca84','4a73fc45-c860-40d4-81ec-00e68784ca84',0,0,0,'I am here as well now!'),
 	('4b1e5409-4fc0-4b9c-a519-01298784ca84','2009-12-08 14:26:33','4b089566-b204-4f80-a8e2-69838784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a73fc45-c860-40d4-81ec-00e68784ca84',0,0,0,'Timmmmmy is here! Say Helloez 2 meh!'),
-	('4b1e541a-5b84-4da0-958b-00bd8784ca84','2009-12-08 14:26:50','4b089566-b204-4f80-a8e2-69838784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','4a73fc45-c860-40d4-81ec-00e68784ca84',0,0,0,'Timmmmmy is here! Say Helloez 2 meh!\r\n\r\nMan you are booooooring\r\n\r\n\r\nboooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooring!');
+	('4b1e541a-5b84-4da0-958b-00bd8784ca84','2009-12-08 14:26:50','4b089566-b204-4f80-a8e2-69838784ca84','4a93f845-c860-40d4-81ec-00e68784ca84','4a73fc45-c860-40d4-81ec-00e68784ca84',0,0,0,'Timmmmmy is here! Say Helloez 2 meh!\r\n\r\nMan you are booooooring\r\n\r\n\r\nboooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooring!'),
+	('4b1f7499-95dc-475d-93eb-01298784ca84','2009-12-09 10:57:45','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,0,'YaY'),
+	('4b1f74bf-3300-487c-8ee5-00bd8784ca84','2009-12-09 10:58:23','4a648ce4-08a4-46e2-91f8-024a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,1,'YaY');
 
 /*!40000 ALTER TABLE `shouts` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -400,7 +404,7 @@ LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`,`created`,`modified`,`is_deleted`,`is_disabled`,`has_accepted_tos`,`username`,`password`,`gender_id`,`email`,`last_login`,`activation_key`,`password_reset_key`)
 VALUES
-	('4a648ce4-08a4-46e2-91f8-024a8784ca84','2009-08-03 16:15:22','2009-12-08 14:25:52',0,0,1,'ionas','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b',3,'ionas@sna.dev','2009-12-08 14:25:52','',''),
+	('4a648ce4-08a4-46e2-91f8-024a8784ca84','2009-08-03 16:15:22','2009-12-10 15:19:43',0,0,1,'ionas','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b',3,'ionas@sna.dev','2009-12-10 15:19:43','',''),
 	('4a841aaa-6be4-4851-a666-00e38784ca84','2009-08-13 15:52:42','2009-12-08 14:19:18',0,0,1,'abc','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b',1,'sna@mailinator.com','2009-12-08 14:19:18','',''),
 	('4b089566-b204-4f80-a8e2-69838784ca84','2009-12-04 02:35:34','2009-12-08 14:25:55',0,0,1,'tim','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b',1,'foobar123@mailinator.com','2009-12-08 14:25:55','','');
 

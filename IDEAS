@@ -155,3 +155,28 @@ http://ru.php.net/manual/en/function.ob-start.php#80328
     return str_replace($search, $replace, $output);
   }
 ?>
+
+######################
+
+@ ROUTING
+http://teknoid.wordpress.com/2009/12/08/overriding-default-urls-aka-persistent-routes/
+
+######################
+
+@ JQUERY
+http://www.jamesfairhurst.co.uk/posts/view/custom_cakephp_flash_messages_updated/
+http://teknoid.wordpress.com/2009/10/14/an-intro-look-at-jquery-tools-enhancement-for-setflash-and-cakephp-1-3/
+
+########################
+
+@ p28n l10n i18n
+http://bakery.cakephp.org/articles/view/p28n-the-top-to-bottom-persistent-internationalization-tutorial
+
+####################
+
+After password change => force logout
+
+###################
+
+Password STRENGTH detector
+https://ionas82.wordpress.com/wp-admin/profile.php (very bottom)

@@ -129,7 +129,6 @@ html, body, #container {
 #footer #footer_menu a.last {
 	border-right: none;	
 }
-#footer #top_link {
+#footer .navLink {
 	font-size: 150%;
-	
 }

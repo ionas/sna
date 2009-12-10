@@ -146,6 +146,7 @@ class AppController extends Controller {
 	
 	function beforeRender() {
 		$this->set('authedUser', $this->_getAuthedUserData());
+		$this->set('referer', $this->referer());
 		$this->_autoLoadCssAndJavascript();
 		$this->_alwaysPushThisDataToView();
 		$this->_useLayout();

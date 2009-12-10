@@ -21,8 +21,12 @@ class User extends AppModel {
 		parent::__construct();
 		$this->validate = array(
 'username' => array(
+	'notEmpty' => array( // required by SecurityComponent
+		'required' => true, // required for CSS
+		'rule' => array('notEmpty'),
+		'message' => __('Minimum length of 4 characters.', true),
+	),
 	'isUnique' => array(
-		'required' => true,
 		'rule' => 'isUnique',
 		'message' => __('This username is already in use.', true),
 	),
@@ -36,8 +40,12 @@ class User extends AppModel {
 	),
 ),
 'password' => array(
+	'notEmpty' => array( // required by SecurityComponent
+		'required' => true, // required for CSS
+		'rule' => array('notEmpty'),
+		'message' => __('Minimum length of 6 characters.', true),
+	),
 	'minLength' => array(
-		'required' => true,
 		'rule' => array('minLength', '6'),
 		'message' => __('Minimum length of 6 characters.', true),
 	),
@@ -51,20 +59,26 @@ class User extends AppModel {
 		'message' => __('Your Password does not match with your Password Confirmation.', true),
 	),
 ),
-'password_confirmation' => array( // fake rule for required = true
-	'notEmpty' => array(
-		'required' => true,
+'password_confirmation' => array( // virtual
+	'notEmpty' => array( // required by SecurityComponent
+		'required' => true, // required for CSS
 		'rule' => array('notEmpty'),
+		'message' => __('You have to repeat your password.', true),
 	),
 ),
 'password_current' => array( // virtual
-	'minLength' => array(
-		'required' => true,
-		'rule' => array('minLength', '6'),
+	'notEmpty' => array( // required by SecurityComponent
+		'required' => true, // required for CSS
+		'rule' => array('notEmpty'),
 		'message' => __('Minimum length of 6 characters.', true),
 	),
 ),
 'email' => array(
+	'notEmpty' => array( // required by SecurityComponent
+		'required' => true, // required for CSS
+		'rule' => array('notEmpty'),
+		'message' => __('Must be a valid email address.', true),
+	),
 	'isUnique' => array(
 		'required' => true,
 		'rule' => 'isUnique',
@@ -83,15 +97,20 @@ class User extends AppModel {
 		'message' => __('Your Email does not match with your Email Confirmation.', true),
 	),
 ),
-'email_confirmation' => array( // fake rule for required = true
-	'notEmpty' => array(
-		'required' => true,
+'email_confirmation' => array( // virtual
+	'notEmpty' => array( // required by SecurityComponent
+		'required' => true, // required for CSS
 		'rule' => array('notEmpty'),
+		'message' => __('You have to retype your email address.', true),
 	),
 ),
 'has_accepted_tos' => array(
+	'notEmpty' => array( // required by SecurityComponent
+		'required' => true, // required for CSS
+		'rule' => array('notEmpty'),
+		'message' => __('You may only accept or deny the Terms of Service.', true),
+	),
 	'boolean' => array(
-		'required' => true,
 		'rule' => array('boolean'),
 		'message' => __('You may only accept or deny the Terms of Service.', true),
 	),
@@ -101,13 +120,13 @@ class User extends AppModel {
 		'message' => __('You must accept the Terms of Service on User Account registration.', true),
 	),
 ),
-'last_login' => array(
+'last_login' => array( // internal
 	'validateDatetime' => array(
 		'rule' => array('validateDatetime', 'last_login'),
 		'message' => __('Last Login must be a valid datetime (yyyy-mm-dd hh:mm:ss).', true),
 	),
 ),
-'activation_key' => array(
+'activation_key' => array( // internal
 	'minLength' => array(
 		'rule' => array('minLength', '3'),
 		'message' => __('Minimum length of 3 characters.', true),
@@ -117,7 +136,7 @@ class User extends AppModel {
 		'message' => __('Enter a correct key which looks like 1A2B-C3D4-EFG5-678H.', true),
 	),
 ),
-'password_reset_key' => array(
+'password_reset_key' => array( // internal
 	'minLength' => array(
 		'rule' => array('minLength', '3'),
 		'message' => __('Minimum length of 3 characters.', true),

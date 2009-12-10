@@ -85,7 +85,7 @@ class MessagesController extends AppController {
 			),
 			'conditions' => $conditions,
 			'order' => 'created DESC',
-			'limit' => 3,
+			'limit' => 5,
 		);
 		$this->set('filter', $filter);
 		$this->set('messages', $this->paginate());

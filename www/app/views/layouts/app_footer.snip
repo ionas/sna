@@ -10,7 +10,10 @@
 			<?=$html->link(__('Terms and Conditions', true), array('controller' => 'pages', 'action' => 'display', 'terms_of_service'))?>
 			<?=$html->link(__('Impress', true), array('controller' => 'pages', 'action' => 'display', 'impress'), array('class' => 'last'))?>
 			</div>
-			<a href="#top" id="top_link">&uarr;</a>
+			<?php if($referer != $this->here):?>
+			<?=$html->link("←", $referer, array('class' => 'navLink'))?>
+			<?php endif?>
+			<?=$html->link("↑", array('#' => 'top'), array('class' => 'navLink'))?>
 		</div>
 	</div>
 	<?=$cakeDebug?>

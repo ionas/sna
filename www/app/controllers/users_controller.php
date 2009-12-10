@@ -181,9 +181,8 @@ ___('Your registration has been successful. However, you will still need to acti
 		if ($this->Auth->isAuthorized() === true) {
 			$this->User->updateLastLogin($this->Auth->user());
 			if (!empty($this->data)) {
-				debug($this->Session->read('Auth.redirect'));
 				$authRedirect = $this->Session->read('Auth.redirect');
-				if ($authRedirect == '/' or $authRedirect == null) {
+				if (in_array($authRedirect, array(null, '/', '/users/register'))) {
 					$this->redirect(array('action' => 'home'));
 				} else {
 					$this->redirect($this->Session->read('Auth.redirect'));

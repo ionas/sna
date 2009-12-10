@@ -157,3 +157,23 @@ a.iconLinkButton:focus {
 	line-height: 250%;
 	text-decoration: none;
 }
+table form,
+table form fieldset,
+table form fieldset input,
+form div.submit,
+table form div,
+table tr td.actions {
+	margin: 0;
+	padding: 0;
+	width: inherit;
+}
+table tr td.actions {
+	padding-top: 1em;
+	padding-bottom: .5em;
+	padding-left: 1em;
+	padding-right: .5em;
+}
+table tr td.actions form {
+	text-align: left;
+	padding-bottom: .5em;
+}
