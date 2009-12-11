@@ -160,7 +160,7 @@ a.iconLinkButton:focus {
 table form,
 table form fieldset,
 table form fieldset input,
-form div.submit,
+table form div.submit,
 table form div,
 table tr td.actions {
 	margin: 0;
