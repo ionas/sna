@@ -67,7 +67,7 @@ class Connection extends AppModel {
 		'message' => '(Error in Connection Model)',
 	);
 	
-	function saveRequest($type, $profileId, $toProfileData) {
+	function request($type, $profileId, $toProfileData) {
 		$fields = array('id', 'type', 'is_request');
 		$conditions = array(
 			'profile_id' => $profileId,
@@ -110,6 +110,12 @@ class Connection extends AppModel {
 				___d($connectionData['Connection']['type']),
 				$connectionData['Profile']['nickname']);
 		}
+		return $return;
+	}
+	
+	function cancel($id) {
+		$return = $this->return;
+		// TODO
 		return $return;
 	}
 	

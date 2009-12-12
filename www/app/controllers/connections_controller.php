@@ -25,7 +25,7 @@ class ConnectionsController extends AppController {
 		if ($error !== false) {
 			$this->Session->setFlash($error);
 		} else {
-			$return = $this->Connection->saveRequest($type, $authedProfileId, $toProfileData);
+			$return = $this->Connection->request($type, $authedProfileId, $toProfileData);
 			if ($return['success'] == true) {
 				$this->Session->setFlash($return['message'], 'flashes/success');
 			} else {
