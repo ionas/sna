@@ -25,6 +25,12 @@
 </div>
 <div class="actions">
 	<?php if (!empty($authedUser) and $authedUser['Profile']['id'] != $profile['Profile']['id']): ?>
+		<ul>
+			<li><?=$secure->link(___('Send Message'),
+				array('controller' => 'messages', 'action' => 'send', $profile['Profile']['id']))?>
+			</li>
+		</ul>
+		<br />
 		<?php if (!empty($possibleConnections)):?>
 			<?php require('possible_connections.ctp');?>
 		<?php endif?>

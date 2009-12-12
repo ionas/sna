@@ -1,5 +1,5 @@
 <div class="users form">
-<?php $session->check('Message.auth') ? $session->flash('auth') : ''?>
+<?php $session->flash('auth')?>
 <?=$form->create('User', array('action' => 'login'))?>
 	<fieldset>
 		<legend><?php __('Login');?></legend>

@@ -10,12 +10,12 @@ class ConnectionsController extends AppController {
 	
 	var $name = 'Connections';
 	
-	var $paginationLimit = 1;
+	var $paginationLimit = 2;
 	
 	function beforeFilter() {
 		parent::beforeFilter();
 		// SecurityComponent setup
-		// $this->Security->requirePost('request', 'respond');
+		$this->Security->requirePost('request', 'respond', 'cancel');
 	}
 	
 	function index() {

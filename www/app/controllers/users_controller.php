@@ -178,6 +178,7 @@ ___('Your registration has been successful. However, you will still need to acti
 	}
 	
 	function login() {
+		// TODO: Enforce logout on username + password submit
 		if ($this->Auth->isAuthorized() === true) {
 			$this->User->updateLastLogin($this->Auth->user());
 			if (!empty($this->data)) {

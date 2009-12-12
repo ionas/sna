@@ -26,3 +26,5 @@ function AppController::beforeRender() {
 afterLayout method for GET requests by the user (to be used by BreadCrumeComponent)
 
 ##################
+
+AuthComponent and Flash - different styles for "successful" flashs (like login/logout)

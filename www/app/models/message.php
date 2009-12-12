@@ -110,7 +110,15 @@ class Message extends AppModel {
 		);
 	}
 	
-	function send($fromProfileId, $toProfileId, $type = 'send') { // type can be send or reply
+	function send($fromProfileId, $toProfileId) {
+		return $this->_send($fromProfileId, $toProfileId, 'send');
+	}
+	
+	function reply($fromProfileId, $toProfileId) {
+		return $this->_send($fromProfileId, $toProfileId, 'reply');
+	}
+	
+	function _send($fromProfileId, $toProfileId, $type) { // type can be send or reply
 		// data[0] is what is saved at the sender, data[1] what the receiver gets.
 		$data[0] = $this->data;
 		$fromProfileData = $this->Profile->find('first', array(

@@ -52,7 +52,8 @@ User logs in at a second place/browser, first session should be invalidated.
 
 #####################
 
-PRG
+Post/Redirect/Get Post-Redirect-Get PRG
 http://en.wikipedia.org/wiki/Post/Redirect/Get (profiles => shouts)
+http://teknoid.wordpress.com/2008/06/24/retaining-a-search-string-in-the-url/
 
 ##############

@@ -17,39 +17,39 @@ class MessagesController extends AppController {
 	}
 	
 	function mailbox($filter = null) {
-		$activeProfileId = $this->Message->Profile->getAuthedId($this->Auth->user());
+		$authedProfileId = $this->Message->Profile->getAuthedId($this->Auth->user());
 		switch($filter) {
 			case 'inbox':
 				$this->set('messagesTitle', __('Inbox', true));
 				$conditions = array(
-					'NOT' => array('Message.from_profile_id' => $activeProfileId),
+					'Message.to_profile_id' => $authedProfileId,
 					'Message.is_trashed' => 0);
 				break;
 			case 'unread':
 				$this->set('messagesTitle', __('Unread', true));
 				$conditions = array(
-					'NOT' => array('Message.from_profile_id' => $activeProfileId),
+					'Message.to_profile_id' => $authedProfileId,
 					'Message.is_read'    => 0,
 					'Message.is_trashed' => 0);
 				break;
 			case 'unreplied':
 				$this->set('messagesTitle', __('Unreplied', true));
 				$conditions = array(
-					'NOT' => array('Message.from_profile_id' => $activeProfileId),
+					'Message.to_profile_id' => $authedProfileId,
 					'Message.is_replied' => 0,
 					'Message.is_trashed' => 0);
 				break;
 			case 'read':
 				$this->set('messagesTitle', __('Read', true));
 				$conditions = array(
-					'NOT' => array('Message.from_profile_id' => $activeProfileId),
+					'Message.to_profile_id' => $authedProfileId,
 					'Message.is_read'    => 1,
 					'Message.is_trashed' => 0);
 				break;
 			case 'sent':
 				$this->set('messagesTitle', __('Sent', true));
 				$conditions = array(
-					'Message.from_profile_id' => $activeProfileId,
+					'Message.from_profile_id' => $authedProfileId,
 					'Message.is_trashed' => 0);
 				break;
 			case 'trash':
@@ -62,7 +62,7 @@ class MessagesController extends AppController {
 				$this->redirect(array('controller' => 'messages', 'action' => 'mailbox', 'unread'));
 				break;
 		}
-		$conditions['Message.profile_id'] = $activeProfileId;
+		$conditions['Message.profile_id'] = $authedProfileId;
 		$this->paginate = array(
 			'fields' => array(
 				'Message.id',
@@ -101,10 +101,12 @@ class MessagesController extends AppController {
 		$this->set('toProfile', $this->Message->Profile->data);
 		if (!empty($this->data['Message']['body'])) {
 			$this->Message->create($this->data);
-			if ($this->Message->send($toProfileId, $toProfileId)) {
-				$this->Session->setFlash(
-					__('Your message has been send to', true) . ' '
-						. $this->Message->Profile->data['Profile']['nickname'] . '.');
+			if ($this->Message->send($this->Message->Profile->getAuthedId($this->Auth->user()),
+					$toProfileId)
+			) {
+				$this->Session->setFlash(___('Your message has been send to') . ' '
+					. $this->Message->Profile->data['Profile']['nickname'] . '.', 'flashes/success');
+				$this->redirect(array('action' => 'mailbox', 'sent'));
 			} else {
 				$this->Session->setFlash(
 					__('Your message could not be send, see below.', true));
@@ -130,12 +132,12 @@ class MessagesController extends AppController {
 		$this->set('message', $this->Message->data);
 		if (!empty($this->data['Message']['body'])) {
 			$this->Message->create($this->data);
-			if ($this->Message->send($this->Message->Profile->getAuthedId($this->Auth->user()),
+			if ($this->Message->reply($this->Message->Profile->getAuthedId($this->Auth->user()),
 					$toProfileData['Profile']['id'])) {
 				$this->Session->setFlash(
 					__('Your message has been send to', true) . ' '
 						. $toProfileData['Profile']['nickname']);
-				$this->redirect($this->here);
+				$this->redirect(array('action' => 'mailbox', 'sent'));
 			} else {
 				$this->Session->setFlash(
 					__('Your message could not be send, see below.', true));
@@ -161,7 +163,7 @@ class MessagesController extends AppController {
 	
 	function trash($id = null) {
 		$this->_toggle_trash($id, 1);
-		$this->redirect(array('action' => 'mailbox'));
+		$this->redirect($this->referer());
 	}
 	
 	function restore($id = null) {
