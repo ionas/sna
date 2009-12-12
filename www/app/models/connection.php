@@ -2,7 +2,7 @@
 
 // TODO:
 // Not sure yet if we should DOUBLE-save mutual connections.
-// We probably should, easier to implement?
+// We probably should? Should not? Which is easier to implement? Which faster?
 
 class Connection extends AppModel {
 	
@@ -60,11 +60,9 @@ class Connection extends AppModel {
 		'ignore',
 	);
 	
-	
-	// Default method return
-	var $return = array(
+	var $return = array( // Default method return values
 		'success' => false,
-		'message' => '(Error in Connection Model)',
+		'message' => 'Error',
 	);
 	
 	function request($type, $profileId, $toProfileData) {
@@ -113,7 +111,7 @@ class Connection extends AppModel {
 		return $return;
 	}
 	
-	function cancel($id) {
+	function cancel($connectionId) {
 		$return = $this->return;
 		// TODO
 		return $return;
