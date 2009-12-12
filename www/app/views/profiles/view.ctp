@@ -24,23 +24,19 @@
 	</dl>
 </div>
 <div class="actions">
-	<ul>
-		<?php if (!empty($authedUser) and $authedUser['Profile']['id'] != $profile['Profile']['id']): ?>
-		<li><?=$html->link(__('Ask 4 Messaging', true), array('controller' => 'connections', 'action' => 'request', 'messaging_authentification', $profile['Profile']['id'])); ?> </li>
-		<li><?=$html->link(__('Ask 4 Shouting', true), array('controller' => 'connections', 'action' => 'request', 'messaging_shouting', $profile['Profile']['id'])); ?> </li>
-		<li><?=$html->link(__('Follow', true), array('controller' => 'connections', 'action' => 'follow', $profile['Profile']['id'])); ?> </li>
-		<li><?=$html->link(__('Buddies?', true), array('controller' => 'connections', 'action' => 'friends', $profile['Profile']['id'])); ?> </li>
-		<li><?=$html->link(__('Ignore', true), array('controller' => 'connections', 'action' => 'ignore', $profile['Profile']['id'])); ?> </li>
+	<?php if (!empty($authedUser) and $authedUser['Profile']['id'] != $profile['Profile']['id']): ?>
+		<?php if (!empty($possibleConnections)):?>
+			<?php require('possible_connections.ctp');?>
 		<?php endif?>
-	</ul>
+	<?php endif?>
 </div>
 <div class="related">
 	<?php if (!empty($authedUser)): ?>
 		<?php if (!empty($shouts)):?>
-			<?php require('shouts.ctp')?>
+			<?php require('shouts.ctp');?>
 		<?php endif?>
 		<?php if(!empty($authedUser)):?>
-			<?php require('shout_to.ctp')?>
+			<?php require('shout_to.ctp');?>
 		<?php endif?>
 	<?php endif?>
 </div>

@@ -66,7 +66,7 @@ foreach ($messages as $message):
 				</td>
 				<td class="actions" rowspan="2">
 					<?php if ($message['Message']['profile_id'] != $message['Message']['from_profile_id']):?>
-						<?=$html->link(__('Reply', true), array('action' => 'reply', $message['Message']['id']), array('class' => 'iconLinkButton messageReply'))?> 
+						<?=$secure->link(__('Reply', true), array('action' => 'reply', $message['Message']['id']), array('class' => 'iconLinkButton messageReply'))?> 
 					<?php endif?>
 					<?php if ($message['Message']['is_trashed'] == 1):?>
 						<?=$secure->link(__('Restore', true), array('action' => 'restore', $message['Message']['id']), array('class' => 'messageRestore'))?> 

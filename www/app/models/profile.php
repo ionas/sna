@@ -22,13 +22,13 @@ class Profile extends AppModel {
 	);
 	
 	var $hasMany = array(
-		'ConnectionA' => array(
+		'Connection' => array(
 			'className' => 'Connection',
-			'foreignKey' => 'profile_id_a',
+			'foreignKey' => 'profile_id',
 		),
-		'ConnectionB' => array(
+		'ToConnection' => array(
 			'className' => 'Connection',
-			'foreignKey' => 'profile_id_b',
+			'foreignKey' => 'to_profile',
 		),
 		'Message' => array(
 			'className' => 'Message',

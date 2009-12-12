@@ -1,4 +1,11 @@
 <?php
+/**
+* TODO: 
+* Filter for index, incoming_requests, outgoing_requests
+* (by profile:124/Type:foo/showHidden:true/showIgnored:true)
+* Links to modify get params
+* 
+**/
 class ConnectionsController extends AppController {
 	
 	var $name = 'Connections';

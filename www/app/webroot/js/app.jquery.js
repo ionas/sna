@@ -1,24 +1,26 @@
+// hidden
+$(document).ready(function(){
+	$("#authMessage").fadeTo(10, .01);
+	$("#flashMessage").fadeTo(10, .01);
+});
 $(window).load(function(){
 	// Remove messageBody
 	$(".messageSubject").addClass('messageSubjectClickable');
 	$(".messageBody").addClass('messageBodyHidden');
 	// TheFlash
-	// hidden
-	$("#authMessage").fadeTo(0, 0);
-	$("#flashMessage").fadeTo(0, 0);
 	// show rapidly first
-	$("#authMessage").oneTime(400, function() {
-		$(this).fadeTo(250, 1);
+	$("#authMessage").oneTime(10, function() {
+		$(this).fadeTo(300, 1);
 	});
-	$("#flashMessage").oneTime(400, function() {
-		$(this).fadeTo(250, 1);
+	$("#flashMessage").oneTime(10, function() {
+		$(this).fadeTo(300, 1);
 	});
 	// hide shortly after, slowy
-	$("#authMessage").oneTime(2500, function() {
-		$(this).fadeTo(750, .01);
+	$("#authMessage").oneTime(3000, function() {
+		$(this).fadeTo(1000, .01);
 	});
-	$("#flashMessage").oneTime(2500, function() {
-		$(this).fadeTo(750, .01);
+	$("#flashMessage").oneTime(3000, function() {
+		$(this).fadeTo(1000, .01);
 	});
 	// FormSubmitAnimation
 	$("form").submit(function () { 

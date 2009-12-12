@@ -7,7 +7,7 @@ class MessagesController extends AppController {
 		parent::beforeFilter();
 		// SecurityComponent setup
 		$this->Security->requirePost('delete', 'trash', 'restore');
-		if(!empty($this->data)) {
+		if(!empty($this->data['Message']['body'])) {
 			$this->Security->requirePut('send', 'reply');
 		}
 	}
@@ -99,7 +99,7 @@ class MessagesController extends AppController {
 			$this->redirect($this->here);
 		}
 		$this->set('toProfile', $this->Message->Profile->data);
-		if (!empty($this->data)) {
+		if (!empty($this->data['Message']['body'])) {
 			$this->Message->create($this->data);
 			if ($this->Message->send($toProfileId, $toProfileId)) {
 				$this->Session->setFlash(
@@ -128,7 +128,7 @@ class MessagesController extends AppController {
 			$this->Message->data['Message']['from_profile_id']);
 		$this->set('toProfile', $toProfileData);
 		$this->set('message', $this->Message->data);
-		if (!empty($this->data)) {
+		if (!empty($this->data['Message']['body'])) {
 			$this->Message->create($this->data);
 			if ($this->Message->send($this->Message->Profile->getAuthedId($this->Auth->user()),
 					$toProfileData['Profile']['id'])) {

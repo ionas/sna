@@ -117,6 +117,23 @@ class Connection extends AppModel {
 		return $return;
 	}
 	
+	function findPossibleConnections($profileId, $toProfileId) {
+		if ($profileId == $toProfileId) {
+			return false;
+		} else {
+			$fields = array(
+				'Connection.type',
+			);
+			$conditions = array(
+				'Connection.profile_id' => $profileId,
+				'Connection.to_profile_id' => $toProfileId,
+			);
+			$types = $this->find('list', compact('fields', 'conditions'));
+			$unusedTypes = array_diff($this->types['all'], $types);
+			return $unusedTypes;
+		}
+	}
+	
 	function _acceptResponse($connectionData) {
 		$return = $this->return;
 		// TODO: If mutual?!
@@ -159,15 +176,18 @@ class Connection extends AppModel {
 	function _createRequest($type, $profileId, $toProfileData) {
 		$return = $this->return;
 		// TODO: Check if there is a mutual request of the same type, if so skip request and store.
-		if ((
-				!in_array('is_response_required_for_' . $type, array_keys($this->ToProfile->_schema))
-				and in_array($type, $this->types['respondable'])
-			) or (
-				in_array('is_response_required_for_' . $type, array_keys($this->ToProfile->_schema)
-				and $toProfileData['Profile']['is_response_required_for_' . $type] == 1
-				and in_array($type, $this->types['respondable']))
-			)
-		) { // If response required (disableable by Profile::is_response_required_for_$type = 0)
+		$requestResponseRequired = false;
+		if (in_array($type, $this->types['respondable'])) {
+			if (!in_array('is_response_required_for_' . $type, array_keys($this->ToProfile->_schema))) {
+				$requestResponseRequired = true;
+			}
+			if (in_array('is_response_required_for_' . $type, array_keys($this->ToProfile->_schema))
+			and $toProfileData['Profile']['is_response_required_for_' . $type] == 1) {
+				$requestResponseRequired = true;
+			}
+		}
+		// If response required (disableable by Profile::is_response_required_for_$type = 0)
+		if ($requestResponseRequired) {
 			if ($this->_store(array(
 				'profile_id' => $profileId,
 				'to_profile_id' => $toProfileData['Profile']['id'],

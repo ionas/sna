@@ -48,6 +48,7 @@ class ProfilesController extends AppController {
 		}
 		$this->set('profile', $this->Profile->read(null, $id));
 		$this->set('shouts', $this->shouts($id));
+		$this->set('possibleConnections', $this->possible_connections($id));
 	}
 	
 	function edit() {
@@ -230,6 +231,14 @@ class ProfilesController extends AppController {
 			$this->Session->setFlash(___('Shout could not be deleted.'));
 		}
 		$this->redirect(array('action' => 'self'));
+	}
+	
+	function possible_connections($toProfileId) {
+		$possibleConnectionsProfileId = $toProfileId;
+		$possibleConnections = $this->Profile->Connection->findPossibleConnections(
+			$this->Profile->getAuthedId($this->Auth->user()), $toProfileId);
+		$this->set(compact('possibleConnections', 'possibleConnectionsProfileId'));
+		return $possibleConnections;
 	}
 	
 }

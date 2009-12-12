@@ -119,13 +119,6 @@ class AppController extends Controller {
 		}
 	}
 	
-	function _alwaysPushThisDataToView() {
-		// $this->data always accessible in view via $data
-		if (!isset($this->viewVars['data'])) {
-			$this->set('data', $this->data);
-		}
-	}
-	
 	function _autoLoadCssAndJavascript() {
 		// Automagically load CSS files for controllers and actions/views
 		$this->set('controller_css_for_layout', 'views' . DS . strtolower($this->name) . '.css');
@@ -148,7 +141,6 @@ class AppController extends Controller {
 		$this->set('authedUser', $this->_getAuthedUserData());
 		$this->set('referer', $this->referer());
 		$this->_autoLoadCssAndJavascript();
-		$this->_alwaysPushThisDataToView();
 		$this->_useLayout();
 	}
 	

@@ -162,7 +162,12 @@ table form fieldset,
 table form fieldset input,
 table form div.submit,
 table form div,
-table tr td.actions {
+table tr td.actions,
+li form,
+li form fieldset,
+li form fieldset input,
+li form div.submit,
+li form div {
 	margin: 0;
 	padding: 0;
 	width: inherit;
@@ -176,4 +181,11 @@ table tr td.actions {
 table tr td.actions form {
 	text-align: left;
 	padding-bottom: .5em;
+}
+li form,
+li form fieldset,
+li form fieldset input,
+li form div.submit,
+li form div {
+	display: inline;
 }
