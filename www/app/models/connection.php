@@ -223,17 +223,16 @@ class Connection extends AppModel {
 	}
 	
 	function _store($set) {
-		debug($set);
 		if (isset($set['type']) and !in_array($set['type'], $this->types['all'])) { // Valid type?
 			$this->log('Connection Model, _store(): Incorrect type specified on save.', 'error');
 			return false;
 		}
 		$data = $this->data; // Backup $this->data
 		unset($this->data); // Security using $this->set() and $this->save() without 'fieldList'
-		$save = $this->save($set);
+		$result = $this->save($set);
 		$this->data = $data; // Restore $this->data
-		// $this->log($save, 'debug'); // Debugging
-		return $save;
+		// $this->log($result, 'debug'); // Debugging save result
+		return $result;
 	}
 	
 }
