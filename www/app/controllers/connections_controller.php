@@ -35,8 +35,28 @@ class ConnectionsController extends AppController {
 		$this->redirect(array('controller' => 'connections', 'action' => 'outgoing_requests'));
 	}
 	
-	function respond($answer, $id) {
-		
+	function respond($responseMethod = null, $id = null) {
+		$connectionData = $this->Connection->read('to_profile_id', $id);
+		$authedProfileId = $this->Connection->Profile->getAuthedId($this->Auth->user());
+		$error = false;
+		if ($connectionData === false) {
+			$error = ___('Invalid connection.');
+		} else if ($authedProfileId != $connectionData['Connection']['to_profile_id']) {
+			$error = ___('You can only respond to requests made to you.');
+		} else if (!in_array($responseMethod, $this->Connection->responseMethods)) {
+			$error = ___('Invalid response.');
+		}
+		if ($error !== false) {
+			$this->Session->setFlash($error);
+		} else {
+			$return = $this->Connection->respond($id, $responseMethod);
+			if ($return['success'] == true) {
+				$this->Session->setFlash($return['message'], 'flashes/success');
+			} else {
+				$this->Session->setFlash($return['message']);
+			}
+		}
+		$this->redirect(array('controller' => 'connections', 'action' => 'incoming_requests'));
 	}
 	
 	function index() {

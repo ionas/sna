@@ -53,6 +53,20 @@ class Connection extends AppModel {
 		),
 	);
 	
+	var $responseMethods = array(
+		'accept',
+		'reject',
+		'hide',
+		'ignore',
+	);
+	
+	
+	// Default method return
+	var $return = array(
+		'success' => false,
+		'message' => '(Error in Connection Model)',
+	);
+	
 	function saveRequest($type, $profileId, $toProfileData) {
 		$fields = array('id', 'type', 'is_request');
 		$conditions = array(
@@ -68,8 +82,77 @@ class Connection extends AppModel {
 		}
 	}
 	
+	function respond($connectionId, $reponseMethod) {
+		$return = $this->return;
+		$connectionData = $this->find('first', array(
+			'fields' => array(
+				'Connection.id',
+				'Connection.type',
+				'Connection.is_request',
+				'Profile.nickname',
+			),
+			'conditions' => array('Connection.id' => $connectionId),
+			'contain' => array(
+				'Profile',
+			),
+		));
+		$funcName = '_' . $reponseMethod . 'Response';
+		if ($connectionData['Connection']['is_request'] == 1) {
+			if (in_array($reponseMethod, $this->responseMethods)
+				and method_exists($this, $funcName)
+			) {
+				$return = call_user_func(array($this->name, $funcName), $connectionData);
+			} else {
+				$this->log('Connection Model, respond(): Method called, does not exist.');
+			}
+		} else {
+			$return['message'] = sprintf(___('Connection %s with %s is already established.'),
+				___d($connectionData['Connection']['type']),
+				$connectionData['Profile']['nickname']);
+		}
+		return $return;
+	}
+	
+	function _acceptResponse($connectionData) {
+		$return = $this->return;
+		if ($this->_store(array(
+			'id' => $connectionData['Connection']['id'],
+			'modified' => date('Y-m-d H:i:s'),
+			'is_request' => 0,
+			'is_hidden_by_requester' => 0,
+			'is_hidden_by_requestee' => 0,
+		))) {
+			$return['success'] = true;
+			$return['message'] = sprintf(___('Accepted %s request by %s.'), 
+				___d($connectionData['Connection']['type']),
+				$connectionData['Profile']['nickname']);
+		} else {
+			$return['success'] = true;
+			$return['message'] = sprintf(___('Could not accept %s request by %s.'),
+				$connectionData['Profile']['nickname']);
+		}
+		return $return;
+	}
+	
+	function _rejectReponse($connectionData) {
+		$return = $this->return;
+		// TODO
+		return $return;
+	}
+	
+	function _hideReponse($connectionData) {
+		$return = $this->return;
+		// TODO
+		return $return;
+	}
+	function _ignoreReponse($connectionData) {
+		$return = $this->return;
+		// TODO
+		return $return;
+	}
+	
 	function _createRequest($type, $profileId, $toProfileData) {
-		$return = array('success' => false);
+		$return = $this->return;
 		// TODO: Check if there is a mutual request of the same type, if so skip request and store.
 		if ((
 				!in_array('is_response_required_for_' . $type, array_keys($this->ToProfile->_schema))
@@ -111,7 +194,7 @@ class Connection extends AppModel {
 	}
 	
 	function _renewRequest($existingData, $toProfileData) {
-		$return = array('success' => false);
+		$return = $this->return;
 		if ($existingData['Connection']['is_request'] == 0) { // Renew requests only (else bollox)
 			$return['message'] = sprintf(___('%s for %s already established.'),
 				ucfirst(___d($existingData['Connection']['type'])),
@@ -135,8 +218,9 @@ class Connection extends AppModel {
 	}
 	
 	function _store($set) {
+		debug($set);
 		if (isset($set['type']) and !in_array($set['type'], $this->types['all'])) { // Valid type?
-			$this->log('Connection Model: Incorrect type specified on save.', 'error');
+			$this->log('Connection Model, _store(): Incorrect type specified on save.', 'error');
 			return false;
 		}
 		$data = $this->data; // Backup $this->data
