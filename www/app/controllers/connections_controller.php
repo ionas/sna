@@ -20,8 +20,7 @@ class ConnectionsController extends AppController {
 		} else if ($toProfileData === false) {
 			$error = ___('Invalid profile id.');
 		} else if ($authedProfileId == $toProfileId) {
-			$error = sprintf(___('You establish connection %s to yourself.'),
-				__d('additions', $type, true));
+			$error = sprintf(___('You establish %s to yourself.'), ___d($type));
 		}
 		if ($error !== false) {
 			$this->Session->setFlash($error);

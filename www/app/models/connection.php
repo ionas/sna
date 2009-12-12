@@ -1,4 +1,9 @@
 <?php
+
+// TODO:
+// Not sure yet if we should DOUBLE-save mutual connections.
+// We probably should, easier to implement?
+
 class Connection extends AppModel {
 	
 	var $name = 'Connection';
@@ -12,7 +17,7 @@ class Connection extends AppModel {
 		'is_request' => array('boolean'),
 		'is_hidden_by_requester' => array('boolean'),
 		'is_hidden_by_requestee' => array('boolean'),
-		'is_ignored_by_requestee' => array('boolean'), // Users won't notice this
+		'is_ignored_by_requestee' => array('boolean'), // Users won't notice if ignored in general
 		'is_deleted_by_requestee' => array('boolean'), // Hiding non-mutual connections like follow
 	);
 	
@@ -65,9 +70,15 @@ class Connection extends AppModel {
 	
 	function _createRequest($type, $profileId, $toProfileData) {
 		$return = array('success' => false);
-		if (in_array('is_response_required_for_' . $type, array_keys($this->ToProfile->_schema))
-			and $toProfileData['Profile']['is_response_required_for_' . $type] == 1
-			and in_array($type, $this->types['respondable'])
+		// TODO: Check if there is a mutual request of the same type, if so skip request and store.
+		if ((
+				!in_array('is_response_required_for_' . $type, array_keys($this->ToProfile->_schema))
+				and in_array($type, $this->types['respondable'])
+			) or (
+				in_array('is_response_required_for_' . $type, array_keys($this->ToProfile->_schema)
+				and $toProfileData['Profile']['is_response_required_for_' . $type] == 1
+				and in_array($type, $this->types['respondable']))
+			)
 		) { // If response required (disableable by Profile::is_response_required_for_$type = 0)
 			if ($this->_store(array(
 				'profile_id' => $profileId,
