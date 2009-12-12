@@ -2,17 +2,6 @@
 
 YouTube like Mail inbox for reference
 
-###########
-
-css: do not use float or position abs/rel 
-instead use display: inline-block
-See: http://blog.mozilla.com/webdev/2009/02/20/cross-browser-inline-block/
-
-http://meyerweb.com/eric/tools/css/reset/
-http://developer.yahoo.com/yui/articles/hosting/?reset&MIN#configure
-http://developer.yahoo.com/yui/examples/reset/reset-simple.html
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/reset/reset-min.css"> 
-
 ##############
 
 Security:
@@ -35,10 +24,6 @@ foreach($this->data[$this->alias] as $fieldname => $value) {
 
 ##############
 
-SSL and requireSecure()
-
-##############
-
 Gravatar instead of own Avatar
 Instead of Avatarable Behavior used now internally, use git submodule or git subtree or something like that and Miles Johnsons Uploader plugin  http://www.milesj.me/resources/script/uploader-plugin#Attaching-Files-To-Models-Auto-Upload
 
@@ -47,10 +32,6 @@ Instead of Avatarable Behavior used now internally, use git submodule or git sub
 After password change => force logout
 
 ###################
-
-User logs in at a second place/browser, first session should be invalidated.
-
-#####################
 
 Post/Redirect/Get Post-Redirect-Get PRG
 http://en.wikipedia.org/wiki/Post/Redirect/Get (profiles => shouts)

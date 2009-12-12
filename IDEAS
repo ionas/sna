@@ -55,6 +55,7 @@ http://teknoid.wordpress.com/2009/11/17/improved-form-handling-in-cakephp-1-3/
 @ Data Sanatizsation
 if ( $this->data != Sanatize::html( $this->data ) && ! $this->data['Model']['change_accepted'] ) return false
 Sanatize::html()
+http://book.cakephp.org/view/153/Data-Sanitization
 
 ##################
 
@@ -66,6 +67,7 @@ http://www.neilcrookes.com/2009/01/30/cakephp-site-search-with-yahoo-boss/
 #################
 
 @ Security Component
+SSL and requireSecure()
 http://www.milesj.me/blog/read/43/Protecting-Your-Forms-With-The-Security-Component
 
 #################
@@ -160,3 +162,26 @@ http://bakery.cakephp.org/articles/view/pagination
 http://snook.ca/archives/cakephp/contact_form_cakephp
 
 ###############
+
+@ SCREENDESIGN:
+http://tango.freedesktop.org/Tango_Icon_Library
+
+###############
+
+@ CSS:
+http://www.alistapart.com/articles/progressiveenhancementwithcss/
+css: do not use float or position abs/rel 
+instead use display: inline-block
+See: http://blog.mozilla.com/webdev/2009/02/20/cross-browser-inline-block/
+
+http://meyerweb.com/eric/tools/css/reset/
+http://developer.yahoo.com/yui/articles/hosting/?reset&MIN#configure
+http://developer.yahoo.com/yui/examples/reset/reset-simple.html
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/reset/reset-min.css"> 
+
+###############
+
+@ CODING STANDARDS
+https://trac.cakephp.org/wiki/Developement/CodingStandards
+
+#################

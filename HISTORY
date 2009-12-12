@@ -1,0 +1,34 @@
+X Logging in and out
+X User TOS Check on Login
+X User basic registration, validation and activation
+X User registration autofill username = nickname
+X User Registration prechecked checkbox: Send me a copy of my user account details (username, passwort, email, registration date)
+X (User) Validation translation (change from "var $validates = ..." to "contructor: $this->validates = ...")
+X User Registration Email Templates
+X User Registration Email Templates (external)
+X User last login
+X User deletion
+X last login bugfix (read to session on login, write to DB on login and logout)
+X Honey Pot Component + Autoloading helper
+X User forgot password
+X User change password
+X Chang default layout a bit - gives it a nice feeling
+X User hide
+X Cleanup User Controller
+X Form error format (CSS)
+X Check out Translation + Translation Tool (PO Files)
+X Add Language switcher to $layout + save in Cookies
+X Profile page
+X Profile visibility options
+X Move "user" and "profile" "current" naming to "active" (better readability)
+X Messaging
+X After User CREATION, create empty associated profile
+X Profile picture uploads
+X Basic Profile View (with Shouts)
+X Shoutbox
+X Shout Hiding / Shout Deletion
+X Create and use Gender model
+X Translate gender model data (Translateable?)
+X Fetch gender info to email templates (Herr/Frau)
+X For Gender/Persontitle - see 
+X Connection MVC

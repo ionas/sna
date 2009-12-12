@@ -13,5 +13,4 @@ Alternative: http://www.ad7six.com/entries/view/67/Generic-capability-based-secu
 
 ############
 
-Profile/Edit FILE/PUT/POST issue:
-http://cakephp.lighthouseapp.com/projects/42648/tickets/67-fix-formhelpercreatetype-file-defaults-to-http-put-should-default-to-http-post-configurable-else-issues-with-securitycomponentrequirepost-vs-securitycomponentrequireput-appear
+AuthComponent /users/login must kill current session after button pressed

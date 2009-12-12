@@ -1,3 +1,9 @@
+##########
+
+Profile/Edit FILE/PUT/POST issue:
+http://cakephp.lighthouseapp.com/projects/42648/tickets/67-fix-formhelpercreatetype-file-defaults-to-http-put-should-default-to-http-post-configurable-else-issues-with-securitycomponentrequirepost-vs-securitycomponentrequireput-appear
+
+##########
 
 SecurityComponent working with requestAction
 See: http://cakephp.lighthouseapp.com/projects/42648/tickets/67-fix-formhelpercreatetype-file-defaults-to-http-put-should-default-to-http-post-configurable-else-issues-with-securitycomponentrequirepost-vs-securitycomponentrequireput-appear
@@ -28,3 +34,5 @@ afterLayout method for GET requests by the user (to be used by BreadCrumeCompone
 ##################
 
 AuthComponent and Flash - different styles for "successful" flashs (like login/logout)
+
+##################

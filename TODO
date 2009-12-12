@@ -1,3 +1,84 @@
+##############
+
+Add Controller::saveReferer()
+$this->referer() with check against $this->here (no redirect back to self - loop protection)
+
+###########
+
+@ BUDDY & AUTH:
+o Messaging auth challenge (see ICQ)
+o Buddy auth challenge
+o Buddylists
+o Friend/Partner of Friend/Partner
+o Friend/Partner of Friend/Partner of Friend/Partner
+o Friend of Friend Connection Display
+
+###########
+
+@ USER/PROFILE:
+- After activation, redirect to /profile/x/edit
+- User change Email
+- Profile Edit - Monthname Translation
+- Profile Edit - Selected Date
+- See Profile/Editview for TODO
+
+- Gravatar (PLUGIN!)
+
+- Add User/Profile/Messages DELETION/PURGING (Personal Data only) var $purgeFields => array('name' => array('type' => 'type', 'value' => 'value'), look at cakes schema to determine type maybe)
+
+###########
+
+@ TRANSLATION:
+- Add Language autodetection (browser, geo location/ip) + save in Cookies
+- /users/register;lang=eng
+- LANG Urls / LANG Router
+- http://bakery.cakephp.org/articles/view/p28n-the-top-to-bottom-persistent-internationalization-tutorial
+- http://teknoid.wordpress.com/2008/11/28/cakephp-url-based-language-switching-for-i18n-and-l10n-internationalization-and-localization/
+
+###########
+
+SCREENDESIGN!!!
+
+###########
+
+@ ACTIVITIES (PLUGIN!)
+- data sources to last.fm, twitter, flickr, wordpress/rss
+
+###########
+
+@ DISCUSSION_GROUPS (PLUGIN!)
+
+###########
+
+@ MULTIPLE_PAGINATION (profile paginating shouts, activities, buddies whatever)
+http://cakephp.lighthouseapp.com/projects/42648/tickets/102-support-for-multiple-pagination
+- TODO, wrap request params, see bakery
+Also of interest:
+str_replace / => |
+str_replace : => ,
+echo 'paginate:shouts(' . str_replace('/', '|', '/page:1/sort:Shout.created/direction:asc') . ')'
+. '/paginate:activities(' . rawurlencode('/page:1/sort:Activities.created/direction:asc') . ')';
+
+###########
+
+@ SECURITY:
+- Check Security Concept @ Auth (All forbidden, allow excplicit)
+- CSFR: Form instead of Link for "Modifing" things:
+http://groups.google.com/group/cake-php/browse_thread/thread/8d82f0b09d1057c5#msg_3f7316111ff013ec
+http://www.ad7six.com/read/67-Generic-capability-based-security-%28CSRF-prevention%29
+http://code.assembla.com/mi/subversion/nodes/branches/mi_plugin/controllers/components/swiss_army.php#ln302
+- CSFR (Security, /foo/delete/id123 should not work (POST instead of GET?))
+- ACL (if required)
+- Security Features and Double Salts, See also: http://devedge.jonas-hartmann.com/documents/Securing_authentication_and_data_manipulation_via_HTTP.html
+- Research Akismet: http://sethcardoza.com/posts/view/8/title/integrating-akismet-with-cakephp http://akismet.com/ http://cakeforge.org/snippet/detail.php?type=snippet&id=95
+- Sanitize: <?php App::import('Sanitize')?> / Sanitize::html()
+- Password Generator (JS Based or Ajax based)
+
+###########
+
+Method and Class DOCUMENTATION
+TESTS
+
 ###########
 
 Validate User Registration Token Expiry
@@ -5,6 +86,7 @@ Remove unvalidated users after 72h (3days)
 
 ###########
 
-invalidate session if logged in from another place (DB Sessions?)
+Invalidate session if logged in from another place (DB Sessions?)
+User logs in at a second place/browser, first session should be invalidated.
 
 ###########
