@@ -32,10 +32,9 @@ class Connection extends AppModel {
 			'ignore',
 			'follow',
 			'friend',
-			'partner',
 			'messaging_authentification',
 			'shouting_authentification',
-			'spammer',
+			'partner', // TODO: Just for testing
 		),
 		'mutual' => array(
 			'friend',
@@ -43,9 +42,9 @@ class Connection extends AppModel {
 		),
 		'respondable' => array(
 			'friend',
-			'partner',
 			'messaging_authentification',
 			'shouting_authentification',
+			'partner', // TODO: Just for testing
 		),
 	);
 	
@@ -66,7 +65,10 @@ class Connection extends AppModel {
 	
 	function _createRequest($type, $profileId, $toProfileData) {
 		$return = array('success' => false);
-		if (in_array($type, $this->types['respondable'])) { // If response required
+		if (in_array('is_response_required_for_' . $type, array_keys($this->ToProfile->_schema))
+			and $toProfileData['Profile']['is_response_required_for_' . $type] == 1
+			and in_array($type, $this->types['respondable'])
+		) { // If response required (disableable by Profile::is_response_required_for_$type = 0)
 			if ($this->_store(array(
 				'profile_id' => $profileId,
 				'to_profile_id' => $toProfileData['Profile']['id'],

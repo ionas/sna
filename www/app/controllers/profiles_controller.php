@@ -57,7 +57,10 @@ class ProfilesController extends AppController {
 		if (!empty($this->data)) {
 			$this->data['Profile']['user_id'] = $this->Auth->user('id');
 			if ($this->Profile->save($this->data, true, array(
-						'is_hidden', 'nickname', 'birthday', 'location', 'gender_id'))) {
+				'is_hidden', 'nickname', 'birthday', 'location', 'gender_id',
+				'is_response_required_for_messaging_authentification',
+				'is_response_required_for_shouting_authentification',
+			))) {
 				$this->Session->setFlash(___('The Profile has been saved'), 'flashes/success');
 				// $this->redirect($this->referer());
 			} else {

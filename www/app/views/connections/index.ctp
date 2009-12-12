@@ -35,14 +35,18 @@ foreach ($connections as $connection):
 		<td style="text-align: left;">
 			<table>
 				<tr>
-					<th>Request</th>
-					<th>Hidden</th>
-					<th>Ignored</th>
+					<th>R</th>
+					<th>Hidden Requester</th>
+					<th>Hidden Requestee</th>
+					<th>Ignored Requestee</th>
+					<th>Deleted Requestee</th>
 				</tr>
 				<tr>
 					<td><?=$connection['Connection']['is_request']?></td>
-					<td><?=$connection['Connection']['is_hidden']?></td>
-					<td><?=$connection['Connection']['is_ignored']?></td>
+					<td><?=$connection['Connection']['is_hidden_by_requester']?></td>
+					<td><?=$connection['Connection']['is_hidden_by_requestee']?></td>
+					<td><?=$connection['Connection']['is_ignored_by_requestee']?></td>
+					<td><?=$connection['Connection']['is_deleted_by_requestee']?></td>
 				</tr>
 			</table>
 		</td>

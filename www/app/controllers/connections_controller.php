@@ -5,9 +5,15 @@ class ConnectionsController extends AppController {
 	
 	var $paginationLimit = 1;
 	
+	function beforeFilter() {
+		parent::beforeFilter();
+		// SecurityComponent setup
+		// $this->Security->requirePost('request', 'respond');
+	}
+	
 	function request($type = null, $toProfileId = null) {
 		$authedProfileId = $this->Connection->Profile->getAuthedId($this->Auth->user());
-		$toProfileData = $this->Connection->ToProfile->read(array('id', 'nickname'), $toProfileId);
+		$toProfileData = $this->Connection->ToProfile->read(null, $toProfileId);
 		$error = false;
 		if ($type == null or !in_array($type, $this->Connection->types['all'])) {
 			$error = ___('Invalid connection type.');
@@ -27,7 +33,7 @@ class ConnectionsController extends AppController {
 				$this->Session->setFlash($return['message']);
 			}
 		}
-		// $this->redirect(array('controller' => 'connections', 'action' => 'outgoing_requests'));
+		$this->redirect(array('controller' => 'connections', 'action' => 'outgoing_requests'));
 	}
 	
 	function respond($answer, $id) {
@@ -47,9 +53,11 @@ class ConnectionsController extends AppController {
 			'Connection.type',
 			'Connection.profile_id',
 			'Connection.to_profile_id',
-			'Connection.is_hidden',
 			'Connection.is_request',
-			'Connection.is_ignored',
+			'Connection.is_hidden_by_requestee',
+			'Connection.is_hidden_by_requester',
+			'Connection.is_ignored_by_requestee',
+			'Connection.is_deleted_by_requestee',
 			'Profile.id',
 			'Profile.nickname',
 			'ToProfile.id',
@@ -70,14 +78,7 @@ class ConnectionsController extends AppController {
 		// If filtered by target profile, add some conditions
 		if ($toProfileId != null) {
 			$conditions[] = array(
-				'or' => array(
-					'Connection.to_profile_id' => $toProfileId,
-					// If on the other side of a (mutual) connection
-					array(
-						'Connection.profile_id' => $toProfileId,
-//						'Connection.type' => $this->Connection->types['mutual'],
-					),
-				),
+				'Connection.to_profile_id' => $toProfileId,
 			);
 		}
 		$contain = array(
@@ -85,9 +86,6 @@ class ConnectionsController extends AppController {
 			'ToProfile',
 		);
 		$order = array(
-			'Connection.is_hidden',
-			'Connection.is_request',
-			'Connection.is_ignored',
 			'Connection.modified',
 		);
 		$limit = $this->paginationLimit;
@@ -105,9 +103,11 @@ class ConnectionsController extends AppController {
 			'Connection.type',
 			'Connection.profile_id',
 			'Connection.to_profile_id',
-			'Connection.is_hidden',
 			'Connection.is_request',
-			'Connection.is_ignored',
+			'Connection.is_hidden_by_requestee',
+			'Connection.is_hidden_by_requester',
+			'Connection.is_ignored_by_requestee',
+			'Connection.is_deleted_by_requestee',
 			'Profile.id',
 			'Profile.nickname',
 		);
@@ -122,9 +122,6 @@ class ConnectionsController extends AppController {
 			'Profile',
 		);
 		$order = array(
-			'Connection.is_hidden',
-			'Connection.is_request',
-			'Connection.is_ignored',
 			'Connection.modified',
 		);
 		$limit = $this->paginationLimit;
@@ -143,9 +140,11 @@ class ConnectionsController extends AppController {
 			'Connection.type',
 			'Connection.profile_id',
 			'Connection.to_profile_id',
-			'Connection.is_hidden',
 			'Connection.is_request',
-			'Connection.is_ignored',
+			'Connection.is_hidden_by_requestee',
+			'Connection.is_hidden_by_requester',
+			'Connection.is_ignored_by_requestee',
+			'Connection.is_deleted_by_requestee',
 			'Profile.id',
 			'Profile.nickname',
 			'ToProfile.id',
@@ -163,9 +162,6 @@ class ConnectionsController extends AppController {
 			'ToProfile',
 		);
 		$order = array(
-			'Connection.is_hidden',
-			'Connection.is_request',
-			'Connection.is_ignored',
 			'Connection.modified',
 		);
 		$limit = $this->paginationLimit;

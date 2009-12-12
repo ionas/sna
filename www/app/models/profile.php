@@ -75,6 +75,8 @@ class Profile extends AppModel {
 				),
 			),
 			'is_hidden' => array('boolean'),
+			'is_response_required_for_messaging_authentification' => array('boolean'),
+			'is_response_required_for_shouting_authentification' => array('boolean'),
 		);
 	}
 	

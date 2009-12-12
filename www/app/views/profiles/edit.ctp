@@ -29,7 +29,11 @@ if (file_exists(APP . DS . WEBROOT_DIR
 					'month' => '06',
 					'day' => '28'))),
 		$form->input('gender_id'),
-		$form->input('location')?>
+		$form->input('location'),
+		$form->input('is_response_required_for_messaging_authentification', array('label' => 
+			___('Users must request authentification before being able to send you messages?'))),
+		$form->input('is_response_required_for_shouting_authentification', array('label' => 
+			___('Users must request authentification before being able to post in your shoutbox?')))?>
 		<!-- TODO: Timezone -->
 		<!-- TODO: Country -->
 		<!-- TODO: About you / Description -->
