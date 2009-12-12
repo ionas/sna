@@ -30,7 +30,7 @@ foreach ($connections as $connection):
 			<?php endif?>
 		</td>
 		<td>
-			<?=ucfirst(__d('additions', $connection['Connection']['type'], true))?>
+			<?=ucfirst(str_replace('_', ' ', __d('additions', $connection['Connection']['type'], true)))?>
 		</td>
 		<td style="text-align: left;">
 			<table>

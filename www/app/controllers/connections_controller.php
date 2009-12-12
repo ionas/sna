@@ -7,27 +7,27 @@ class ConnectionsController extends AppController {
 	
 	function request($type = null, $toProfileId = null) {
 		$authedProfileId = $this->Connection->Profile->getAuthedId($this->Auth->user());
+		$toProfileData = $this->Connection->ToProfile->read(array('id', 'nickname'), $toProfileId);
 		$error = false;
-		// TODO fetch $toProfileId from profiles, check if it actually exists
-		if ($type == null) {
-			$error = ___('No type specified.');
-		} else if ($toProfileId == null) {
+		if ($type == null or !in_array($type, $this->Connection->types['all'])) {
+			$error = ___('Invalid connection type.');
+		} else if ($toProfileData === false) {
 			$error = ___('Invalid profile id.');
 		} else if ($authedProfileId == $toProfileId) {
-			$error = sprintf(___('You request connection %s to yourself.'),
+			$error = sprintf(___('You establish connection %s to yourself.'),
 				__d('additions', $type, true));
 		}
 		if ($error !== false) {
-			$this->Session->setFlash($errorMsg);
+			$this->Session->setFlash($error);
 		} else {
-			$info = $this->Connection->saveOrRenewRequest($type, $authedProfileId, $toProfileId);
-			if ($info['success'] == true) {
-				$this->Session->setFlash($info['message'], 'flashes/success');
+			$return = $this->Connection->saveRequest($type, $authedProfileId, $toProfileData);
+			if ($return['success'] == true) {
+				$this->Session->setFlash($return['message'], 'flashes/success');
 			} else {
-				$this->Session->setFlash($info['message']);
+				$this->Session->setFlash($return['message']);
 			}
 		}
-		$this->redirect(array('controller' => 'connections', 'action' => 'outgoing_requests'));
+		// $this->redirect(array('controller' => 'connections', 'action' => 'outgoing_requests'));
 	}
 	
 	function respond($answer, $id) {

@@ -1,5 +1,3 @@
-Instead of Avatarable Behavior used now internally, use git submodule or git subtree or something like that and Miles Johnsons Uploader plugin  http://www.milesj.me/resources/script/uploader-plugin#Attaching-Files-To-Models-Auto-Upload
-
 ###########
 
 YouTube like Mail inbox for reference
@@ -19,10 +17,6 @@ http://developer.yahoo.com/yui/examples/reset/reset-simple.html
 
 Security:
 	Configure::write('Session.cookie', 'CAKEPHP'); (different name)
-
-##############
-
-http://en.wikipedia.org/wiki/Post/Redirect/Get (e.g.: profiles => shouts)
 
 ##############
 
@@ -46,3 +40,19 @@ SSL and requireSecure()
 ##############
 
 Gravatar instead of own Avatar
+Instead of Avatarable Behavior used now internally, use git submodule or git subtree or something like that and Miles Johnsons Uploader plugin  http://www.milesj.me/resources/script/uploader-plugin#Attaching-Files-To-Models-Auto-Upload
+
+###################
+
+After password change => force logout
+
+###################
+
+User logs in at a second place/browser, first session should be invalidated.
+
+#####################
+
+PRG
+http://en.wikipedia.org/wiki/Post/Redirect/Get (profiles => shouts)
+
+##############

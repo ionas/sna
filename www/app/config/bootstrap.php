@@ -42,11 +42,27 @@
  */
 //EOF
 
-// convenience method to call ___('Foo') istead of __('Foo', true)
+/**
+*  Convenience method for __('String', true); calls.
+*  Call: ___('Foo'); instead!
+*/
 function ___($string) {
 	return __($string, true);
 }
 
-define('BR', '<br />');
+/**
+* Convenience method for str_replace('_', ' ', __d('additions', $string, true)); calls.
+* Call ___d($string); instead!
+*
+*/
+function ___d($key, $source = 'additions', $autoReplaceUnderscores = true, $doNotEcho = true) {
+	$string = __d($source, $key, $doNotEcho);
+	if ($autoReplaceUnderscores) {
+		$string = str_replace('_', ' ', $string);
+	}
+	return $string;
+}
+
+define('BR', '<br />'); // XHTML/HTML Convenience
 
 ?>

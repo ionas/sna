@@ -1,12 +1,17 @@
-- entering "/" removes Auth Session => AFTER rendered
+############
 
-- user creation + auto profile creation (Profile.nickname should EQUAL Profile.id, at first)
+user creation + auto profile creation (Profile.nickname should EQUAL Profile.id, at first)
 
-- BREADCRUME component buggy (+ afterShutdown of whole cake app)
+############
 
-- pressing one form button adds "spinning wheel", to all forms => should only color all of them grey
+entering "/" removes Auth Session => AFTER rendered
 
-- logging out (timeout, or logout and then in another tab pressing a button), then doing a POST/PUT request (security component) -> csrf attack (but its none). Solution, no redirect for post/put, just get. Possibility of adding GET views for non view-post-actions (like Move to Trash)
+############
+
+logging out (timeout, or logout and then in another tab pressing a button), then doing a POST/PUT request (security component) -> csrf attack (but its none). Solution, no redirect for post/put, just get. Possibility of adding GET views for non view-post-actions (like Move to Trash)
 Alternative: http://www.ad7six.com/entries/view/67/Generic-capability-based-security-%28CSRF-prevention%29
 
-- / should load UsersController->register_or_login - First via redirect later via Router
+############
+
+Profile/Edit FILE/PUT/POST issue:
+http://cakephp.lighthouseapp.com/projects/42648/tickets/67-fix-formhelpercreatetype-file-defaults-to-http-put-should-default-to-http-post-configurable-else-issues-with-securitycomponentrequirepost-vs-securitycomponentrequireput-appear
