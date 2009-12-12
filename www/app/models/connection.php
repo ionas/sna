@@ -115,6 +115,7 @@ class Connection extends AppModel {
 	
 	function _acceptResponse($connectionData) {
 		$return = $this->return;
+		// TODO: If mutual?!
 		if ($this->_store(array(
 			'id' => $connectionData['Connection']['id'],
 			'modified' => date('Y-m-d H:i:s'),

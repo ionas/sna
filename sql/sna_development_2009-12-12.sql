@@ -4,7 +4,7 @@
 #
 # Host: localhost (MySQL 5.0.67)
 # Database: sna_development
-# Generation Time: 2009-12-12 15:03:56 +0100
+# Generation Time: 2009-12-12 17:00:33 +0100
 # ************************************************************
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -42,14 +42,14 @@ LOCK TABLES `connections` WRITE;
 /*!40000 ALTER TABLE `connections` DISABLE KEYS */;
 INSERT INTO `connections` (`id`,`created`,`modified`,`type`,`profile_id`,`to_profile_id`,`is_request`,`is_hidden_by_requester`,`is_hidden_by_requestee`,`is_ignored_by_requestee`,`is_deleted_by_requestee`)
 VALUES
-	(51,'2009-12-12 14:28:21','2009-12-12 14:28:21','messaging_authentification','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,0,0,0),
-	(52,'2009-12-12 14:42:32','2009-12-12 14:42:32','friend','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,0,0,0),
+	(51,'2009-12-12 14:28:21','2009-12-12 14:28:21','messaging_authentification','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',1,0,0,0,0),
+	(52,'2009-12-12 14:42:32','2009-12-12 14:42:32','friend','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',1,0,0,0,0),
 	(53,'2009-12-12 14:42:39','2009-12-12 14:42:39','follow','4a93f845-c860-40d4-81ec-00e68784ca84','4a8f0408-6568-49bc-9b81-017a8784ca84',0,0,0,0,0),
-	(55,'2009-12-12 14:43:41','2009-12-12 14:43:41','friend','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',0,0,0,0,0),
-	(56,'2009-12-12 14:48:05','2009-12-12 15:01:57','messaging_authentification','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',1,0,0,0,0),
+	(55,'2009-12-12 14:43:41','2009-12-12 16:59:53','friend','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',1,0,0,0,0),
+	(56,'2009-12-12 14:48:05','2009-12-12 16:56:42','messaging_authentification','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',1,0,0,0,0),
 	(57,'2009-12-12 14:48:18','2009-12-12 14:48:18','follow','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',0,0,0,0,0),
-	(62,'2009-12-12 14:58:44','2009-12-12 15:01:48','partner','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',1,0,0,0,0),
-	(63,'2009-12-12 15:02:16','2009-12-12 15:02:16','shouting_authentification','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',0,0,0,0,0);
+	(62,'2009-12-12 14:58:44','2009-12-12 16:57:13','partner','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',1,0,0,0,0),
+	(63,'2009-12-12 15:02:16','2009-12-12 16:56:40','shouting_authentification','4a8f0408-6568-49bc-9b81-017a8784ca84','4a93f845-c860-40d4-81ec-00e68784ca84',1,0,0,0,0);
 
 /*!40000 ALTER TABLE `connections` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -406,8 +406,8 @@ LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`,`created`,`modified`,`is_deleted`,`is_disabled`,`has_accepted_tos`,`username`,`password`,`gender_id`,`email`,`last_login`,`activation_key`,`password_reset_key`)
 VALUES
-	('4a648ce4-08a4-46e2-91f8-024a8784ca84','2009-08-03 16:15:22','2009-12-12 14:43:22',0,0,1,'ionas','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b',3,'ionas@sna.dev','2009-12-12 14:43:22','',''),
-	('4a841aaa-6be4-4851-a666-00e38784ca84','2009-08-13 15:52:42','2009-12-12 14:43:18',0,0,1,'abc','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b',1,'sna@mailinator.com','2009-12-12 14:43:18','',''),
+	('4a648ce4-08a4-46e2-91f8-024a8784ca84','2009-08-03 16:15:22','2009-12-12 16:04:00',0,0,1,'ionas','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b',3,'ionas@sna.dev','2009-12-12 16:04:00','',''),
+	('4a841aaa-6be4-4851-a666-00e38784ca84','2009-08-13 15:52:42','2009-12-12 16:04:04',0,0,1,'abc','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b',1,'sna@mailinator.com','2009-12-12 16:04:04','',''),
 	('4b089566-b204-4f80-a8e2-69838784ca84','2009-12-04 02:35:34','2009-12-08 14:25:55',0,0,1,'tim','d234c827a80548e868cac076365c483fcdfadb80050a682fffd67a42e1dd012b',1,'foobar123@mailinator.com','2009-12-08 14:25:55','','');
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
