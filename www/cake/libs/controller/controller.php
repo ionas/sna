@@ -998,7 +998,6 @@ class Controller extends Object {
 			}
 			$options['order'] = array($options['sort'] => $direction);
 		}
-
 		if (!empty($options['order']) && is_array($options['order'])) {
 			$alias = $object->alias ;
 			$key = $field = key($options['order']);
