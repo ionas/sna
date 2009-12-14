@@ -35,7 +35,6 @@ class ConnectionsController extends AppController {
 			'Connection.is_hidden_by_requestee',
 			'Connection.is_hidden_by_requester',
 			'Connection.is_ignored_by_requestee',
-			'Connection.is_deleted_by_requestee',
 			'Profile.id',
 			'Profile.nickname',
 			'ToProfile.id',
@@ -85,7 +84,6 @@ class ConnectionsController extends AppController {
 			'Connection.is_hidden_by_requestee',
 			'Connection.is_hidden_by_requester',
 			'Connection.is_ignored_by_requestee',
-			'Connection.is_deleted_by_requestee',
 			'Profile.id',
 			'Profile.nickname',
 		);
@@ -122,7 +120,6 @@ class ConnectionsController extends AppController {
 			'Connection.is_hidden_by_requestee',
 			'Connection.is_hidden_by_requester',
 			'Connection.is_ignored_by_requestee',
-			'Connection.is_deleted_by_requestee',
 			'Profile.id',
 			'Profile.nickname',
 			'ToProfile.id',

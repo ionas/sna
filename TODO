@@ -21,10 +21,14 @@ o Friend of Friend Connection Display
 - Profile Edit - Monthname Translation
 - Profile Edit - Selected Date
 - See Profile/Editview for TODO
+- Profile Visitors
 
 - Gravatar (PLUGIN!)
+- http://bakery.cakephp.org/articles/view/gravatar-helper
+http://github.com/ionas/CakePHP-Goodies/tree/master/views/helpers/
 
 - Add User/Profile/Messages DELETION/PURGING (Personal Data only) var $purgeFields => array('name' => array('type' => 'type', 'value' => 'value'), look at cakes schema to determine type maybe)
+
 
 ###########
 

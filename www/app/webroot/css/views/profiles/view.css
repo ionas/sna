@@ -41,12 +41,18 @@
 .shouts.index p.picture img {
 	border: 1px solid #224477;
 	padding: 1px;
-	border-radius: 2px; /* CSS 3 */
-	-o-border-radius: 2px; /* Opera */
-	-icab-border-radius: 2px; /* iCab */
-	-khtml-border-radius: 2px; /* Konqueror */
-	-moz-border-radius: 2px; /* Firefox */
-	-webkit-border-radius: 2px; /* Safari */
+	-moz-border-radius-topright: 3px;
+	-moz-border-radius-topleft: 3px;
+	-webkit-border-top-right-radius: 3px;
+	-webkit-border-top-left-radius: 3px;
+	-khtml-border-radius-topright: 3px;
+	-khtml-border-radius-topleft: 3px;
+	-icab-border-top-right-radius: 3px;
+	-icab-border-top-left-radius: 3px;
+	-o-border-radius-topright: 3px;
+	-o-border-radius-topleft: 3px;
+	border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
 }
 .shouts.index p.picture img:hover {
 	background: white;

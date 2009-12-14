@@ -3,7 +3,7 @@ class Gender extends AppModel {
 	
 	var $name = 'Gender';
 	var $validate = array(
-		'is_hidden' => array('numeric'),
+		'is_hidden' => array('boolean'),
 		'label' => array('notempty'),
 	);
 	

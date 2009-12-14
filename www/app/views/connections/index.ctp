@@ -36,17 +36,15 @@ foreach ($connections as $connection):
 			<table>
 				<tr>
 					<th>R</th>
-					<th>Hidden Requester</th>
-					<th>Hidden Requestee</th>
-					<th>Ignored Requestee</th>
-					<th>Deleted Requestee</th>
+					<th>Hidden By Requester</th>
+					<th>Hidden By Requestee</th>
+					<th>Ignored By Requestee</th>
 				</tr>
 				<tr>
 					<td><?=$connection['Connection']['is_request']?></td>
 					<td><?=$connection['Connection']['is_hidden_by_requester']?></td>
 					<td><?=$connection['Connection']['is_hidden_by_requestee']?></td>
 					<td><?=$connection['Connection']['is_ignored_by_requestee']?></td>
-					<td><?=$connection['Connection']['is_deleted_by_requestee']?></td>
 				</tr>
 			</table>
 		</td>

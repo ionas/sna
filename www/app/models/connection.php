@@ -18,7 +18,6 @@ class Connection extends AppModel {
 		'is_hidden_by_requester' => array('boolean'),
 		'is_hidden_by_requestee' => array('boolean'),
 		'is_ignored_by_requestee' => array('boolean'), // Users won't notice if ignored in general
-		'is_deleted_by_requestee' => array('boolean'), // Hiding non-mutual connections like follow
 	);
 	
 	var $belongsTo = array(
@@ -65,6 +64,23 @@ class Connection extends AppModel {
 		'message' => 'Error',
 	);
 	
+	function findPossibleConnections($profileId, $toProfileId) {
+		if ($profileId == $toProfileId) {
+			return false;
+		} else {
+			$fields = array(
+				'Connection.type',
+			);
+			$conditions = array(
+				'Connection.profile_id' => $profileId,
+				'Connection.to_profile_id' => $toProfileId,
+			);
+			$usedConnectionTypes = $this->find('list', compact('fields', 'conditions'));
+			$unusedConnections = array_diff($this->types['all'], $usedConnectionTypes);
+			return $unusedConnections;
+		}
+	}
+	
 	function request($type, $profileId, $toProfileData) {
 		$fields = array('id', 'type', 'is_request');
 		$conditions = array(
@@ -82,18 +98,16 @@ class Connection extends AppModel {
 	
 	function respond($connectionId, $reponseMethod) {
 		$return = $this->return;
-		$connectionData = $this->find('first', array(
-			'fields' => array(
-				'Connection.id',
-				'Connection.type',
-				'Connection.is_request',
-				'Profile.nickname',
-			),
-			'conditions' => array('Connection.id' => $connectionId),
-			'contain' => array(
-				'Profile',
-			),
-		));
+		$fields = array(
+			'Connection.id',
+			'Connection.type',
+			'Connection.is_request',
+			'Profile.nickname',
+		);
+		$conditions = array('Connection.id' => $connectionId);
+		$contain = array('Profile');
+		$connectionData = $this->find('first', compact('fields', 'conditions', 'contain'));
+		// TODO: Just use switch on responseMethod
 		$funcName = '_' . $reponseMethod . 'Response';
 		if ($connectionData['Connection']['is_request'] == 1) {
 			if (in_array($reponseMethod, $this->responseMethods)
@@ -115,23 +129,6 @@ class Connection extends AppModel {
 		$return = $this->return;
 		// TODO
 		return $return;
-	}
-	
-	function findPossibleConnections($profileId, $toProfileId) {
-		if ($profileId == $toProfileId) {
-			return false;
-		} else {
-			$fields = array(
-				'Connection.type',
-			);
-			$conditions = array(
-				'Connection.profile_id' => $profileId,
-				'Connection.to_profile_id' => $toProfileId,
-			);
-			$types = $this->find('list', compact('fields', 'conditions'));
-			$unusedTypes = array_diff($this->types['all'], $types);
-			return $unusedTypes;
-		}
 	}
 	
 	function _acceptResponse($connectionData) {
