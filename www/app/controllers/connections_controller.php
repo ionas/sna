@@ -167,7 +167,8 @@ class ConnectionsController extends AppController {
 				$this->Session->setFlash($return['message']);
 			}
 		}
-		$this->redirect(array('controller' => 'connections', 'action' => 'outgoing_requests'));
+		$this->redirect($this->saveReferer(
+			array('controller' => 'connections', 'action' => 'outgoing_requests')));
 	}
 	
 	function respond($responseMethod = null, $id = null) {
@@ -191,12 +192,19 @@ class ConnectionsController extends AppController {
 				$this->Session->setFlash($return['message']);
 			}
 		}
-		$this->redirect(array('controller' => 'connections', 'action' => 'incoming_requests'));
+		$this->redirect($this->saveReferer(
+			array('controller' => 'connections', 'action' => 'incoming_requests')));
 	}
 	
 	function cancel($connectionId = null) {
-		// TODO
-		$this->Connection->cancel($connectionId);
+		$return = $this->Connection->cancel($connectionId);
+		if ($return['success'] == true) {
+			$this->Session->setFlash($return['message'], 'flashes/success');
+		} else {
+			$this->Session->setFlash($return['message']);
+		}
+		$this->redirect($this->saveReferer(
+			array('controller' => 'connections', 'action' => 'index')));
 	}
 	
 }

@@ -1,9 +1,4 @@
 <?php
-
-// TODO:
-// Not sure yet if we should DOUBLE-save mutual connections.
-// We probably should? Should not? Which is easier to implement? Which faster?
-
 class Connection extends AppModel {
 	
 	var $name = 'Connection';
@@ -38,30 +33,27 @@ class Connection extends AppModel {
 			'friend',
 			'messaging_authentification',
 			'shouting_authentification',
-			'partner', // TODO: Just for testing
 		),
 		'mutual' => array(
 			'friend',
-			'partner', // TODO: Just for testing
 		),
 		'respondable' => array(
 			'friend',
 			'messaging_authentification',
 			'shouting_authentification',
-			'partner', // TODO: Just for testing
 		),
 	);
 	
 	var $responseMethods = array(
 		'accept',
-		'reject',
+		'deny',
 		'hide',
 		'ignore',
 	);
 	
 	var $return = array( // Default method return values
 		'success' => false,
-		'message' => 'Error',
+		'message' => 'Connection Error.',
 	);
 	
 	function findPossibleConnections($profileId, $toProfileId) {
@@ -88,7 +80,6 @@ class Connection extends AppModel {
 			'profile_id' => $profileId,
 			'to_profile_id' => $toProfileData['Profile']['id'],
 		);
-		// TODO: Check for existing mutual connection request here and just accept it
 		$existingData = $this->find('first', compact('fields', 'conditions'));
 		if ($existingData === false) {
 			return $this->_createRequest($type, $profileId, $toProfileData);
@@ -97,7 +88,7 @@ class Connection extends AppModel {
 		}
 	}
 	
-	function respond($connectionId, $reponseMethod) {
+	function respond($connectionId, $responseMethod) {
 		$return = $this->return;
 		$fields = array(
 			'Connection.id',
@@ -108,15 +99,14 @@ class Connection extends AppModel {
 		$conditions = array('Connection.id' => $connectionId);
 		$contain = array('Profile');
 		$connectionData = $this->find('first', compact('fields', 'conditions', 'contain'));
-		// TODO: Just use switch on responseMethod
-		$funcName = '_' . $reponseMethod . 'Response';
+		$funcName = '_' . $responseMethod . 'Response';
 		if ($connectionData['Connection']['is_request'] == 1) {
-			if (in_array($reponseMethod, $this->responseMethods)
+			if (in_array($responseMethod, $this->responseMethods)
 				and method_exists($this, $funcName)
 			) {
 				$return = call_user_func(array($this->name, $funcName), $connectionData);
 			} else {
-				$this->log('Connection Model, respond(): Method called, does not exist.');
+				$this->log('Connection Model, respond(): Method called, does not exist.', 'error');
 			}
 		} else {
 			$return['message'] = sprintf(___('Connection %s with %s is already established.'),
@@ -128,13 +118,29 @@ class Connection extends AppModel {
 	
 	function cancel($connectionId) {
 		$return = $this->return;
-		// TODO
+		$fields = array(
+			'Connection.id',
+			'Connection.type',
+			'Profile.nickname',
+		);
+		$conditions = array('Connection.id' => $connectionId);
+		$contain = array('Profile');
+		$connectionData = $this->find('first', compact('fields', 'conditions', 'contain'));
+		if ($this->delete($connectionData['Connection']['id'])) {
+			$return['success'] = true;
+			$return['message'] = sprintf(___('%s connection with %s canceled.'), 
+				ucfirst(___d($connectionData['Connection']['type'])),
+				$connectionData['Profile']['nickname']);
+		} else {
+			$return['message'] = sprintf(___('Could not cancel connection.'),
+				ucfirst(___d($connectionData['Connection']['type'])),
+				$connectionData['Profile']['nickname']);
+		}
 		return $return;
 	}
 	
 	function _acceptResponse($connectionData) {
 		$return = $this->return;
-		// TODO: If mutual?!
 		if ($this->_store(array(
 			'id' => $connectionData['Connection']['id'],
 			'modified' => date('Y-m-d H:i:s'),
@@ -147,33 +153,66 @@ class Connection extends AppModel {
 				___d($connectionData['Connection']['type']),
 				$connectionData['Profile']['nickname']);
 		} else {
-			$return['success'] = true;
 			$return['message'] = sprintf(___('Could not accept %s request by %s.'),
 				$connectionData['Profile']['nickname']);
 		}
 		return $return;
 	}
 	
-	function _rejectReponse($connectionData) {
+	function _denyResponse($connectionData) {
 		$return = $this->return;
-		// TODO
+		if ($this->delete($connectionData['Connection']['id'])) {
+			$return['success'] = true;
+			$return['message'] = sprintf(___('Rejected %s request by %s.'), 
+				___d($connectionData['Connection']['type']),
+				$connectionData['Profile']['nickname']);
+		} else {
+			$return['message'] = sprintf(___('Could not reject %s request by %s.'),
+				$connectionData['Profile']['nickname']);
+		}
 		return $return;
 	}
 	
-	function _hideReponse($connectionData) {
+	function _hideResponse($connectionData) {
 		$return = $this->return;
-		// TODO
+		if ($this->_store(array(
+			'id' => $connectionData['Connection']['id'],
+			'modified' => date('Y-m-d H:i:s'),
+			'is_hidden_by_requestee' => 1,
+		))) {
+			$return['success'] = true;
+			$return['message'] = sprintf(___('Hid %s request by %s.'), 
+				___d($connectionData['Connection']['type']),
+				$connectionData['Profile']['nickname']);
+		} else {
+			$return['message'] = sprintf(___('Could not hide %s request by %s.'),
+				$connectionData['Profile']['nickname']);
+		}
 		return $return;
 	}
-	function _ignoreReponse($connectionData) {
+	
+	function _ignoreResponse($connectionData) {
 		$return = $this->return;
-		// TODO
+		if ($this->_store(array(
+			'id' => $connectionData['Connection']['id'],
+			'modified' => date('Y-m-d H:i:s'),
+			'is_ignored_by_requestee' => 1,
+		))) {
+			$return['success'] = true;
+			$return['message'] = sprintf(___('Ignored %s request by %s.'), 
+				___d($connectionData['Connection']['type']),
+				$connectionData['Profile']['nickname']);
+		} else {
+			$return['message'] = sprintf(___('Could not ignore %s request by %s.'),
+				$connectionData['Profile']['nickname']);
+		}
 		return $return;
 	}
 	
 	function _createRequest($type, $profileId, $toProfileData) {
 		$return = $this->return;
-		// TODO: Check if there is a mutual request of the same type, if so skip request and store.
+		// TODO: Check for existing mutual connection request here and just accept it
+		// Check if there is a mutual request of the same type, if so skip request and store.
 		$requestResponseRequired = false;
 		if (in_array($type, $this->types['respondable'])) {
 			if (!in_array('is_response_required_for_' . $type, array_keys($this->ToProfile->_schema))) {

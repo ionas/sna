@@ -140,9 +140,21 @@ class AppController extends Controller {
 	function beforeRender() {
 		$this->set('authedUser', $this->_getAuthedUserData());
 		$this->set('referer', $this->referer());
+		$this->set('saveReferer', $this->saveReferer());
 		$this->_autoLoadCssAndJavascript();
 		$this->_useLayout();
 	}
 	
+	function saveReferer($redirect = array()) {
+		if ($this->referer() == $this->here) {
+			if (!empty($redirect)) {
+				return $redirect;
+			} else {
+				return '/';
+			}
+		} else {
+			return $this->referer();
+		}
+	}
 }
 ?>

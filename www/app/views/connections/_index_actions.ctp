@@ -1,1 +1,1 @@
-<?=$secure->link(__('Cancel', true), array('action' => 'delete', $connection['Connection']['id']), null, sprintf(__('Are you sure you want to cancel request # %s?', true), $connection['Connection']['id']))?>
+<?=$secure->link(__('Cancel', true), array('action' => 'cancel', $connection['Connection']['id']), null, sprintf(__('Are you sure you want to cancel request # %s?', true), $connection['Connection']['id']))?>
