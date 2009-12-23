@@ -9,6 +9,7 @@ $this->referer() with check against $this->here (no redirect back to self - loop
 o Messaging auth challenge (see ICQ)
 o Buddy auth challenge
 o Buddylists
+
 o Friend/Partner of Friend/Partner
 o Friend/Partner of Friend/Partner of Friend/Partner
 o Friend of Friend Connection Display
@@ -29,6 +30,14 @@ http://github.com/ionas/CakePHP-Goodies/tree/master/views/helpers/
 
 - Add User/Profile/Messages DELETION/PURGING (Personal Data only) var $purgeFields => array('name' => array('type' => 'type', 'value' => 'value'), look at cakes schema to determine type maybe)
 
+##############
+
+On Profile Create, Create Welcome shout from sna profile (see Last.fm)
+
+##############
+
+Allow multiple pagination (not at the same time)
+See Ticket + Blog
 
 ###########
 

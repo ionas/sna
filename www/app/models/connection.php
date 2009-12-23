@@ -43,6 +43,9 @@ class Connection extends AppModel {
 			'messaging_authentification',
 			'shouting_authentification',
 		),
+		'networkable' => array(
+			'friend', // TODO, for friend of friend and friend of friend of friend
+		),
 	);
 	
 	var $responseMethods = array(
