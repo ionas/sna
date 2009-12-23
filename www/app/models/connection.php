@@ -1,4 +1,5 @@
 <?php
+// Feature: ConnectionLog
 class Connection extends AppModel {
 	
 	var $name = 'Connection';
@@ -54,6 +55,7 @@ class Connection extends AppModel {
 	var $return = array( // Default method return values
 		'success' => false,
 		'message' => 'Connection Error.',
+		'status' => 0,
 	);
 	
 	function findPossibleConnections($profileId, $toProfileId) {
@@ -234,6 +236,7 @@ class Connection extends AppModel {
 				$return['success'] = true;
 				$return['message'] = sprintf(___('%s requested from %s.'),
 					ucfirst(___d($type)), $toProfileData['Profile']['nickname']);
+				$return['status'] = 2;
 			} else {
 				$return['message'] = sprintf(___('Could not request %s from %s.'),
 					___d($type), $toProfileData['Profile']['nickname']);

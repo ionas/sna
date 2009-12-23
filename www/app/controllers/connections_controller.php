@@ -10,7 +10,7 @@ class ConnectionsController extends AppController {
 	
 	var $name = 'Connections';
 	
-	var $paginationLimit = 2;
+	var $paginationLimit = 5;
 	
 	function beforeFilter() {
 		parent::beforeFilter();
@@ -162,7 +162,11 @@ class ConnectionsController extends AppController {
 		} else {
 			$return = $this->Connection->request($type, $authedProfileId, $toProfileData);
 			if ($return['success'] == true) {
-				$this->Session->setFlash($return['message'], 'flashes/success');
+				if($return['status'] == 2) {
+					$this->Session->setFlash($return['message'], 'flashes/notification');
+				} else {
+					$this->Session->setFlash($return['message'], 'flashes/success');
+				}
 			} else {
 				$this->Session->setFlash($return['message']);
 			}
