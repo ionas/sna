@@ -84,10 +84,11 @@ class Connection extends AppModel {
 	function request($type, $profileId, $toProfileData) {
 		$fields = array('id', 'type', 'is_request');
 		$conditions = array(
+			'type' => $type,
 			'profile_id' => $profileId,
 			'to_profile_id' => $toProfileData['Profile']['id'],
-			'type' => $type,
 		);
+		// TODO: Check for existing mutual connection request here and just accept it
 		$existingData = $this->find('first', compact('fields', 'conditions'));
 		if ($existingData === false) {
 			return $this->_createRequest($type, $profileId, $toProfileData);

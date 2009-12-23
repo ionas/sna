@@ -22,6 +22,8 @@ class AppModel extends Model {
 				// see: http://php.net/manual/en/control-structures.foreach.php#92116
 			}
 			return $list;
+		} else if ($conditions == 'pagination') {
+			// TODO ...
 		} else {
 			return parent::find($conditions, $fields, $order, $recursive);
 		}
@@ -180,7 +182,6 @@ class AppModel extends Model {
 			return $data[$this->alias][$fieldname];
 		}
 	}
-	
 	
 }
 ?>
