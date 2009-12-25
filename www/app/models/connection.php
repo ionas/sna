@@ -255,7 +255,6 @@ class Connection extends AppModel {
 	function _createRequest($type, $profileId, $toProfileData) {
 		$return = $this->return;
 		$requestResponseRequired = true;
-		debug($toProfileData);
 		if (!in_array($type, $this->types['respondable']) or ( // No response required by connection
 			 	// ...or: not a required flag that is set to 0 (not required) 
 				in_array('is_required_' . $type, array_keys($this->ToProfile->_schema))

@@ -162,7 +162,7 @@ class Message extends AppModel {
 			return true;
 		}
 		/* HACKFIX:
-		* Required because of a bug in cake
+		* Required because of a bug in cake. saveAll() and validation bug probably fixed in 1.3
 		* Reason: Validation of saveAll kicks in, BUT it does not trigger front end errors
 		*/
 		$this->validates($this->data);
