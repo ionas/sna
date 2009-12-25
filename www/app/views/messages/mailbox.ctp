@@ -53,10 +53,10 @@ foreach ($messages as $message):
 			<tr<?=$class?>>
 				<?php if ($filter == 'sent'):?>
 				<td><?=$html->link($message['ToProfile']['nickname'], array('controller' => 'profiles', 'action' => 'view', $message['Message']['to_profile_id']))?> 
-					<br /><?=__('On');?> <?=$myhtml->dateMedium($message['Message']['created'])?></td>
+					<?=BR?><?=__('On');?> <?=$myhtml->dateMedium($message['Message']['created'])?></td>
 				<?php else:?>
 				<td><?=$html->link($message['FromProfile']['nickname'], array('controller' => 'profiles', 'action' => 'view', $message['Message']['from_profile_id']))?> 
-					<br /><?=__('On');?> <?=$myhtml->dateMedium($message['Message']['created'])?></td>
+					<?=BR?><?=__('On');?> <?=$myhtml->dateMedium($message['Message']['created'])?></td>
 				<?php endif?>
 				<?php if ($filter == 'trash'):?>
 				<td><?=$html->link($message['ToProfile']['nickname'], array('controller' => 'profiles', 'action' => 'view', $message['Message']['to_profile_id']))?></td>
@@ -66,7 +66,8 @@ foreach ($messages as $message):
 				</td>
 				<td class="actions" rowspan="2">
 					<?php if ($message['Message']['profile_id'] != $message['Message']['from_profile_id']):?>
-						<?=$secure->link(__('Reply', true), array('action' => 'reply', $message['Message']['id']), array('class' => 'iconLinkButton messageReply'))?> 
+						<?=$html->link(__('Reply', true), array('action' => 'reply', $message['Message']['id']), array('class' => 'messageReply'))?> 
+						<?=BR.BR?>
 					<?php endif?>
 					<?php if ($message['Message']['is_trashed'] == 1):?>
 						<?=$secure->link(__('Restore', true), array('action' => 'restore', $message['Message']['id']), array('class' => 'messageRestore'))?> 

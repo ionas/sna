@@ -46,6 +46,18 @@ class ProfilesController extends AppController {
 		if (!empty($this->data)) {
 			$this->shout_to($id);
 		}
+		$this->set('messagingAuthentification', false);
+		if ($this->Profile->Connection->check('messaging_authentification',
+			$this->Profile->getAuthedId($this->Auth->user()), $id)
+		) {
+			$this->set('messagingAuthentification', true);
+		}
+		$this->set('shoutingAuthentification', false);
+		if ($this->Profile->Connection->check('shouting_authentification',
+			$this->Profile->getAuthedId($this->Auth->user()), $id)
+		) {
+			$this->set('shoutingAuthentification', true);
+		}
 		$this->set('profile', $this->Profile->read(null, $id));
 		$this->set('shouts', $this->shouts($id));
 		$this->set('possibleConnections', $this->possible_connections($id));
@@ -59,11 +71,11 @@ class ProfilesController extends AppController {
 			$this->data['Profile']['user_id'] = $this->Auth->user('id');
 			if ($this->Profile->save($this->data, true, array(
 				'is_hidden', 'nickname', 'birthday', 'location', 'gender_id',
-				'is_response_required_for_messaging_authentification',
-				'is_response_required_for_shouting_authentification',
+				'is_required_messaging_authentification',
+				'is_required_shouting_authentification',
 			))) {
 				$this->Session->setFlash(___('The Profile has been saved'), 'flashes/success');
-				// $this->redirect($this->referer());
+				$this->redirect($this->referer());
 			} else {
 				$this->Session->setFlash(__('The Profile could not be saved. Please, try again.', true));
 			}

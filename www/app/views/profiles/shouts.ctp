@@ -42,9 +42,9 @@ foreach ($shouts as $shout):
 			<?=$html->link($shout['FromProfile']['nickname'], array('action' => 'view', $shout['Shout']['from_profile_id']))?>
 			on <?=substr($shout['Shout']['created'], 0, -3); ?>:
 			<?php if($shout['Shout']['is_deleted_by_shouter']):?>
-				<br /><em class="notification is_deleted_by_shouter">(<?__('This shout is only visible to you, as it has been removed by its author')?>)</em>
+				<?=BR?><em class="notification is_deleted_by_shouter">(<?__('This shout is only visible to you, as it has been removed by its author')?>)</em>
 			<?php elseif($shout['Shout']['is_hidden']):?>
-				<br /><em class="notification is_hidden">(<?__('This shout is hidden')?>)</em>
+				<?=BR?><em class="notification is_hidden">(<?__('This shout is hidden')?>)</em>
 			<?php endif?>
 		</p>
 		<div class="body">
@@ -63,7 +63,7 @@ foreach ($shouts as $shout):
 			<?php endif?>
 		<?php endif?>
 		</div>
-		<br class="clear" />
+		<?=BRCLEAR?>
 	</li>
 <?php endforeach; ?>
 </ul>

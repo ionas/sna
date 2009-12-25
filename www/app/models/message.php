@@ -27,7 +27,6 @@ class Message extends AppModel {
 	);
 	
 	function __construct($id = false, $table = null, $ds = null) {
-		parent::__construct();
 		$this->validate = array(
 			'user_id' => array(
 				'notempty' => array(
@@ -108,6 +107,7 @@ class Message extends AppModel {
 				),
 			),
 		);
+		parent::__construct();
 	}
 	
 	function send($fromProfileId, $toProfileId) {
@@ -119,8 +119,12 @@ class Message extends AppModel {
 	}
 	
 	function _send($fromProfileId, $toProfileId, $type) { // type can be send or reply
-		// data[0] is what is saved at the sender, data[1] what the receiver gets.
-		$data[0] = $this->data;
+		if (!$this->auth($fromProfileId, $toProfileId)) {
+			$this->invalidate('messaging_authentification',
+				___('Messaging authentification required.'));
+			return false;
+		}
+		$data[0] = $this->data; // data[0]: copy for the sender
 		$fromProfileData = $this->Profile->find('first', array(
 				'fields' => array('user_id'),
 				'conditions' => array('Profile.id' => $fromProfileId)));
@@ -128,7 +132,7 @@ class Message extends AppModel {
 		$data[0]['Message']['profile_id'] = $fromProfileId;
 		$data[0]['Message']['from_profile_id'] = $fromProfileId;
 		$data[0]['Message']['to_profile_id'] = $toProfileId;
-		$data[1] = $data[0];
+		$data[1] = $data[0]; // data[1]: copy for the receiver
 		// TODO: Check if the receiving user and profile are alive
 		if ($toProfileData = $this->Profile->find('first', array(
 				'fields' => array('user_id', 'is_hidden'),
@@ -157,12 +161,17 @@ class Message extends AppModel {
 					'subject', 'body')))) {
 			return true;
 		}
-		$this->validates($data);
 		/* HACKFIX:
-		* Required because of a bug in either app or cake
+		* Required because of a bug in cake
 		* Reason: Validation of saveAll kicks in, BUT it does not trigger front end errors
 		*/
+		$this->validates($this->data);
 		return false;
+	}
+	
+	function auth($fromProfileId, $toProfileId) {
+		return ClassRegistry::init('Connection')->check(
+			'messaging_authentification', $fromProfileId, $toProfileId);
 	}
 	
 }

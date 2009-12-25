@@ -7,7 +7,7 @@ class MessagesController extends AppController {
 		parent::beforeFilter();
 		// SecurityComponent setup
 		$this->Security->requirePost('delete', 'trash', 'restore');
-		if(!empty($this->data['Message']['body'])) {
+		if (!empty($this->data)) {
 			$this->Security->requirePut('send', 'reply');
 		}
 	}
@@ -96,10 +96,9 @@ class MessagesController extends AppController {
 				$this->Auth->user())
 		or !$this->Message->Profile->read('nickname', $toProfileId)) {
 			$this->Session->setFlash(__('Invalid profile.', true));
-			$this->redirect($this->here);
+			$this->saveRedirect(array('controller' => 'profiles', 'action' => 'self'));
 		}
-		$this->set('toProfile', $this->Message->Profile->data);
-		if (!empty($this->data['Message']['body'])) {
+		if (!empty($this->data)) {
 			$this->Message->create($this->data);
 			if ($this->Message->send($this->Message->Profile->getAuthedId($this->Auth->user()),
 					$toProfileId)
@@ -112,6 +111,7 @@ class MessagesController extends AppController {
 					__('Your message could not be send, see below.', true));
 			}
 		}
+		$this->set('toProfile', $this->Message->Profile->data);
 	}
 	
 	function reply($id = null) {

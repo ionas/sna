@@ -64,5 +64,6 @@ function ___d($key, $source = 'additions', $autoReplaceUnderscores = true, $doNo
 }
 
 define('BR', '<br />'); // XHTML/HTML Convenience
+define('BRCLEAR', '<br style="visibility: hidden; height: 0; width: 0; border:0; margin: 0; padding: 0; display: inline; clear: both" />');
 
 ?>

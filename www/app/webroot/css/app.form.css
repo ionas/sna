@@ -178,6 +178,7 @@ table tr td.actions {
 	padding-left: 1em;
 	padding-right: .5em;
 }
+table tr td.actions,
 table tr td.actions form {
 	text-align: left;
 	padding-bottom: .5em;

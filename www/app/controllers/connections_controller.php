@@ -18,7 +18,7 @@ class ConnectionsController extends AppController {
 		$this->Security->requirePost('request', 'respond', 'cancel');
 	}
 	
-	function index() {
+	function index($type = null, $toProfileId = null) {
 		$toProfileId = null;
 		if (!empty($this->params['named']['profile'])) {
 			$toProfileId = $this->params['named']['profile'];
@@ -58,12 +58,17 @@ class ConnectionsController extends AppController {
 				'Connection.to_profile_id' => $toProfileId,
 			);
 		}
+		if ($type != null) {
+			$conditions[] = array(
+				'Connection.type' => $type,
+			);
+		}
 		$contain = array(
 			'Profile',
 			'ToProfile',
 		);
 		$order = array(
-			'Connection.modified',
+			'Connection.modified DESC',
 		);
 		$limit = $this->paginationLimit;
 		$this->paginate = compact('fields', 'conditions', 'contain', 'order', 'limit');
@@ -98,7 +103,7 @@ class ConnectionsController extends AppController {
 			'Profile',
 		);
 		$order = array(
-			'Connection.modified',
+			'Connection.modified DESC',
 		);
 		$limit = $this->paginationLimit;
 		$this->paginate = compact('fields', 'conditions', 'contain', 'order', 'limit');
@@ -137,7 +142,7 @@ class ConnectionsController extends AppController {
 			'ToProfile',
 		);
 		$order = array(
-			'Connection.modified',
+			'Connection.modified DESC',
 		);
 		$limit = $this->paginationLimit;
 		$this->paginate = compact('fields', 'conditions', 'contain', 'order', 'limit');

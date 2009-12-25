@@ -3,7 +3,7 @@ class Profile extends AppModel {
 	
 	var $name = 'Profile';
 	
-	// TODO switch/change Avatarable
+	// TODO: switch/change Avatarable to Gravatar
 	var $actsAs = array('Containable', 'Avatarable');
 	
 	var $displayField = 'nickname';
@@ -42,6 +42,8 @@ class Profile extends AppModel {
 		),
 	);
 	
+	var $_authedId = null; // Holds the profile id authed user's current profile
+	
 	function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct();
 		$this->validate = array(
@@ -75,21 +77,23 @@ class Profile extends AppModel {
 				),
 			),
 			'is_hidden' => array('boolean'),
-			'is_response_required_for_messaging_authentification' => array('boolean'),
-			'is_response_required_for_shouting_authentification' => array('boolean'),
+			'is_required_messaging_authentification' => array('boolean'),
+			'is_required_shouting_authentification' => array('boolean'),
 		);
 	}
 	
-	function getAuthedId($authInfo = null) {
-		$data = $this->find('first', array(
-			'fields' => array('id'),
-			'conditions' => array('user_id' => $authInfo['User']['id'])));
-		if (empty($data)) {
-			return false;
-		} else {
-			return $data['Profile']['id'];
-			
+	function getAuthedId($authInfo = array()) {
+		if ($this->_authedId == null) {
+			$data = $this->find('first', array(
+				'fields' => array('id'),
+				'conditions' => array('user_id' => $authInfo['User']['id'])));
+			if (empty($data)) {
+				return false;
+			} else {
+				$this->_authedId = $data['Profile']['id'];
+			}
 		}
+		return $this->_authedId;
 	}
 	
 }

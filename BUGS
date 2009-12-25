@@ -14,3 +14,17 @@ Alternative: http://www.ad7six.com/entries/view/67/Generic-capability-based-secu
 ############
 
 AuthComponent /users/login must kill current session after button pressed
+
+##############
+
+User model updateActvity updates modified (which it should not) automagical
+
+############### 
+
+Using Back/Forth buttons of the browser still shows TheFlash
+
+###############
+
+Using Back/Forth buttons of the browser results into buttons begin disabled
+
+##############

@@ -85,6 +85,25 @@ class Shout extends AppModel {
 			),
 		);
 	}
-
+	
+	function save($data = null, $validate = true, $fieldList = array()) {
+		// You may shout to yourself:
+		if ($this->data['Shout']['from_profile_id'] != $this->data['Shout']['profile_id']) {
+			// But for others you probably need authentification, so check it:
+			if ($this->auth($this->data['Shout']['from_profile_id'],
+				$this->data['Shout']['profile_id']) === false
+			) {
+				return false;
+			}
+		}
+		// Everything fine it seems, save it
+		return parent::save($data, $validate, $fieldList);
+	}
+	
+	function auth($fromProfileId, $toProfileId) {
+		return ClassRegistry::init('Connection')->check(
+			'shouting_authentification', $fromProfileId, $toProfileId);
+	}
+	
 }
 ?>

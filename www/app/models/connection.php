@@ -7,13 +7,13 @@ class Connection extends AppModel {
 	var $actsAs = array('Containable');
 	
 	var $validate = array(
-		'type' => array('notempty'),
+		'type' => array('notempty'), // Alphanumeric as well
 		'profile_id' => array('notempty'),
 		'to_profile_id' => array('notempty'),
 		'is_request' => array('boolean'),
 		'is_hidden_by_requester' => array('boolean'),
 		'is_hidden_by_requestee' => array('boolean'),
-		'is_ignored_by_requestee' => array('boolean'), // Users won't notice if ignored in general
+		'is_ignored_by_requestee' => array('boolean'), // Users won't notice being ignored at all.
 	);
 	
 	var $belongsTo = array(
@@ -44,7 +44,7 @@ class Connection extends AppModel {
 			'shouting_authentification',
 		),
 		'networkable' => array(
-			'friend', // TODO, for friend of friend and friend of friend of friend
+			'friend', // TODO: for friend of friend and friend of friend of friend
 		),
 	);
 	
@@ -61,24 +61,39 @@ class Connection extends AppModel {
 		'status' => 0,
 	);
 	
+	function __construct($id = false, $table = null, $ds = null) {
+		$this->return['message'] = ___('Generic Connection Error.');
+		parent::__construct($id, $table, $ds);
+	}
+	
 	function findPossibleConnections($profileId, $toProfileId) {
 		if ($profileId == $toProfileId) {
 			return false;
-		} else {
-			$fields = array(
-				'Connection.type',
-			);
-			$conditions = array(
-				'Connection.profile_id' => $profileId,
-				'Connection.to_profile_id' => $toProfileId,
-			);
-			$usedConnectionTypes = $this->find('list', compact('fields', 'conditions'));
-			$unusedConnections = array_diff($this->types['all'], $usedConnectionTypes);
-			return $unusedConnections;
 		}
+		// Filter established Connections
+		$fields = array(
+			'Connection.type',
+		);
+		$conditions = array(
+			'Connection.profile_id' => $profileId,
+			'Connection.to_profile_id' => $toProfileId,
+			'Connection.is_request' => 0, // A request is anot 
+		);
+		$establishedConnections = $this->find('list', compact('fields', 'conditions'));
+		$unestablishedConnections = array_diff($this->types['all'], $establishedConnections);
+		
+		// Filter connection types globally allowed by the target profile
+		$possibleConnections = array_diff($unestablishedConnections,
+			$this->_getTypesAuthedByProfile($toProfileId));
+		
+		return $possibleConnections;
 	}
 	
 	function request($type, $profileId, $toProfileData) {
+		$return = $this->return;
+		if (in_array($type, $this->_getTypesAuthedByProfile($toProfileData['Profile']['id']))) {
+			return $return;
+		}
 		$fields = array('id', 'type', 'is_request');
 		$conditions = array(
 			'type' => $type,
@@ -144,6 +159,29 @@ class Connection extends AppModel {
 		return $return;
 	}
 	
+	function _getTypesAuthedByProfile($profileId) {
+		$typesAuthedByProfile = array();
+		$fields = array();
+		$conditions = array('id' => $profileId);
+		foreach ($this->types['all'] as $type) {
+			if (in_array('is_required_' . $type, array_keys($this->Profile->_schema))) {
+				$types['is_required_' . $type] = 0;
+				$fields[] = 'is_required_' . $type;
+			}
+		}
+		$conditions[] = array('or' => $types);
+		$profileData = $this->Profile->find('first', compact('fields', 'conditions'));
+		if (!empty($profileData)) {
+			foreach ($profileData['Profile'] as $type => $flag) {
+				if ($flag == 0) { // is_required_?_authentification = 0
+					$type = explode('is_required_', $type);
+					$typesAuthedByProfile[] = $type[1];
+				}
+			}
+		}
+		return $typesAuthedByProfile;
+	}
+
 	function _acceptResponse($connectionData) {
 		$return = $this->return;
 		if ($this->_store(array(
@@ -216,26 +254,46 @@ class Connection extends AppModel {
 	
 	function _createRequest($type, $profileId, $toProfileData) {
 		$return = $this->return;
-		// TODO: Check for existing mutual connection request here and just accept it
-		// Check if there is a mutual request of the same type, if so skip request and store.
-		$requestResponseRequired = false;
-		if (in_array($type, $this->types['respondable'])) {
-			if (!in_array('is_response_required_for_' . $type, array_keys($this->ToProfile->_schema))) {
-				$requestResponseRequired = true;
-			}
-			if (in_array('is_response_required_for_' . $type, array_keys($this->ToProfile->_schema))
-			and $toProfileData['Profile']['is_response_required_for_' . $type] == 1) {
-				$requestResponseRequired = true;
-			}
+		$requestResponseRequired = true;
+		debug($toProfileData);
+		if (!in_array($type, $this->types['respondable']) or ( // No response required by connection
+			 	// ...or: not a required flag that is set to 0 (not required) 
+				in_array('is_required_' . $type, array_keys($this->ToProfile->_schema))
+				and $toProfileData['Profile']['is_required_' . $type] == 0)
+		) {
+				$requestResponseRequired = false;
 		}
-		// If response required (disableable by Profile::is_response_required_for_$type = 0)
+		// If response required (disableable by Profile::is_required_$type = 0)
 		if ($requestResponseRequired) {
-			if ($this->_store(array(
+			$connectionData = array(
 				'profile_id' => $profileId,
 				'to_profile_id' => $toProfileData['Profile']['id'],
 				'type' => $type,
 				'is_request' => 1,
-			))) {
+			);
+			// If there is a mutual request of the same type
+			// do not create a new connection
+			// but update the given one.
+			$fields = array('id');
+			$conditions = $connectionData;
+			$conditions['profile_id'] = $connectionData['to_profile_id'];
+			$conditions['to_profile_id'] = $connectionData['profile_id'];
+			$existingData = $this->find('first', compact('conditions'));
+			if($existingData !== false) {
+				$this->id = $existingData['Connection']['id'];
+				$existingData['is_request'] = 0;
+				if ($this->save($existingData)) {
+					$return['success'] = true;
+					$return['message'] = sprintf(___('%s with %s established.'), 
+						ucfirst(___d($type)), $toProfileData['Profile']['nickname']);
+					
+				} else {
+					$return['message'] = sprintf(___('Could not establish %s with %s.'),
+						___d($type), $toProfileData['Profile']['nickname']);
+				}
+			}
+			// Else store the connection
+			else if ($this->_store($connectionData)) {
 				$return['success'] = true;
 				$return['message'] = sprintf(___('%s requested from %s.'),
 					ucfirst(___d($type)), $toProfileData['Profile']['nickname']);
@@ -244,7 +302,7 @@ class Connection extends AppModel {
 				$return['message'] = sprintf(___('Could not request %s from %s.'),
 					___d($type), $toProfileData['Profile']['nickname']);
 			}
-		} else { // If no response required
+		} else { // If no response required (either because of type, or because of profile setting)
 			if ($this->_store(array(
 				'profile_id' => $profileId,
 				'to_profile_id' => $toProfileData['Profile']['id'],
@@ -298,11 +356,37 @@ class Connection extends AppModel {
 		return $result;
 	}
 	
-	function check($type, $profileId, $toProfileId) {
-		$return = $this->return;
-		// TODO
-		// TODO treat mutual
-		return $return;
+	function check($type, $fromProfileId, $toProfileId) {
+		// No point connecting to one self
+		if ($toProfileId == $fromProfileId) {
+			return false;
+		}
+		// Check auth by connection...
+		$conditions = array(
+			'type' => $type,
+			'is_request' => 0,
+		);
+		if (in_array($type, $this->types['mutual'])) { // Mutual type = twisted IDs
+			$conditions['Connection.profile_id'] = $toProfileId;
+			$conditions['Connection.to_profile_id'] = $fromProfileId;
+		} else { // Non mutual type
+			$conditions['Connection.profile_id'] = $fromProfileId;
+			$conditions['Connection.to_profile_id'] = $toProfileId;
+		}
+		$authed = (boolean) $this->find('count', compact('fields', 'conditions'));
+		// If not authed by Connection, check if there is an authentification by profile defaults
+		if ($authed == false) {
+			if (in_array('is_required_' . $type, array_keys($this->Profile->_schema))) {
+				$conditions = array(
+					'id' => $toProfileId,
+					'is_required_' . $type => 0,
+				);
+				if ((boolean) $this->Profile->find('count', compact('conditions'))) {
+					return true;
+				}
+			}
+		}
+		return $authed;
 	}
 	
 }

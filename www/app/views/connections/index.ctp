@@ -32,6 +32,7 @@ foreach ($connections as $connection):
 		<td>
 			<?=ucfirst(str_replace('_', ' ', __d('additions', $connection['Connection']['type'], true)))?>
 		</td>
+		<!--
 		<td style="text-align: left;">
 			<table>
 				<tr>
@@ -48,6 +49,7 @@ foreach ($connections as $connection):
 				</tr>
 			</table>
 		</td>
+		-->
 		<td class="actions">
 			<?php if ($this->action == 'index'):?>
 				<?=$this->element('../connections/_index_actions', array('connection' => $connection))?>

@@ -16,7 +16,7 @@ if ($hasAcceptedTos != 1) {
 </p>
 <fieldset id="tosWindow">
 <?=$termsOfService?>
-<br />
+<?=BR?>
 <p>
 For later reference, you can find a copy of our <?=$html->link(__('Terms of Service', true), array('controller'=> 'pages', 'action'=>'display', 'terms_of_service'))?> at <?=$html->link(env('SERVER_NAME') . '/terms_of_service', array('controller'=> 'pages', 'action'=>'display', 'terms_of_service'))?>, all time.
 </p>

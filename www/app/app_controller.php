@@ -1,10 +1,8 @@
 <?php
 class AppController extends Controller {
 	
-	var $components = array( 'Cookie', 'Session', 'Security', 'Auth', 'RequestHandler');
+	var $components = array('Cookie', 'Security', 'Auth', 'RequestHandler', 'Session');
 	var $helpers = array('Html', 'Form', 'Secure', 'Javascript', 'Myhtml');
-	
-	var $_layoutWorkAround = null;
 	
 	function beforeFilter() {
 		$this->_setupAuth();
@@ -44,7 +42,7 @@ class AppController extends Controller {
 		$this->Auth->autoRedirect = true;
 	}
 	
-	function _getAuthedUserData() {
+	function getAuthedUserData() {
 		$authedUser = array();
 		$authedProfileData = array();
 		if ($this->Auth->isAuthorized()) {
@@ -52,7 +50,12 @@ class AppController extends Controller {
 			$this->loadModel('Profile');
 			$this->Profile = new Profile();
 			$authedProfileData = $this->Profile->find('first', array(
-				'fields' => array('Profile.id', 'Profile.nickname'),
+				'fields' => array(
+					'Profile.id',
+					'Profile.nickname',
+					'Profile.is_required_messaging_authentification',
+					'Profile.is_required_shouting_authentification',
+				),
 				'conditions' => array('Profile.user_id' => $this->Auth->user('id'))));
 		}
 		return array_merge($authedProfileData, $authedUser);
@@ -127,8 +130,8 @@ class AppController extends Controller {
 		$this->set('css_for_layout', 'layouts' . DS . strtolower($this->layout . '.css'));
 	}
 	
-	function _useLayout() {
-		if($this->_layoutWorkAround != null) {
+	function _useLayoutWorkaround() {
+		if(isset($this->_layoutWorkAround) and $this->_layoutWorkAround != null) {
 			$this->layout = $this->_layoutWorkAround;
 		}
 	}
@@ -138,11 +141,11 @@ class AppController extends Controller {
 	}
 	
 	function beforeRender() {
-		$this->set('authedUser', $this->_getAuthedUserData());
+		$this->set('authedUser', $this->getAuthedUserData());
 		$this->set('referer', $this->referer());
 		$this->set('saveReferer', $this->saveReferer());
 		$this->_autoLoadCssAndJavascript();
-		$this->_useLayout();
+		$this->_useLayoutWorkaround();
 	}
 	
 	function saveReferer($redirect = array()) {
@@ -156,5 +159,11 @@ class AppController extends Controller {
 			return $this->referer();
 		}
 	}
+	
+	function afterRender() {
+		if ($this->Auth->isAuthorized()) {
+			ClassRegistry::init('User')->updateActivity($this->Auth->user(), 'last_action');
+		}
+	}	
 }
 ?>

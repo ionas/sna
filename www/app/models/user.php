@@ -246,28 +246,24 @@ class User extends AppModel {
 		$this->id = $data[$this->alias]['id'];
 		if ($this->saveField('has_accepted_tos', $switch, true)) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 	
 	function setDisabled($data, $switch) {
 		$this->id = $data[$this->alias]['id'];
 		if ($this->saveField('is_disabled', $switch, true)) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 	
-	function updateLastLogin($data) {
+	function updateActivity($data, $type = 'last_login') {
 		$this->id = $data[$this->alias]['id'];
-		if ($this->saveField('last_login', date('Y-m-d H:i:s'), true)) {
+		if ($this->saveField($type, date('Y-m-d H:i:s'), true)) {
 			return true;
-		} else {
-			$this->log('Could not update last_login on user ' . $this->id . true);
-			return false;
 		}
+		return false;
 	}
 	
 	function saveNewPassword($data) {
@@ -290,9 +286,8 @@ class User extends AppModel {
 			$this->save(null, false, array('password'));
 			$this->saveField('password_reset_key', '');
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 	
 	// TODO: still a bug with password validation (entering '' password works)

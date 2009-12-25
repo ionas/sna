@@ -12,9 +12,9 @@
 		?>
 	</head>
 	<body>
-		<?=$content_for_layout?><br />
-		<br />
-		--<br />
+		<?=$content_for_layout?><?=BR?>
+		<?=BR?>
+		--<?=BR?>
 		<?php
 		$domainName = env('SERVER_NAME');
 		if (strpos($domainName, 'www.') === 0) {
@@ -22,9 +22,9 @@
 		}
 		?>
 		<b><?=$domainName?></b>
-		<br />
-		<br />
-		<?=__('This message has been generated. Do not reply to this message.', true)?><br />
+		<?=BR?>
+		<?=BR?>
+		<?=__('This message has been generated. Do not reply to this message.', true)?><?=BR?>
 		<?=__('If you require support, visit', true)?> <?=$html->link(__('http://' . env('SERVER_NAME') . '/pages/support', true),
 				array('controller' => 'pages', 'action' => 'display', 'http://' . env('SERVER_NAME') . '/support'))?>
 	</body>

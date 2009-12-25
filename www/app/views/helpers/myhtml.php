@@ -3,6 +3,13 @@ class MyhtmlHelper extends AppHelper {
 	
 	var $helpers = array('Html');
 	
+	function __construct() {
+		if (!defined('BR')) {
+			define('BR', '<br />'); // XHTML/HTML Convenience
+		}
+		parent::__construct();
+	}
+		
 	function clean($text, $maxLength = '40') {
 		if (mb_detect_encoding($text) != 'UTF-8') {
 			$text = utf8_encode($text); // Encode text in UTF-8
@@ -31,7 +38,7 @@ class MyhtmlHelper extends AppHelper {
 	function nl2p($text, $options = array(), $enforceMaxLen = true) {
 		$pS = $this->Html->tag('p', null, $options);
 		$pE = '</p>';
-		$br = '<br />';
+		$br = BR;
 		if (!empty($text)) {
 			// Clean double whitespaces, tabs as well as trailing and starting whitespaces and tabs
 			$text = $this->clean($text);

@@ -26,11 +26,18 @@
 <div class="actions">
 	<?php if (!empty($authedUser) and $authedUser['Profile']['id'] != $profile['Profile']['id']): ?>
 		<ul>
-			<li><?=$secure->link(___('Send Message'),
-				array('controller' => 'messages', 'action' => 'send', $profile['Profile']['id']))?>
+			<li><?php if ($messagingAuthentification):?>
+				<?=$html->link(
+					___('Send Message'), array(
+						'controller' => 'messages', 'action' => 'send', $profile['Profile']['id']))
+				?><?php else:?>
+					<p><em>
+					<?php __('You require authentification if you want to send a message to this profile.')?>
+					</em></p>
+				<?php endif?>
 			</li>
 		</ul>
-		<br />
+		<?=BR?>
 		<?php if (!empty($possibleConnections)):?>
 			<?php require('possible_connections.ctp');?>
 		<?php endif?>
@@ -41,8 +48,15 @@
 		<?php if (!empty($shouts)):?>
 			<?php require('shouts.ctp');?>
 		<?php endif?>
-		<?php if(!empty($authedUser)):?>
+		<?php if (($authedUser['Profile']['id'] == $profile['Profile']['id']
+				or $shoutingAuthentification)):?>
 			<?php require('shout_to.ctp');?>
+		<?php endif?>
+		<?php if (($authedUser['Profile']['id'] != $profile['Profile']['id']
+				and !$shoutingAuthentification)):?>
+			<p class="notification"><em>
+				<?php __('You require authentification if you want to shout to this profile.')?>
+			</em></p>
 		<?php endif?>
 	<?php endif?>
 </div>

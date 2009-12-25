@@ -10,3 +10,10 @@
 		<li><hr /><?=$html->link(__('Logout', true), array('controller' => 'users', 'action' => 'logout'))?></li>
 	</ul>
 </div>
+<?php if(!empty($authedUser)):?>
+<div id="infobox">
+	<p><?=sprintf(___('Logged with: %s.'), $authedUser['User']['username'])?></p>
+	<p><?=sprintf(___('Active profile: %s.'), $authedUser['Profile']['nickname'])?></p>
+	<p><?=sprintf(___('Last Login: %s.'), $myhtml->dateMedium($authedUser['User']['last_login']))?></p>
+</div>
+<?php endif?>

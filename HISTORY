@@ -32,3 +32,5 @@ X Translate gender model data (Translateable?)
 X Fetch gender info to email templates (Herr/Frau)
 X For Gender/Persontitle - see 
 X Connection MVC
+X Messaging auth challenge (see ICQ)
+X Buddy auth challenge

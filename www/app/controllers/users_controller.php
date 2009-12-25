@@ -180,7 +180,7 @@ ___('Your registration has been successful. However, you will still need to acti
 	function login() {
 		// TODO: Enforce logout on username + password submit
 		if ($this->Auth->isAuthorized() === true) {
-			$this->User->updateLastLogin($this->Auth->user());
+			$this->User->updateActivity($this->Auth->user(), 'last_login');
 			if (!empty($this->data)) {
 				$authRedirect = $this->Session->read('Auth.redirect');
 				if (in_array($authRedirect, array(null, '/', '/users/register'))) {
@@ -206,7 +206,7 @@ ___('Your registration has been successful. However, you will still need to acti
 		if ($this->Auth->isAuthorized() == true) {
 			$this->Session->setFlash(
 				__('Goodbye', true) . ' ' . $this->Auth->user('username') . '...');
-			$this->User->updateLastLogin($this->Auth->user());
+			$this->User->updateActivity($this->Auth->user(), 'last_login');
 		}
 		$this->Auth->logout();
 		$this->redirect(array('action' => 'home'));

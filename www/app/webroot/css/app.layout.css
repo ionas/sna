@@ -59,10 +59,25 @@ body {
 	margin: 0;
 	list-style: none;
 }
-#menu {
+#menu,
+#infobox {
 	float: left;
 	width: 12em;
 	margin-right: 1em;
+}
+#infobox {
+	margin: 0;
+	padding: 0;
+	margin-top: .5em;
+	clear: left;
+	font-size: 130%;
+}
+#infobox p {
+	font-size: 70%;
+	padding: .2em .5em;
+	padding-right: 0;
+	margin-right: 0;
+	width: inherit;
 }
 #menu a {
 	text-decoration: none;
