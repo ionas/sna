@@ -298,5 +298,12 @@ class Connection extends AppModel {
 		return $result;
 	}
 	
+	function check($type, $profileId, $toProfileId) {
+		$return = $this->return;
+		// TODO
+		// TODO treat mutual
+		return $return;
+	}
+	
 }
 ?>
