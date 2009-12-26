@@ -18,11 +18,7 @@ class ConnectionsController extends AppController {
 		$this->Security->requirePost('request', 'respond', 'cancel');
 	}
 	
-	function index($type = null, $toProfileId = null) {
-		$toProfileId = null;
-		if (!empty($this->params['named']['profile'])) {
-			$toProfileId = $this->params['named']['profile'];
-		}
+	function index($toProfileId = null, $type = null) {
 		$authedProfileId = $this->Connection->Profile->getAuthedId($this->Auth->user());
 		$fields = array(
 			'Connection.id',
@@ -52,16 +48,23 @@ class ConnectionsController extends AppController {
 				),
 			)
 		);
-		// If filtered by target profile, add some conditions
-		if ($toProfileId != null) {
-			$conditions[] = array(
-				'Connection.to_profile_id' => $toProfileId,
-			);
-		}
+		// Type filter
 		if ($type != null) {
 			$conditions[] = array(
 				'Connection.type' => $type,
 			);
+		}
+		// Target profile filter
+		if ($toProfileId != null) {
+			$conditions[] = array('or' => array(
+				array(
+					'Connection.to_profile_id' => $toProfileId,
+				),
+				array(
+					'Connection.profile_id' => $toProfileId,
+					'Connection.type' => $this->Connection->types['mutual'],
+				),
+			));
 		}
 		$contain = array(
 			'Profile',
@@ -76,7 +79,7 @@ class ConnectionsController extends AppController {
 		$this->set('viewTitle', ___('Established connections'));
 	}
 	
-	function incoming_requests($profileId = null) {
+	function incoming_requests($profileId = null, $type = null) {
 		$authedProfileId = $this->Connection->Profile->getAuthedId($this->Auth->user());
 		$fields = array(
 			'Connection.id',
@@ -96,6 +99,13 @@ class ConnectionsController extends AppController {
 			'Connection.is_request' => 1,
 			'Connection.to_profile_id' => $authedProfileId,
 		);
+		// Type filter
+		if ($type != null) {
+			$conditions[] = array(
+				'Connection.type' => $type,
+			);
+		}
+		// Target profile filter
 		if ($profileId != null) {
 			$conditions['Connection.profile_id'] = $profileId;
 		}
@@ -112,7 +122,7 @@ class ConnectionsController extends AppController {
 		$this->render('index');
 	}
 	
-	function outgoing_requests($profileId = null) {
+	function outgoing_requests($profileId = null, $type = null) {
 		$authedProfileId = $this->Connection->Profile->getAuthedId($this->Auth->user());
 		$fields = array(
 			'Connection.id',
@@ -134,6 +144,13 @@ class ConnectionsController extends AppController {
 			'Connection.is_request' => 1,
 			'Connection.profile_id' => $authedProfileId,
 		);
+		// Type filter
+		if ($type != null) {
+			$conditions[] = array(
+				'Connection.type' => $type,
+			);
+		}
+		// Target profile filter
 		if ($profileId != null) {
 			$conditions['Connection.to_profile_id'] = $profileId;
 		}
@@ -151,7 +168,7 @@ class ConnectionsController extends AppController {
 		$this->render('index');
 	}
 	
-	function request($type = null, $toProfileId = null) {
+	function request($toProfileId = null, $type = null) {
 		$authedProfileId = $this->Connection->Profile->getAuthedId($this->Auth->user());
 		$toProfileData = $this->Connection->ToProfile->read(null, $toProfileId);
 		$error = false;
