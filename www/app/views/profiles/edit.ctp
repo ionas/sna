@@ -1,5 +1,8 @@
 <div class="profiles form">
-<?=$form->create('Profile', array('type' => 'file'))?>
+ 
+<?=$form->create('Profile', array('type' => 'post', 'enctype' => 'multipart/form-data'))?> 
+ 
+
 	<fieldset>
  		<legend><?php __('Profile')?></legend>
 	<?=$form->input('id'),
