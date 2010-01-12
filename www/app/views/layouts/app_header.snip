@@ -11,10 +11,8 @@
 	<?=$html->css('app.layout')?> 
 	<?=$html->css('app.form')?> 
 	<?=$html->css('app.jquery')?>
-	<!--[if gte IE7]>
-	<?=$html->css('app.browser.ie')?>
-	<![endif]-->
- 	<?php if (file_exists(CSS . $css_for_layout)) { echo $html->css($css_for_layout); }?> 
+	<!--[if gte IE 7]><?=$html->css('app.browser.ie')?><![endif]-->
+	<?php if (file_exists(CSS . $css_for_layout)) { echo $html->css($css_for_layout); }?> 
 	<?php if (file_exists(CSS . $controller_css_for_layout)) {
 		echo $html->css($controller_css_for_layout); } ?> 
 	<?php if(file_exists(CSS . $view_css_for_layout)) { echo $html->css($view_css_for_layout); } ?> 
