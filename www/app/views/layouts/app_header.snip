@@ -11,7 +11,7 @@
 	<?=$html->css('app.layout')?> 
 	<?=$html->css('app.form')?> 
 	<?=$html->css('app.jquery')?>
-	<!--[if IE]>
+	<!--[if gte IE7]>
 	<?=$html->css('app.browser.ie')?>
 	<![endif]-->
  	<?php if (file_exists(CSS . $css_for_layout)) { echo $html->css($css_for_layout); }?> 

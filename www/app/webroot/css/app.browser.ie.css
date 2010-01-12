@@ -12,5 +12,7 @@ a.iconLinkButton,
 .messageSubjectClickable:before {
 	border-radius: 4px;
 	behavior: url('css/htc/border-radius.htc');
-	background: white;
+}
+form fieldset {
+	background: inherit
 }
