@@ -13,6 +13,6 @@ a.iconLinkButton,
 	-moz-border-radius: 11px;
 	-webkit-border-radius: 11px;
 	border-radius: 11px;
-	behavior: url(htc/border-radius.htc);
+	behavior: url(/css/htc/border-radius.htc);
 	background: green;
 }
