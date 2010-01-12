@@ -10,9 +10,5 @@ form fieldset,
 form textarea,
 a.iconLinkButton,
 .messageSubjectClickable:before {
-	-moz-border-radius: 11px;
-	-webkit-border-radius: 11px;
-	border-radius: 11px;
-	behavior: url(/css/htc/border-radius.htc);
-	background: green;
+	behavior: url('css/htc/border-radius.htc');
 }
