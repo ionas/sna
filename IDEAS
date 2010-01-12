@@ -9,6 +9,7 @@ http://bakery.cakephp.org/articles/view/boost-performance-by-removing-htaccess-p
 CSS Caching: http://ru.php.net/manual/en/function.ob-start.php#71299
 Page Caching (for GET): http://www.coderprofile.com/networks/source-codes/170/simple-page-caching
 Containable: http://mark-story.com/posts/view/using-bindmodel-to-get-to-deep-relations
+Memcached: http://bakery.cakephp.org/articles/view/simple-way-to-memcache-almost-all-database-queries
 
 ###########
 
@@ -185,9 +186,13 @@ http://developer.yahoo.com/yui/examples/reset/reset-simple.html
 Comments like this: http://www.igvita.com/2008/05/27/ruby-eventmachine-the-speed-demon/
 
 CSS Round Corners
+http://code.google.com/p/curved-corner
 http://www.smileycat.com/miaow/archives/000044.php
 http://virtuelvis.com/gallery/css/rounded/
 http://perishablepress.com/press/2008/11/24/perfect-rounded-corners-with-css/
+
+http://colorschemedesigner.com/
+http://kuler.adobe.com/
 
 http://www.css3.info/preview/web-fonts-with-font-face/
 http://snook.ca/archives/html_and_css/becoming-a-font-embedding-master

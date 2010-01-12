@@ -1,0 +1,14 @@
+#menu,
+#content,
+#authMessage,
+#flashMessage,
+form div.input.error .error-message,
+form div.input.text input,
+form div.input.password input,
+form div.submit input,
+form fieldset,
+form textarea,
+a.iconLinkButton,
+.messageSubjectClickable:before {
+	behavior: url(htc/border-radius.htc);
+}
