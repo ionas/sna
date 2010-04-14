@@ -84,6 +84,18 @@ http://www.milesj.me/blog/read/66/Fixing-The-Missing-Model-And-AppModel-Replacem
 
 ###################
 
+@ Fonts/CSS/Headers
+http://www.jankoatwarpspeed.com/post/2009/06/11/text-embossing-effect.aspx
+http://www.webdesignerwall.com/tutorials/css-gradient-text-effect/
+http://snook.ca/archives/html_and_css/css-text-rotation
+http://net.tutsplus.com/javascript-ajax/how-to-use-any-font-you-wish-with-flir/
+http://www.slideshare.net/jonathansnook/the-type-we-want-mix10
+http://snook.ca/archives/conferences/mix10-the-type-we-want
+http://www.codestyle.org/css/font-family/sampler-SansSerif.shtml
+
+@ CSS3/Background
+http://snook.ca/pages/demo/bg-image
+
 @ Navigation
 
 <ul id="menu"><li><a href="/foo">Foo</a></li><li><a href="/bar">Bar</a></li></ul>
@@ -169,7 +181,7 @@ http://snook.ca/archives/cakephp/contact_form_cakephp
 
 @ SCREENDESIGN:
 http://tango.freedesktop.org/Tango_Icon_Library
-
+http://net.tutsplus.com/javascript-ajax/how-to-use-any-font-you-wish-with-flir/
 ###############
 
 @ CSS:

@@ -3,20 +3,40 @@ class AppModel extends Model {
 	
 	var $recursive = -1; // Default setting for all Model::find() calls, better use containable
 	
+	// TODO: Is this used anyway?
+	// This is bad design
+	function purge($id) {
+		if (!isset($this->skipOnPurge)) {
+			$this->skipOnPurge = array('id', 'created', 'modified');
+		}
+		if ($id != null) {
+			$purgeData = array_diff(array_keys($this->_schema), $this->skipOnPurge);
+			$purgeData = Set::normalize($purgeData);
+			$purgeData[$this->alias] = array_fill_keys(array_keys($purgeData), null);
+			$purgeData[$this->alias]['is_deleted'] = '1';
+			$purgeData[$this->alias][$this->primaryKey] = $this->id;
+			if ($this->save($purgeData, null, false) !== false) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	/**
-	* TODO: should be moved into a behavior named Dynamic
+	* TODO: should be moved into a behavior named DynamicDisplayFieldable
 	* Usage: var $displayField = array("%s %s", "{n}.User.name", "{n}.User.secondname");
 	* Based on: http://bakery.cakephp.org/articles/view/multiple-display-field-3#3875
 	* by Arialdo Martini
 	*/
 	function find($conditions = null, $fields = array(), $order = null, $recursive = null) {
+		$translationFile = 'additions'; // TODO: Should default to cakephp's default
 		if ($conditions == 'list' && is_array($this->displayField)) {
 			$data = $this->find('all', $fields, $order, $recursive);
 			$list = Set::combine($data, '{n}.' . $this->name . '.' . $this->primaryKey,
 				$this->displayField);
 			if (isset($this->displayFieldDoTranslate) and $this->displayFieldDoTranslate === true) {
 				foreach ($list as &$element) {
-					$element = __d('additions', $element, true); // Translation
+					$element = __d($translationFile, $element, true); // Translation
 				}
 				unset($element); // Fixes PHP 5.2.x issue with foreach on & references
 				// see: http://php.net/manual/en/control-structures.foreach.php#92116
@@ -30,7 +50,7 @@ class AppModel extends Model {
 	}
 	
 	/**
-	* TODO all validations should be moved into a behavior like "extendedValidationable"
+	* TODO all validations should be moved into a behavior like "extendedValidationableBehavior"
 	* including pause and unpause validation
 	*/
 	function validateEqualData($data, $comparisonField, $message = null) {
@@ -93,7 +113,7 @@ class AppModel extends Model {
 		$this->pauseValidation($fieldname, $rulename, false);
 	}
 	
-	// TODO: Should be moved into a MailBehavior
+	// TODO: Should be moved into a MailableBehavior
 	// Wrapper around EMailComponent (and possibly SMSGatewayComponent in future)
 	function _sendMessage($viewData, $template, $gateway) {
 		if (isset($gateway['email'])) {
@@ -125,26 +145,7 @@ class AppModel extends Model {
 		// ENH: SMS-Gateway
 	}
 	
-	// TODO: is this used anyway?
-	// this is bad design
-	function purge($id) {
-		if (!isset($this->skipOnPurge)) {
-			$this->skipOnPurge = array('id', 'created', 'modified');
-		}
-		if ($id != null) {
-			$purgeData = array_diff(array_keys($this->_schema), $this->skipOnPurge);
-			$purgeData = Set::normalize($purgeData);
-			$purgeData[$this->alias] = array_fill_keys(array_keys($purgeData), null);
-			$purgeData[$this->alias]['is_deleted'] = '1';
-			$purgeData[$this->alias][$this->primaryKey] = $this->id;
-			if ($this->save($purgeData, null, false) !== false) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	// TODO: move this into extendedDebuggable
+	// TODO: move this into extendedDebuggableBehavior
 	function validates($options = array()) {
 		// Debug validation
 		$errors = $this->invalidFields($options);
@@ -155,7 +156,7 @@ class AppModel extends Model {
 		return parent::validates($options);
 	}
 	
-	// TODO: Move to extendedOperationable
+	// TODO: Move to extendedOperationableBehavior
 	// Saves a field, if the object exists
 	function saveFieldIfExists($id = null, $fieldname, $value, $validate = false) {
 		if ($this->find('count', array('conditions' => array($this->primaryKey => $id))) < 1) {
@@ -172,7 +173,7 @@ class AppModel extends Model {
 	// Gets a single field value, if the object exists
 	// Todo add cache and cache clean, on save, saveFieldIfExists and saveField
 	// if the row (or in case of saveField the row+field) is touched, unvalidate cache
-	function getFieldIfExists($id = null, $fieldname) {
+	function getFieldIfExists($id = null, $fieldname) { // Switch params, $id = $this->id by default
 		$data = $this->find('first', array(
 			'conditions' => array($this->primaryKey => $id),
 			'fields' => array($fieldname)));

@@ -5,6 +5,7 @@ class AppController extends Controller {
 	var $helpers = array('Html', 'Form', 'Secure', 'Javascript', 'Myhtml');
 	
 	function beforeFilter() {
+		$this->disableCache();
 		$this->_setupAuth();
 		$this->_setLanguage();
 		$this->_setupLayout();

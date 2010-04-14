@@ -1,29 +1,23 @@
 <?php
-/* SVN FILE: $Id$ */
 /**
  * MS SQL layer for DBO
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
- * Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
- * @link          http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.model.datasources.dbo
  * @since         CakePHP(tm) v 0.10.5.1790
- * @version       $Revision$
- * @modifiedby    $LastChangedBy$
- * @lastmodified  $Date$
- * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+
 /**
  * Short description for class.
  *
@@ -33,24 +27,28 @@
  * @subpackage    cake.cake.libs.model.datasources.dbo
  */
 class DboMssql extends DboSource {
+
 /**
  * Driver description
  *
  * @var string
  */
 	var $description = "MS SQL DBO Driver";
+
 /**
  * Starting quote character for quoted identifiers
  *
  * @var string
  */
 	var $startQuote = "[";
+
 /**
  * Ending quote character for quoted identifiers
  *
  * @var string
  */
 	var $endQuote = "]";
+
 /**
  * Creates a map between field aliases and numeric indexes.  Workaround for the
  * SQL Server driver's 30-character column name limitation.
@@ -58,6 +56,7 @@ class DboMssql extends DboSource {
  * @var array
  */
 	var $__fieldMappings = array();
+
 /**
  * Base configuration settings for MS SQL driver
  *
@@ -71,6 +70,7 @@ class DboMssql extends DboSource {
 		'database' => 'cake',
 		'port' => '1433',
 	);
+
 /**
  * MS SQL column definition
  *
@@ -89,6 +89,7 @@ class DboMssql extends DboSource {
 		'binary'	=> array('name' => 'image'),
 		'boolean'	=> array('name' => 'bit')
 	);
+
 /**
  * Index of basic SQL commands
  *
@@ -100,6 +101,14 @@ class DboMssql extends DboSource {
 		'commit'   => 'COMMIT',
 		'rollback' => 'ROLLBACK'
 	);
+
+/**
+ * Define if the last query had error
+ *
+ * @var string
+ * @access private
+ */
+	var $__lastQueryHadError = false;
 /**
  * MS SQL DBO driver constructor; sets SQL Server error reporting defaults
  *
@@ -109,13 +118,14 @@ class DboMssql extends DboSource {
 	function __construct($config, $autoConnect = true) {
 		if ($autoConnect) {
 			if (!function_exists('mssql_min_message_severity')) {
-				trigger_error("PHP SQL Server interface is not installed, cannot continue.  For troubleshooting information, see http://php.net/mssql/", E_USER_WARNING);
+				trigger_error(__("PHP SQL Server interface is not installed, cannot continue. For troubleshooting information, see http://php.net/mssql/", true), E_USER_WARNING);
 			}
 			mssql_min_message_severity(15);
 			mssql_min_error_severity(2);
 		}
 		return parent::__construct($config, $autoConnect);
 	}
+
 /**
  * Connects to the database using options in the given configuration array.
  *
@@ -152,6 +162,15 @@ class DboMssql extends DboSource {
 		}
 		return $this->connected;
 	}
+
+/**
+ * Check that MsSQL is installed/loaded
+ *
+ * @return boolean
+ */
+	function enabled() {
+		return extension_loaded('mssql');
+	}
 /**
  * Disconnects from database.
  *
@@ -162,6 +181,7 @@ class DboMssql extends DboSource {
 		$this->connected = !@mssql_close($this->connection);
 		return !$this->connected;
 	}
+
 /**
  * Executes given SQL statement.
  *
@@ -170,8 +190,11 @@ class DboMssql extends DboSource {
  * @access protected
  */
 	function _execute($sql) {
-		return mssql_query($sql, $this->connection);
+		$result = @mssql_query($sql, $this->connection);
+		$this->__lastQueryHadError = ($result === false);
+		return $result;
 	}
+
 /**
  * Returns an array of sources (tables) in the database.
  *
@@ -198,6 +221,7 @@ class DboMssql extends DboSource {
 			return $tables;
 		}
 	}
+
 /**
  * Returns an array of the fields in given table name.
  *
@@ -242,6 +266,7 @@ class DboMssql extends DboSource {
 		$this->__cacheDescription($this->fullTableName($model, false), $fields);
 		return $fields;
 	}
+
 /**
  * Returns a quoted and escaped string of $data for use in an SQL statement.
  *
@@ -284,6 +309,7 @@ class DboMssql extends DboSource {
 		}
 		return "'" . $data . "'";
 	}
+
 /**
  * Generates the fields list of an SQL query.
  *
@@ -346,6 +372,7 @@ class DboMssql extends DboSource {
 			return $fields;
 		}
 	}
+
 /**
  * Generates and executes an SQL INSERT statement for given model, fields, and values.
  * Removes Identity (primary key) column from update data before returning to parent, if
@@ -376,6 +403,7 @@ class DboMssql extends DboSource {
 		}
 		return $result;
 	}
+
 /**
  * Generates and executes an SQL UPDATE statement for given model, fields, and values.
  * Removes Identity (primary key) column from update data before returning to parent.
@@ -398,21 +426,22 @@ class DboMssql extends DboSource {
 		}
 		return parent::update($model, array_keys($fields), array_values($fields), $conditions);
 	}
+
 /**
  * Returns a formatted error message from previous database operation.
  *
  * @return string Error message with error number
  */
 	function lastError() {
-		$error = mssql_get_last_message($this->connection);
-
-		if ($error) {
-			if (!preg_match('/contexto de la base de datos a|contesto di database|changed database|datenbankkontext/i', $error)) {
+		if ($this->__lastQueryHadError) {
+			$error = mssql_get_last_message();
+			if ($error && !preg_match('/contexto de la base de datos a|contesto di database|changed database|contexte de la base de don|datenbankkontext/i', $error)) {
 				return $error;
 			}
 		}
 		return null;
 	}
+
 /**
  * Returns number of affected rows in previous database operation. If no previous operation exists,
  * this returns false.
@@ -425,6 +454,7 @@ class DboMssql extends DboSource {
 		}
 		return null;
 	}
+
 /**
  * Returns number of rows in previous resultset. If no previous resultset exists,
  * this returns false.
@@ -437,6 +467,7 @@ class DboMssql extends DboSource {
 		}
 		return null;
 	}
+
 /**
  * Returns the ID generated from the previous INSERT operation.
  *
@@ -447,6 +478,7 @@ class DboMssql extends DboSource {
 		$id = $this->fetchRow('SELECT SCOPE_IDENTITY() AS insertID', false);
 		return $id[0]['insertID'];
 	}
+
 /**
  * Returns a limit statement in the correct format for the particular database.
  *
@@ -468,6 +500,7 @@ class DboMssql extends DboSource {
 		}
 		return null;
 	}
+
 /**
  * Converts database-layer column types to basic types
  *
@@ -512,6 +545,7 @@ class DboMssql extends DboSource {
 		}
 		return 'text';
 	}
+
 /**
  * Enter description here...
  *
@@ -542,6 +576,7 @@ class DboMssql extends DboSource {
 			$j++;
 		}
 	}
+
 /**
  * Builds final SQL statement
  *
@@ -583,7 +618,7 @@ class DboMssql extends DboSource {
 
 				foreach (array('columns', 'indexes') as $var) {
 					if (is_array(${$var})) {
-						${$var} = "\t" . join(",\n\t", array_filter(${$var}));
+						${$var} = "\t" . implode(",\n\t", array_filter(${$var}));
 					}
 				}
 				return "CREATE TABLE {$table} (\n{$columns});\n{$indexes}";
@@ -593,6 +628,7 @@ class DboMssql extends DboSource {
 			break;
 		}
 	}
+
 /**
  * Reverses the sort direction of ORDER statements to get paging offsets to work correctly
  *
@@ -605,6 +641,7 @@ class DboMssql extends DboSource {
 		$order = preg_replace('/\s+DESC/i', ' ASC', $order);
 		return preg_replace('/__tmp_asc__/', ' DESC', $order);
 	}
+
 /**
  * Translates field names used for filtering and sorting to shortened names using the field map
  *
@@ -622,6 +659,7 @@ class DboMssql extends DboSource {
 		}
 		return $sql;
 	}
+
 /**
  * Returns an array of all result rows for a given SQL query.
  * Returns false if no rows matched.
@@ -635,6 +673,7 @@ class DboMssql extends DboSource {
 		$this->__fieldMappings = array();
 		return $results;
 	}
+
 /**
  * Fetches the next row from the current result set
  *
@@ -655,6 +694,7 @@ class DboMssql extends DboSource {
 			return false;
 		}
 	}
+
 /**
  * Inserts multiple values into a table
  *
@@ -678,6 +718,7 @@ class DboMssql extends DboSource {
 			$this->_execute('SET IDENTITY_INSERT ' . $this->fullTableName($table) . ' OFF');
 		}
 	}
+
 /**
  * Generate a database-native column schema string
  *
@@ -694,6 +735,7 @@ class DboMssql extends DboSource {
 		}
 		return $result;
 	}
+
 /**
  * Format indexes for create table
  *
@@ -711,7 +753,7 @@ class DboMssql extends DboSource {
 				$out = "ALTER TABLE {$table} ADD CONSTRAINT {$name} UNIQUE";
 
 				if (is_array($value['column'])) {
-					$value['column'] = join(', ', array_map(array(&$this, 'name'), $value['column']));
+					$value['column'] = implode(', ', array_map(array(&$this, 'name'), $value['column']));
 				} else {
 					$value['column'] = $this->name($value['column']);
 				}
@@ -721,6 +763,7 @@ class DboMssql extends DboSource {
 		}
 		return $join;
 	}
+
 /**
  * Makes sure it will return the primary key
  *

@@ -1,5 +1,4 @@
 <?php
-/* SVN FILE: $Id$ */
 /**
  * Behavior for binding management.
  *
@@ -7,31 +6,30 @@
  *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
- * Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
- * @link          http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.console.libs
  * @since         CakePHP(tm) v 1.2.0.5669
- * @version       $Revision$
- * @modifiedby    $LastChangedBy$
- * @lastmodified  $Date$
- * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+
 /**
  * Behavior to allow for dynamic and atomic manipulation of a Model's associations used for a find call. Most useful for limiting
  * the amount of associations and data returned.
  *
  * @package       cake
  * @subpackage    cake.cake.console.libs
+ * @link http://book.cakephp.org/view/1323/Containable
  */
 class ContainableBehavior extends ModelBehavior {
+
 /**
  * Types of relationships available for models
  *
@@ -39,6 +37,7 @@ class ContainableBehavior extends ModelBehavior {
  * @access private
  */
 	var $types = array('belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany');
+
 /**
  * Runtime configuration for this behavior
  *
@@ -46,6 +45,7 @@ class ContainableBehavior extends ModelBehavior {
  * @access private
  */
 	var $runtime = array();
+
 /**
  * Initiate behavior for the model using specified settings.
  *
@@ -73,12 +73,14 @@ class ContainableBehavior extends ModelBehavior {
 		}
 		$this->settings[$Model->alias] = array_merge($this->settings[$Model->alias], $settings);
 	}
+
 /**
  * Runs before a find() operation. Used to allow 'contain' setting
  * as part of the find call, like this:
  *
- * Model->find('all', array('contain' => array('Model1', 'Model2')));
+ * `Model->find('all', array('contain' => array('Model1', 'Model2')));`
  *
+ * {{{
  * Model->find('all', array('contain' => array(
  * 	'Model1' => array('Model11', 'Model12'),
  * 	'Model2',
@@ -87,6 +89,7 @@ class ContainableBehavior extends ModelBehavior {
  * 		'Model32',
  * 		'Model33' => array('Model331', 'Model332')
  * )));
+ * }}}
  *
  * @param object $Model	Model using the behavior
  * @param array $query Query parameters as set by cake
@@ -128,7 +131,11 @@ class ContainableBehavior extends ModelBehavior {
 			if ($contain) {
 				$backupBindings = array();
 				foreach ($this->types as $relation) {
-					$backupBindings[$relation] = $instance->{$relation};
+					if (!empty($instance->__backAssociation[$relation])) {
+						$backupBindings[$relation] = $instance->__backAssociation[$relation];
+					} else {
+						$backupBindings[$relation] = $instance->{$relation};
+					}
 				}
 				foreach ($this->types as $type) {
 					$unbind = array();
@@ -153,7 +160,7 @@ class ContainableBehavior extends ModelBehavior {
 							if (!$reset && empty($instance->__backOriginalAssociation)) {
 								$instance->__backOriginalAssociation = $backupBindings;
 							} else if ($reset) {
-								$instance->__backAssociation[$type] = $instance->{$type};
+								$instance->__backAssociation[$type] = $backupBindings[$type];
 							}
 							$instance->{$type}[$assoc] = array_merge($instance->{$type}[$assoc], $model['keep'][$assoc]);
 						}
@@ -177,11 +184,13 @@ class ContainableBehavior extends ModelBehavior {
 		}
 
 		$query['fields'] = (array)$query['fields'];
-		if (!empty($Model->belongsTo)) {
-			foreach ($Model->belongsTo as $assoc => $data) {
-				if (!empty($data['fields'])) {
-					foreach ((array) $data['fields'] as $field) {
-						$query['fields'][] = (strpos($field, '.') === false ? $assoc . '.' : '') . $field;
+		foreach (array('hasOne', 'belongsTo') as $type) {
+			if (!empty($Model->{$type})) {
+				foreach ($Model->{$type} as $assoc => $data) {
+					if (!empty($data['fields'])) {
+						foreach ((array) $data['fields'] as $field) {
+							$query['fields'][] = (strpos($field, '.') === false ? $assoc . '.' : '') . $field;
+						}
 					}
 				}
 			}
@@ -200,6 +209,7 @@ class ContainableBehavior extends ModelBehavior {
 		$query['fields'] = array_unique($query['fields']);
 		return $query;
 	}
+
 /**
  * Resets original associations on models that may have receive multiple,
  * subsequent unbindings.
@@ -217,6 +227,7 @@ class ContainableBehavior extends ModelBehavior {
 			}
 		}
 	}
+
 /**
  * Unbinds all relations from a model except the specified ones. Calling this function without
  * parameters unbinds all related models.
@@ -224,12 +235,14 @@ class ContainableBehavior extends ModelBehavior {
  * @param object $Model Model on which binding restriction is being applied
  * @return void
  * @access public
+ * @link http://book.cakephp.org/view/1323/Containable#Using-Containable-1324
  */
 	function contain(&$Model) {
 		$args = func_get_args();
 		$contain = call_user_func_array('am', array_slice($args, 1));
 		$this->runtime[$Model->alias]['contain'] = $contain;
 	}
+
 /**
  * Permanently restore the original binding settings of given model, useful
  * for restoring the bindings after using 'reset' => false as part of the
@@ -253,6 +266,7 @@ class ContainableBehavior extends ModelBehavior {
 			}
 		}
 	}
+
 /**
  * Process containments for model.
  *
@@ -281,7 +295,7 @@ class ContainableBehavior extends ModelBehavior {
 			if (strpos($name, '.') !== false) {
 				$chain = explode('.', $name);
 				$name = array_shift($chain);
-				$children = array(join('.', $chain) => $children);
+				$children = array(implode('.', $chain) => $children);
 			}
 
 			$children = (array)$children;
@@ -357,6 +371,7 @@ class ContainableBehavior extends ModelBehavior {
 		$containments['depth'] = empty($depths) ? 0 : max($depths);
 		return $containments;
 	}
+
 /**
  * Calculate needed fields to fetch the required bindings for the given model.
  *
@@ -404,6 +419,7 @@ class ContainableBehavior extends ModelBehavior {
 		}
 		return array_unique($fields);
 	}
+
 /**
  * Build the map of containments
  *
