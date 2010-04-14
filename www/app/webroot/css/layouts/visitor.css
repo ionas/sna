@@ -4,3 +4,86 @@
 #footer #footer_menu {
 	padding-left: 17em;
 }
+#content {
+	width: 48em;
+}
+#content, #submenu {
+	float: left;
+}
+#submenu {
+	width: 12.5em;
+	margin-top: 1.7em;
+	padding-right: 1em;
+}
+#submenu ul {
+	border: 1px solid #999;
+	border-radius: 4px; /* CSS 3 */
+	-o-border-radius: 4px; /* Opera */
+	-icab-border-radius: 4px; /* iCab */
+	-khtml-border-radius: 4px; /* Konqueror */
+	-moz-border-radius: 4px; /* Firefox */
+	-webkit-border-radius: 4px; /* Safari */
+	background: white;
+}
+#submenu li {
+	padding: .5em;
+	background: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, rgb(200,200,200)),
+		color-stop(1, rgb(240,240,240))
+	);
+	background: -moz-linear-gradient(
+		center bottom,
+		rgb(200,200,200) 0%,
+		rgb(240,240,240) 100%
+	);
+	border-bottom: 1px solid #aaa;
+}
+#submenu ul:focus,
+#submenu ul:hover {
+	cursor: pointer;
+}
+#submenu li:focus,
+#submenu li:hover {
+	background: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, rgb(240,240,240)),
+		color-stop(1, rgb(200,200,200))
+	);
+	background: -moz-linear-gradient(
+		center bottom,
+		rgb(240,240,240) 0,
+		rgb(200,200,200) 100%
+	);
+	cursor: pointer;
+}
+#submenu li:first-child {
+	border-top-left-radius: 4px;
+	-webkit-border-top-left-radius: 4px;
+	-moz-border-radius-topleft: 4px;
+	border-top-right-radius: 4px;
+	-webkit-border-top-right-radius: 4px;
+	-moz-border-radius-topright: 4px;
+}
+#submenu li:last-child {
+	border-bottom: 0;
+	border-bottom-left-radius: 4px;
+	-webkit-border-bottom-left-radius: 4px;
+	-moz-border-radius-bottomleft: 4px;
+	border-bottom-right-radius: 4px;
+	-webkit-border-bottom-right-radius: 4px;
+	-moz-border-radius-bottomright: 4px;
+}
+#submenu li a {
+	color: black;
+	text-decoration: none;
+	display: block;
+}
+#submenu li:hover,
+#submenu li:focus {
+	text-decoration: underline;
+}

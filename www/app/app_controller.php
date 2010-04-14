@@ -2,7 +2,7 @@
 class AppController extends Controller {
 	
 	var $components = array('Cookie', 'Security', 'Auth', 'RequestHandler', 'Session');
-	var $helpers = array('Html', 'Form', 'Secure', 'Javascript', 'Myhtml');
+	var $helpers = array('Html', 'Form', 'Javascript', 'Session', 'Secure', 'Myhtml');
 	
 	function beforeFilter() {
 		$this->disableCache();
@@ -165,6 +165,7 @@ class AppController extends Controller {
 		if ($this->Auth->isAuthorized()) {
 			ClassRegistry::init('User')->updateActivity($this->Auth->user(), 'last_action');
 		}
-	}	
+	}
+	
 }
 ?>

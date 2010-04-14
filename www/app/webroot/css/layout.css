@@ -1,0 +1,68 @@
+html {
+	background: url('../img/background.png');
+}
+body {
+	background: url('../img/background_fade.png') repeat-x;
+	font-size: 11pt;
+}
+.clear {
+	clear: both;
+}
+#header_box {
+	position: relative;
+	width: 902px;
+	height: 140px;
+	margin: 0 auto;
+	background: url('../img/header.png') no-repeat;
+}
+#layout_box {
+	width: 960px;
+	margin: 0 auto;
+	background: url('../img/content_background.png') repeat-y;
+}
+#content_box {
+	width: 902px;
+	padding: 29px;
+	margin: 0 auto;
+	background: url('../img/content_background_top.png') no-repeat;
+}
+#footer_box {
+	width: 960px;
+	height: 192px;
+	margin: 0 auto;
+	background: url('../img/content_background_bottom.png') no-repeat;
+}
+#search_box {
+	position: absolute;
+	top: 0;
+	right: 21px;
+	width: 117px;
+	height: 22px;
+}
+#search_box input {
+	width: 112px;
+	height: 17px;
+	padding-bottom: 5px;
+	padding-left: 5px;
+	border: 0;
+	background: url('../img/search_background.png') no-repeat;
+	color: #aaa;
+}
+#search_box input:focus {
+	color: black;
+	background: url('../img/search_background_focus.png') no-repeat;
+}
+#footer_box {
+	clear: both;
+	padding-top: 5em;
+	text-align: center;
+	font-size: 90%;
+}
+#footer_box a {
+	color: #aaa;
+	text-decoration: none;
+}
+#footer_box a:hover,
+#footer_box a:focus {
+	text-decoration: underline;
+}

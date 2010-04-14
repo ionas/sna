@@ -1,0 +1,72 @@
+form div.input.error .error-message {
+	float: left;
+	clear: none;
+	width: auto;
+	margin: 0;
+	margin-left: .5em;
+	color: #fff;
+	border-radius: 4px; /* CSS 3 */
+	-o-border-radius: 4px; /* Opera */
+	-icab-border-radius: 4px; /* iCab */
+	-khtml-border-radius: 4px; /* Konqueror */
+	-moz-border-radius: 4px; /* Firefox */
+	-webkit-border-radius: 4px; /* Safari */
+	background: #990000;
+	background-image: url('/img/notice_error_invert.png');
+	background-repeat: no-repeat;
+	background-position: -.2em -.2em;
+	padding-left: 2.1em;
+	font-weight: normal;
+	padding-top: .18em;
+	padding-bottom: .18em;
+	padding-right: .5em;
+	margin-right: 1em;
+}
+form div.input.text.error .error-message,
+form div.input.password.error .error-message,
+form div.input.textarea.error .error-message {
+	margin-top: 3px;
+}
+
+/* flash message */
+#authMessage,
+#flashMessage {
+	width: auto;
+	margin: 0;
+	border: 1px solid #900;
+	color: #900;
+	border-radius: 4px; /* CSS 3 */
+	-o-border-radius: 4px; /* Opera */
+	-icab-border-radius: 4px; /* iCab */
+	-khtml-border-radius: 4px; /* Konqueror */
+	-moz-border-radius: 4px; /* Firefox */
+	-webkit-border-radius: 4px; /* Safari */
+	background-image: url('/img/notice_error.png');
+	background-repeat: no-repeat;
+	background-position: -.2em -.1em;
+	padding-left: 2.1em;
+	padding-top: .4em;
+	padding-bottom: .4em;
+	padding-right: .5em;
+	margin-bottom: 2em;
+	margin-left: 2em;
+	margin-top: 2em;
+	font-size: 110%;
+	background-color: #fffff7;
+	position: absolute;
+	top: 7em;
+	z-index: 2000;
+	text-shadow: 1px 1px 2px #aaa;
+}
+#authMessage.success,
+#flashMessage.success {
+	color: green;
+	border-color: green;
+	background-image: url('/img/notice_success.png');
+}
+#authMessage.notification,
+#flashMessage.notification {
+	color: #8F7500;
+	border-color: #8F7500;
+	background-image: url('/img/notice_notice.png');
+}

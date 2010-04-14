@@ -1,0 +1,149 @@
+body {
+	font-size: 10px;
+}
+/* header */
+#header h1 {
+	background-image: url('../img/app.icon.gif');
+	background-repeat: no-repeat left;
+	background-position: left -8px;
+	padding-left: 40px;
+}
+/* lang selector */
+#header {
+	position: relative;
+	font-size: 130%;
+	padding-left: 1em;
+}
+#langSelector {
+	position: absolute;
+	top: 1em;
+	right: 1em;
+}
+#langSelector p {
+	float: left;
+	line-height: 80%;
+}
+#langSelector p a {
+	background: transparent;
+	color: white;
+	font-weight: normal;
+}
+#langSelector p:first-child {
+	padding-right: .5em;
+	margin-right: .5em;
+	border-right: 1px solid white;
+}
+#container {
+	width: 94em;
+	margin: 0 auto;
+}
+#menu,
+#content {
+	font-size: 130%;
+	background: white;
+	font-size: 130%;
+	clear: none;
+	border: 1px solid white;
+	border-radius: 4px; /* CSS 3 */
+	-o-border-radius: 4px; /* Opera */
+	-icab-border-radius: 4px; /* iCab */
+	-khtml-border-radius: 4px; /* Konqueror */
+	-moz-border-radius: 4px; /* Firefox */
+	-webkit-border-radius: 4px; /* Safari */
+	border-bottom-color: black;
+}
+#menu,
+#menu ul,
+#menu li {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+#menu,
+#infobox {
+	float: left;
+	width: 12em;
+	margin-right: 1em;
+}
+#infobox {
+	margin: 0;
+	padding: 0;
+	margin-top: .5em;
+	clear: left;
+	font-size: 130%;
+}
+#infobox p {
+	font-size: 70%;
+	padding: .2em .5em;
+	padding-right: 0;
+	margin-right: 0;
+	width: inherit;
+}
+#menu a {
+	text-decoration: none;
+}
+#menu a:hover {
+	background: none;
+	color: black;
+	text-decoration: underline;
+}
+#menu li {
+	margin: 1em 0;
+}
+#menu a {
+	display: block;
+	margin-right: 1em;
+	padding-left: 1em;
+}
+#menu li hr {
+	height: 1px;
+	width: 100%;
+	border: 0;
+	color: #247;
+	background:  #247;
+	margin-bottom: 1em;
+}
+#content {
+	padding: 0 3em 2em 3em;
+}
+html, body, #container {
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+	height: 100%;
+}
+#content {
+	min-height: 100%;
+}
+#content {
+	overflow: hidden;
+}
+#footer {
+	padding-top: 1em;
+	padding-bottom: 3em;
+	font-size: 100%;
+}
+#footer #footer_menu {
+	float: left;
+	padding-top: .5em;
+}
+#footer #footer_menu a {
+	display: block;
+	float: left;
+	font-weight: normal;
+	line-height: 90%;
+	margin-right: 8px;
+	padding-right: 8px;
+	border-right: 1px solid #ddd;
+	color: #ddd;
+}
+#footer #footer_menu a:hover {
+	text-decoration: underline;
+}
+#footer #footer_menu a.last {
+	border-right: none;	
+}
+#footer .navLink {
+	font-size: 150%;
+}

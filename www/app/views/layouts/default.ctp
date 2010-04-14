@@ -1,7 +1,7 @@
 <?php require(LAYOUTS . 'app_header.snip')?>
 <?php require(LAYOUTS . 'app_menu.snip')?>
 		<div id="content">
-			<?php $session->flash()?>
+			<?=$this->Session->flash()?>
 			<?=BRCLEAR?>
 			<?=$content_for_layout?>
 		</div>

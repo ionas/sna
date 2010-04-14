@@ -2,32 +2,43 @@
 	"-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" id="top">
-<head>
-	<?=$html->charset()?>
-	<title>Social Network Application &middot; <?=$title_for_layout?></title>
-	<?=$html->meta('icon')?> 
-	<?=$html->css('cake.generic')?> 
-	<?=$html->css('app.generic')?> 
-	<?=$html->css('app.layout')?> 
-	<?=$html->css('app.form')?> 
-	<?=$html->css('app.jquery')?>
-	<!--[if gte IE 7]><?=$html->css('app.browser.ie')?><![endif]-->
-	<?php if (file_exists(CSS . $css_for_layout)) { echo $html->css($css_for_layout); }?> 
-	<?php if (file_exists(CSS . $controller_css_for_layout)) {
-		echo $html->css($controller_css_for_layout); } ?> 
-	<?php if(file_exists(CSS . $view_css_for_layout)) { echo $html->css($view_css_for_layout); } ?> 
-	<?=$javascript->link('jquery-1.3.2')?> 
-	<?=$javascript->link('jquery.timers')?> 
-	<?=$javascript->link('jquery.smoothScroll')?> 
-	<?=$javascript->link('app.jquery')?> 
-	<?=$scripts_for_layout?> 
-</head>
-<body>
-	<div id="container">
-		<div id="header">
-			<h1><?=$html->link(__('Social Network Application', true), '/')?></h1>
+	<head>
+		<?=$this->Html->charset()?>
+		<title>Social Network Application &middot; <?=$title_for_layout?></title>
+		<?=$this->Html->meta('icon'),
+			$this->Html->css('reset'),
+			$this->Html->css('debug'),
+			$this->Html->css('layout'),
+			$this->Html->css('messages'),
+			$this->Html->css('forms'); /*,
+			$this->Html->css('app.generic'),
+			$this->Html->css('app.layout'),
+			$this->Html->css('app.jquery'),
+			$this->Html->script('jquery-1.3.2'),
+			$this->Html->script('jquery.timers'), 
+			$this->Html->script('jquery.smoothScroll'), 
+			$this->Html->script('app.jquery');
+			*/
+		?>
+		<!--[if gte IE 7]><?=$this->Html->css('app.browser.ie')?><![endif]-->
+		<?php if (file_exists(CSS . $css_for_layout)) { echo $this->Html->css($css_for_layout); }?> 
+		<?php if (file_exists(CSS . $controller_css_for_layout)) {
+			echo $this->Html->css($controller_css_for_layout); } ?> 
+		<?php if(file_exists(CSS . $view_css_for_layout)) { echo $this->Html->css($view_css_for_layout); } ?> 
+		<?=$scripts_for_layout?> 
+	</head>
+	<body>
+		<div id="header_box">
+			<h1><?=$this->Html->link(__('Social Network Application', true), '/')?></h1>
+			<div id="search_box">
+				<form>
+					<input type="text" value="Search..." onblur="if (this.value == '') this.value = 'Search...'" onfocus="if (this.value == 'Search...') this.value = ''">
+				</form>
+			</div>
 			<div id="langSelector">
-				<p><?=$html->link('In English', array('lang' => 'eng'))?></p>
-				<p><?=$html->link('In Deutsch', array('lang' => 'deu'))?></p>
+				<p><?=$this->Html->link('In English', array('lang' => 'eng'))?></p>
+				<p><?=$this->Html->link('In Deutsch', array('lang' => 'deu'))?></p>
 			</div>
 		</div>
+		<div id="layout_box">
+			<div id="content_box">

@@ -1,0 +1,40 @@
+form div.submit input.userHasSubmitted,
+form div.submit input.userHasSubmitted:hover,
+form div.submit input.userHasSubmitted:focus {
+	color: #aaa;
+	background-color: #eee;
+	border-color: #ddd;
+	border-width: 1px;
+	margin-bottom: 1px;
+	background-position: bottom;
+}
+form div.submit input.userHasSubmittedWheel,
+form div.submit input.userHasSubmittedWheel:hover,
+form div.submit input.userHasSubmittedWheel:focus {
+	background-position: right center;
+	background-repeat: no-repeat;
+	background-image: url('/img/loading_animation.gif');
+	padding-right: 20px;
+	outline: none;
+}
+
+/* /messages/mailbox */
+.messageSubjectClicked {
+	color: transparent;
+	border-bottom-color: transparent;
+	border-right-color: transparent;
+}
+.messageSubjectClickable {
+	cursor: pointer;
+	visibility: visible;
+	color: inherit;
+	border-bottom-color: silver;
+	border-right-color: silver;
+}
+.messageSubjectClickable:before {
+	content: "↓";
+	font-weight: bold;
+}
+.messageBody.messageBodyHidden {
+	display: none;
+}

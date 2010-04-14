@@ -1,0 +1,24 @@
+.cake-sql-log {
+	margin: 0;
+	padding: 0;
+	width: 960px;
+	border: 1px solid #ccc;
+	background: #eee;
+	padding: 1px;
+	margin-top:5em;
+}
+.cake-sql-log table {
+	background: #f4f4f4;
+}
+.cake-sql-log th,
+.cake-sql-log td {
+	text-align: left;
+	border: 1px solid #ddd;
+	padding: 4px 8px;
+}
+.cake-sql-log th {
+	background: #ddd;
+}
+.cake-sql-log td {
+	font-family: 'Monaco', 'Consolas', "Courier New", monospaced;
+}

@@ -1,0 +1,192 @@
+form {
+	margin: 0;
+	padding: 0;
+	width: auto;
+}
+form fieldset {
+	padding: 1em 0 2em 1em;
+}
+form legend {
+	padding-left: .3em;
+	padding-right: .3em;
+}
+form div.input
+form div.input input {
+	margin: 0;
+}
+form div.input {
+	margin-bottom: 1em;
+}
+form div.input.text input,
+form div.input.password input,
+form div.input.error.text input,
+form div.input.error.password input {
+	width: auto;
+}
+form div.input.error.text input,
+form div.input.error.password input {
+	float: left;
+	clear: none;
+	margin-bottom: 1em;
+}
+form div.input.checkbox input,
+form div.input.checkbox label {
+	float: left;
+	margin: 0;
+}
+form div.input.checkbox label {
+	width: auto;
+	border: 1px solid white;
+	line-height: 133%;
+}
+form div.input.error.checkbox label {
+	color: #900;
+}
+form div.input.error .error-message {
+	float: left;
+	clear: none;
+	width: auto;
+	margin: 0;
+	margin-left: .5em;
+	color: #fff;
+	border-radius: 4px; /* CSS 3 */
+	-o-border-radius: 4px; /* Opera */
+	-icab-border-radius: 4px; /* iCab */
+	-khtml-border-radius: 4px; /* Konqueror */
+	-moz-border-radius: 4px; /* Firefox */
+	-webkit-border-radius: 4px; /* Safari */
+	background: #990000;
+	background-image: url('/img/notice_error_invert.png');
+	background-repeat: no-repeat;
+	background-position: .1em 0;
+	padding-left: 2.4em;
+	font-weight: normal;
+}
+form div.input.text.error .error-message,
+form div.input.password.error .error-message,
+form div.input.textarea.error .error-message {
+	margin-top: 3px;
+}
+div.input label {
+	padding-left: 8px;
+	padding-bottom: .3em;
+	line-height: 100%;
+	font-size: 100%;
+}
+form div.input.text input,
+form div.input.password input,
+form div.submit input,
+form fieldset,
+form textarea,
+a.iconLinkButton,
+.messageSubjectClickable:before {
+	border: 1px solid #999;
+	border-radius: 4px; /* CSS 3 */
+	-o-border-radius: 4px; /* Opera */
+	-icab-border-radius: 4px; /* iCab */
+	-khtml-border-radius: 4px; /* Konqueror */
+	-moz-border-radius: 4px; /* Firefox */
+	-webkit-border-radius: 4px; /* Safari */
+}
+form div.input.text input,
+form div.input.password input,
+form textarea,
+a.iconLinkButton,
+.messageSubjectClickable:before {
+	color: #333;
+	background: #fafafa;
+	letter-spacing: .2pt;
+	padding-left: 6px;
+	padding-right: 4px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	margin-top: 3px;
+	background-image: url('../img/input_field.gif');
+	background-repeat: repeat-x;
+}
+form textarea {
+	line-height: 150%;
+	height: 19.5em;
+	width: auto;
+	font-size: 100%
+}
+form div.input.text input:focus,
+form div.input.password input:focus,
+form textarea:focus {
+	color: #000;
+	text-decoration: none;
+	border-color: #555;
+	background: #f4ffcc;
+	background-image: url('../img/input_field_hover.gif');
+}
+form div.submit {
+	margin-left: 20px;
+}
+form div.submit input,
+a.iconLinkButton,
+.messageSubjectClickable:before {
+	font-family: Arial;
+	cursor: pointer;
+	background-color: #ddd;
+	background-image: url('../img/input_button_grey.gif');
+	background-repeat: repeat-x;
+	background-position: top left;
+}
+form div.submit input {
+	margin-bottom: 1px;
+}
+form div.submit input:hover,
+form div.submit input:focus,
+a.iconLinkButton:hover,
+a.iconLinkButton:focus {
+	color: #000;
+	text-decoration: none;
+	border-color: #555;
+	border-bottom-width: 2px;
+	margin-bottom: 0;
+	background-color: #eeffbb;
+	background-color: #e4eccc;
+	background-image: url('../img/input_button_hover.gif');
+}
+form p {
+	padding-left: 9px;
+}
+a.iconLinkButton,
+a.iconLinkButton:hover,
+a.iconLinkButton:focus {
+	line-height: 250%;
+	text-decoration: none;
+}
+table form,
+table form fieldset,
+table form fieldset input,
+table form div.submit,
+table form div,
+table tr td.actions,
+li form,
+li form fieldset,
+li form fieldset input,
+li form div.submit,
+li form div {
+	margin: 0;
+	padding: 0;
+	width: inherit;
+}
+table tr td.actions {
+	padding-top: 1em;
+	padding-bottom: .5em;
+	padding-left: 1em;
+	padding-right: .5em;
+}
+table tr td.actions,
+table tr td.actions form {
+	text-align: left;
+	padding-bottom: .5em;
+}
+li form,
+li form fieldset,
+li form fieldset input,
+li form div.submit,
+li form div {
+	display: inline;
+}

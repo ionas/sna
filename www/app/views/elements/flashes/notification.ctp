@@ -1,0 +1,1 @@
+<div id="flashMessage" class="message notification"><?=$message?></div>

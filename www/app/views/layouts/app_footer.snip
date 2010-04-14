@@ -1,21 +1,20 @@
-
-		<div id="footer">
-			<div id="footer_menu">
-			<?=$html->link(__('Home', true), array('controller' => 'users', 'action' => 'home'))?>
-			<?=$html->link(__('Login', true), array('controller' => 'users', 'action' => 'login'))?>
-			<?=$html->link(__('Support', true), array('controller' => 'pages', 'action' => 'display', 'support'))?>
-			<?=$html->link(__('About', true), array('controller' => 'pages', 'action' => 'display', 'about'))?>
-			<?=$html->link(__('Donate', true), array('controller' => 'pages', 'action' => 'display', 'donate'))?>
-			<?=$html->link(__('Feedback', true), array('controller' => 'pages', 'action' => 'display', 'feedback'))?>
-			<?=$html->link(__('Terms and Conditions', true), array('controller' => 'pages', 'action' => 'display', 'terms_of_service'))?>
-			<?=$html->link(__('Impress', true), array('controller' => 'pages', 'action' => 'display', 'impress'), array('class' => 'last'))?>
+				<br class="clear">
+				<div id="footer_box">
+					<?=$this->Html->link(__('Home', true), array('controller' => 'users', 'action' => 'home'))?>
+					<?=$this->Html->link(__('Login', true), array('controller' => 'users', 'action' => 'login'))?>
+					<?=$this->Html->link(__('Support', true), array('controller' => 'pages', 'action' => 'display', 'support'))?>
+					<?=$this->Html->link(__('About', true), array('controller' => 'pages', 'action' => 'display', 'about'))?>
+					<?=$this->Html->link(__('Donate', true), array('controller' => 'pages', 'action' => 'display', 'donate'))?>
+					<?=$this->Html->link(__('Feedback', true), array('controller' => 'pages', 'action' => 'display', 'feedback'))?>
+					<?=$this->Html->link(__('Terms and Conditions', true), array('controller' => 'pages', 'action' => 'display', 'terms_of_service'))?>
+					<?=$this->Html->link(__('Impress', true), array('controller' => 'pages', 'action' => 'display', 'impress'), array('class' => 'last'))?>
+					<?php if($referer != $this->here):?>
+					<?=$this->Html->link("←", $referer, array('class' => 'navLink'))?>
+					<?php endif?>
+					<?=$this->Html->link("↑", array('#' => 'top'), array('class' => 'navLink'))?>
+					<?=$this->element('sql_dump')?>
+				</div>
 			</div>
-			<?php if($referer != $this->here):?>
-			<?=$html->link("←", $referer, array('class' => 'navLink'))?>
-			<?php endif?>
-			<?=$html->link("↑", array('#' => 'top'), array('class' => 'navLink'))?>
 		</div>
-	</div>
-	<?=$cakeDebug?>
 	</body>
 </html>

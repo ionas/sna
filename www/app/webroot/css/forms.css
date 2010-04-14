@@ -1,0 +1,151 @@
+form {
+	margin: 0;
+	padding: 0;
+	width: auto;
+	line-height: 150%;
+}
+form fieldset {
+	padding: 1em 0 1em 2em;
+	margin-bottom: 1em;
+}
+form legend {
+	padding-left: .3em;
+	padding-right: .3em;
+	color: #e32;
+	font-size: 160%;
+}
+form div.input
+form div.input input {
+	margin: 0;
+}
+form div.input {
+	margin-bottom: 1em;
+}
+form div.input {
+	clear: both;
+}
+form div.input.required {
+	font-weight: bold;
+}
+form div.input {
+}
+form div.input.text input,
+form div.input.password input,
+form div.input.error.text input,
+form div.input.error.password input {
+	width: 45%;
+}
+form div.input.error.text input,
+form div.input.error.password input {
+	float: left;
+	clear: none;
+	margin-bottom: 1em;
+}
+form div.input.checkbox input,
+form div.input.checkbox label {
+	float: left;
+	margin: 0;
+}
+form div.input.checkbox input {
+	margin-top: .2em;
+	margin-right: .5em;
+}
+form div.input.checkbox label {
+	width: auto;
+	border: 1px solid white;
+	line-height: 133%;
+}
+form div.input.error.checkbox label {
+	color: #900;
+}
+div.input label {
+	padding-bottom: .3em;
+	line-height: 100%;
+	font-size: 100%;
+	display: block;
+}
+form div.input.text input,
+form div.input.password input,
+form div.submit input,
+form fieldset,
+form textarea {
+	border: 1px solid #999;
+	border-radius: 4px; /* CSS 3 */
+	-o-border-radius: 4px; /* Opera */
+	-icab-border-radius: 4px; /* iCab */
+	-khtml-border-radius: 4px; /* Konqueror */
+	-moz-border-radius: 4px; /* Firefox */
+	-webkit-border-radius: 4px; /* Safari */
+}
+form div.input.text input,
+form div.input.password input,
+form textarea {
+	color: #333;
+	background: #fafafa;
+	letter-spacing: .2pt;
+	padding-left: 6px;
+	padding-right: 4px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	margin-top: 3px;
+	background-image: url('../img/input_field.gif');
+	background-repeat: repeat-x;
+}
+form textarea {
+	line-height: 150%;
+	width: auto;
+	font-size: 100%
+}
+form div.input.text input:focus,
+form div.input.password input:focus,
+form textarea:focus {
+	color: #000;
+	text-decoration: none;
+	border-color: #555;
+	background: #f4ffcc;
+	background-image: url('../img/input_field_hover.gif');
+}
+form div.submit input {
+	font-family: Arial;
+	cursor: pointer;
+	background-color: #ddd;
+	background-image: url('../img/input_button_grey.gif');
+	background-repeat: repeat-x;
+	background-position: top left;
+	font-weight: bold;
+}
+form div.submit input {
+	margin-bottom: 1px;
+}
+form div.submit input:hover,
+form div.submit input:focus {
+	color: #000;
+	text-decoration: none;
+	border-color: #555;
+	border-bottom-width: 2px;
+	margin-bottom: 0;
+	background-color: #eeffbb;
+	background-color: #e4eccc;
+	background-image: url('../img/input_button_hover.gif');
+}
+table form,
+table form fieldset,
+table form fieldset input,
+table form div.submit,
+table form div,
+table tr td.actions {
+	margin: 0;
+	padding: 0;
+	width: inherit;
+}
+table tr td.actions {
+	padding-top: 1em;
+	padding-bottom: .5em;
+	padding-left: 1em;
+	padding-right: .5em;
+}
+table tr td.actions,
+table tr td.actions form {
+	text-align: left;
+	padding-bottom: .5em;
+}
